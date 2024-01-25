@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -21,7 +22,9 @@ import android.widget.ViewFlipper;
 import com.bumptech.glide.Glide;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.adapter.CategoryAdapter;
+import com.example.appbanhangonl.adapter.ProductAdapter;
 import com.example.appbanhangonl.model.CategoryModel;
+import com.example.appbanhangonl.model.ProductModel;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     List<CategoryModel> categoryModelList;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ApiBanHang apiBanHang;
+    List<ProductModel> productModelList;
+    ProductAdapter productAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +62,28 @@ public class MainActivity extends AppCompatActivity {
         if (isConnected(this)) {
             ActionViewFliper();
             getCategoryList();
+            getProduct();
         } else {
             Toast.makeText(getApplicationContext(), "Không có Internet!!!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getProduct() {
+        compositeDisposable.add(apiBanHang.getAPIProduct()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        product -> {
+                            if (product.isSucces()) {
+                                productModelList = product.getResult();
+                                productAdapter = new ProductAdapter(getApplicationContext(), productModelList);
+                                recyclerViewHome.setAdapter(productAdapter);
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getApplicationContext(), "Không kết nối được" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
     private void getCategoryList() {
@@ -81,13 +105,16 @@ public class MainActivity extends AppCompatActivity {
     private void Mapping() {
         toolbar = findViewById(R.id.toolBarHome);
         viewFlipper = findViewById(R.id.viewFlipper);
-        recyclerViewHome = findViewById(R.id.recyclerView);
+        recyclerViewHome = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
+        recyclerViewHome.setLayoutManager(layoutManager);
+        recyclerViewHome.setHasFixedSize(true);
         navigationView = findViewById(R.id.navigationView);
         listViewHome = findViewById(R.id.listViewHome);
         drawerLayout = findViewById(R.id.drawerLayout);
         //Khởi tạo list
         categoryModelList = new ArrayList<>();
-
+        productModelList = new ArrayList<>();
     }
 
     //Thanh menu
