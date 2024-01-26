@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -63,9 +65,41 @@ public class MainActivity extends AppCompatActivity {
             ActionViewFliper();
             getCategoryList();
             getProduct();
+            getEventClick();
         } else {
             Toast.makeText(getApplicationContext(), "Không có Internet!!!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getEventClick() {
+        listViewHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        Intent home = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(home);
+                        break;
+                    case 1:
+                        Intent phoneProduct = new Intent(getApplicationContext(), PhoneProductActivity.class);
+                        phoneProduct.putExtra("Loai", 1);
+                        startActivity(phoneProduct);
+                        break;
+                    case 2:
+                        Intent lapTopProduct = new Intent(getApplicationContext(), LapTopProductActivity.class);
+                        startActivity(lapTopProduct);
+                        break;
+                    case 3:
+                        Intent infomation = new Intent(getApplicationContext(), InfomationActivity.class);
+                        startActivity(infomation);
+                        break;
+                    case 4:
+                        Intent contact = new Intent(getApplicationContext(), ContactActivity.class);
+                        startActivity(contact);
+                        break;
+                }
+            }
+        });
     }
 
     private void getProduct() {

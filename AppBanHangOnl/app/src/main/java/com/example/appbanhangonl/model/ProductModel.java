@@ -6,6 +6,7 @@ public class ProductModel {
     String GiaSP;
     String MoTa;
     String HinhAnh;
+    int Loai;
 
     public int getMaSPMoi() {
         return MaSPMoi;
@@ -54,8 +55,4 @@ public class ProductModel {
     public void setLoai(int loai) {
         Loai = loai;
     }
-
-    int Loai;
-
-
 }
