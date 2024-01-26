@@ -86,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(phoneProduct);
                         break;
                     case 2:
-                        Intent lapTopProduct = new Intent(getApplicationContext(), LapTopProductActivity.class);
+                        Intent lapTopProduct = new Intent(getApplicationContext(), PhoneProductActivity.class);
+                        lapTopProduct.putExtra("Loai", 2);
                         startActivity(lapTopProduct);
                         break;
                     case 3:

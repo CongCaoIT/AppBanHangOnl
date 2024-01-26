@@ -1,6 +1,7 @@
 package com.example.appbanhangonl.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +50,17 @@ public class PhoneProductActivity extends AppCompatActivity {
         ActionToolBar();
         getData(page);
         addEventLoad();
+        ActionBar a = getSupportActionBar();
+        LoadTitle();
+    }
+
+    private void LoadTitle() {
+        ActionBar actionBarTilte = getSupportActionBar();
+        if (info == 1) {
+            actionBarTilte.setTitle("Điện thoại");
+        } else if (info == 2) {
+            actionBarTilte.setTitle("Lap Top");
+        }
     }
 
     private void addEventLoad() {
@@ -112,8 +124,7 @@ public class PhoneProductActivity extends AppCompatActivity {
                                     }
                                     phoneAdapter.notifyItemRangeChanged(pos, num);
                                 }
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(getApplicationContext(), "Hết hàng", Toast.LENGTH_SHORT).show();
                                 isLoading = true;
                             }

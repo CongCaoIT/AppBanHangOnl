@@ -1,6 +1,7 @@
 package com.example.appbanhangonl.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.PointerIcon;
 import android.view.View;
@@ -13,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.appbanhangonl.Interface.ItemClickListener;
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.activity.ProductDetailsActivity;
 import com.example.appbanhangonl.model.ProductModel;
 
 import java.text.DecimalFormat;
@@ -47,11 +50,21 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
             ProductModel productModel = arr.get(position);
-            myViewHolder.textViewPhoneName.setText(productModel.getTenSP());
+            myViewHolder.textViewPhoneName.setText(productModel.getTenSP().trim());
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
             myViewHolder.textViewPhonePrice.setText("Giá: " + decimalFormat.format(Double.parseDouble(productModel.getGiaSP())) + " VND");
             myViewHolder.textViewPhoneDescribe.setText(productModel.getMoTa());
             Glide.with(context).load(productModel.getHinhAnh()).into(myViewHolder.imageViewPhone);
+            myViewHolder.setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onClick(View view, int pos, boolean isLongClick) {
+                    if(!isLongClick){
+                        Intent intent = new Intent(context, ProductDetailsActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                }
+            });
         } else {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
             loadingViewHolder.progressBar.setIndeterminate(true);
@@ -77,9 +90,10 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textViewPhoneName, textViewPhonePrice, textViewPhoneDescribe, textViewid;
         ImageView imageViewPhone;
+        private ItemClickListener itemClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +101,16 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             textViewPhonePrice = itemView.findViewById(R.id.item_phone_price);
             textViewPhoneDescribe = itemView.findViewById(R.id.item_phone_describe);
             imageViewPhone = itemView.findViewById(R.id.item_phone_img);
+            itemView.setOnClickListener(this);
+        }
+
+        public void setItemClickListener(ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemClickListener.onClick(v, getAdapterPosition(), false);
         }
     }
 }
