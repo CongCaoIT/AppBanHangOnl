@@ -1,11 +1,13 @@
 package com.example.appbanhangonl.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,6 +35,9 @@ public class PhoneProductActivity extends AppCompatActivity {
     int page = 1, info;
     PhoneAdapter phoneAdapter;
     List<ProductModel> productModelList;
+    LinearLayoutManager linearLayoutManager;
+    Handler handler = new Handler();
+    boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +47,75 @@ public class PhoneProductActivity extends AppCompatActivity {
         info = getIntent().getIntExtra("Loai", 1);
         Mapping();
         ActionToolBar();
-        getData();
+        getData(page);
+        addEventLoad();
     }
 
-    private void getData() {
+    private void addEventLoad() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (isLoading == false) {
+                    if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == productModelList.size() - 1) {
+                        isLoading = true;
+                        loadMore();
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadMore() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                productModelList.add(null);
+                phoneAdapter.notifyItemInserted(productModelList.size() - 1);
+            }
+        });
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //remove null
+                productModelList.remove(productModelList.size() - 1);
+                phoneAdapter.notifyItemRemoved(productModelList.size());
+                page = page + 1;
+                getData(page);
+                phoneAdapter.notifyDataSetChanged();
+                isLoading = false;
+            }
+        }, 2000);
+    }
+
+    private void getData(int page) {
         compositeDisposable.add(apiBanHang.getAPIProduct(page, info)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         product -> {
-                            if(product.isSucces())
-                            {
-                                productModelList = product.getResult();
-                                phoneAdapter = new PhoneAdapter(getApplicationContext(), productModelList);
-                                recyclerView.setAdapter(phoneAdapter);
+                            if (product.isSucces()) {
+                                if (phoneAdapter == null) {
+                                    productModelList = product.getResult();
+                                    phoneAdapter = new PhoneAdapter(getApplicationContext(), productModelList);
+                                    recyclerView.setAdapter(phoneAdapter);
+                                } else {
+                                    int pos = productModelList.size() - 1;
+                                    int num = product.getResult().size();
+                                    for (int i = 0; i < num; i++) {
+                                        productModelList.add(product.getResult().get(i));
+                                    }
+                                    phoneAdapter.notifyItemRangeChanged(pos, num);
+                                }
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "Hết hàng", Toast.LENGTH_SHORT).show();
+                                isLoading = true;
                             }
                         },
                         throwable -> {
@@ -78,8 +138,8 @@ public class PhoneProductActivity extends AppCompatActivity {
     private void Mapping() {
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerView_Phone);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         productModelList = new ArrayList<>();
     }
