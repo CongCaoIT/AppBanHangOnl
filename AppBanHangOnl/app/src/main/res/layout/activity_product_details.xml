@@ -7,7 +7,7 @@
     tools:context=".activity.ProductDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarDetails"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#EFFA84"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarDetails">
 
         <ImageView
             android:id="@+id/item_productdetails_img"
@@ -46,32 +46,46 @@
                 android:id="@+id/txbPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Giá: 1500000"
+                android:text="@string/gi_1500000"
                 android:textColor="#ff00"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinner"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/s_l_ng"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/spinner" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnAddCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
                 android:backgroundTint="#fff"
-                android:text="Thêm vào giỏ hàng"
+                android:text="@string/th_m_v_o_gi_h_ng"
                 android:textColor="#ff00"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 

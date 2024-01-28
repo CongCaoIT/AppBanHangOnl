@@ -1,6 +1,8 @@
 package com.example.appbanhangonl.model;
 
-public class ProductModel {
+import java.io.Serializable;
+
+public class ProductModel implements Serializable {
     int MaSPMoi;
     String TenSP;
     String GiaSP;

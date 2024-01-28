@@ -60,6 +60,8 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 public void onClick(View view, int pos, boolean isLongClick) {
                     if(!isLongClick){
                         Intent intent = new Intent(context, ProductDetailsActivity.class);
+
+                        intent.putExtra("data", productModel);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
