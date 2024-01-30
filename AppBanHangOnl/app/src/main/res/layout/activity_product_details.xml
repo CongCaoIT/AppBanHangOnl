@@ -12,7 +12,27 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#EFFA84"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Chi tíết sản phẩm" />
+        app:title="Chi tiết sản phẩm">
+
+        <FrameLayout
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_width="48dp"
+            android:layout_height="?attr/actionBarSize">
+            <com.nex3z.notificationbadge.NotificationBadge
+                android:id="@+id/menu_quanlity"
+                android:layout_gravity="top|right"
+                android:layout_width="28dp"
+                android:layout_height="28dp">
+
+            </com.nex3z.notificationbadge.NotificationBadge>
+            <ImageView
+                android:layout_marginTop="15dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/baseline_shopping_cart_24" />
+        </FrameLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:id="@+id/layout1"

@@ -150,6 +150,10 @@ public class MainActivity extends AppCompatActivity {
         //Khởi tạo list
         categoryModelList = new ArrayList<>();
         productModelList = new ArrayList<>();
+        if(Utils.CartList == null)
+        {
+            Utils.CartList = new ArrayList<>();
+        }
     }
 
     //Thanh menu

@@ -14,7 +14,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.CartModel;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.utils.Utils;
+import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.text.DecimalFormat;
 
@@ -25,6 +28,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     ImageView imageViewImg;
     Spinner spinner;
     Toolbar toolbar;
+    ProductModel productModel;
+    NotificationBadge notificationBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +38,57 @@ public class ProductDetailsActivity extends AppCompatActivity {
         initView();
         ActionToolBar();
         initData();
+        initControl();
     }
 
+    private void initControl() {
+        buttonAddCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddCart();
+            }
+        });
+    }
+
+    private void AddCart() {
+        if (Utils.CartList.size() > 0) {
+            boolean flag = false;
+            int num = Integer.parseInt(spinner.getSelectedItem().toString());
+            for (int i = 0; i < Utils.CartList.size(); i++) {
+                if (Utils.CartList.get(i).getCartid() == productModel.getMaSPMoi()) {
+                    Utils.CartList.get(i).setQuality(num + Utils.CartList.get(i).getQuality());
+                    long price = Long.parseLong(productModel.getGiaSP()) * Utils.CartList.get(i).getQuality();
+                    Utils.CartList.get(i).setPrice(price);
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                long price = Long.parseLong(productModel.getGiaSP()) * num;
+                CartModel cartModel = new CartModel();
+                cartModel.setPrice(price);
+                cartModel.setQuality(num);
+                cartModel.setCartid(productModel.getMaSPMoi());
+                cartModel.setProductName(productModel.getTenSP());
+                cartModel.setProductImg(productModel.getHinhAnh());
+                Utils.CartList.add(cartModel);
+            }
+        } else {
+            int num = Integer.parseInt(spinner.getSelectedItem().toString());
+            long price = Long.parseLong(productModel.getGiaSP()) * num;
+            CartModel cartModel = new CartModel();
+            cartModel.setPrice(price);
+            cartModel.setQuality(num);
+            cartModel.setCartid(productModel.getMaSPMoi());
+            cartModel.setProductName(productModel.getTenSP());
+            cartModel.setProductImg(productModel.getHinhAnh());
+            Utils.CartList.add(cartModel);
+        }
+        notificationBadge.setText(String.valueOf(Utils.CartList.size()));
+    }
+
+
     private void initData() {
-        ProductModel productModel = (ProductModel) getIntent().getSerializableExtra("data");
+        productModel = (ProductModel) getIntent().getSerializableExtra("data");
         textViewName.setText(productModel.getTenSP());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         textViewPrice.setText("Giá: " + decimalFormat.format(Double.parseDouble(productModel.getGiaSP())) + " VND");
@@ -55,6 +107,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         imageViewImg = findViewById(R.id.item_productdetails_img);
         toolbar = findViewById(R.id.toolbarDetails);
+        notificationBadge = (NotificationBadge) findViewById(R.id.menu_quanlity);
+        if(Utils.CartList != null)
+        {
+            notificationBadge.setText(String.valueOf(Utils.CartList.size()));
+        }
     }
 
     private void ActionToolBar() {
