@@ -2,10 +2,12 @@ package com.example.appbanhangonl.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     ImageView imageViewImg;
     Spinner spinner;
     Toolbar toolbar;
+    FrameLayout frameLayout;
     ProductModel productModel;
     NotificationBadge notificationBadge;
 
@@ -83,7 +86,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
             cartModel.setProductImg(productModel.getHinhAnh());
             Utils.CartList.add(cartModel);
         }
-        notificationBadge.setText(String.valueOf(Utils.CartList.size()));
+        int totalItem = 0;
+        for (int i = 0; i < Utils.CartList.size(); i++) {
+            totalItem = totalItem + Utils.CartList.get(i).getQuality();
+        }
+        notificationBadge.setText(String.valueOf(totalItem));
     }
 
 
@@ -108,9 +115,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
         imageViewImg = findViewById(R.id.item_productdetails_img);
         toolbar = findViewById(R.id.toolbarDetails);
         notificationBadge = (NotificationBadge) findViewById(R.id.menu_quanlity);
-        if(Utils.CartList != null)
-        {
-            notificationBadge.setText(String.valueOf(Utils.CartList.size()));
+        frameLayout = findViewById(R.id.frameCart);
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cart = new Intent(getApplicationContext(), CartActivity.class);
+                startActivity(cart);
+            }
+        });
+
+        if (Utils.CartList != null) {
+            int totalItem = 0;
+            for (int i = 0; i < Utils.CartList.size(); i++) {
+                totalItem = totalItem + Utils.CartList.get(i).getQuality();
+            }
+            notificationBadge.setText(String.valueOf(totalItem));
         }
     }
 

@@ -15,6 +15,7 @@
         app:title="Chi tiết sản phẩm">
 
         <FrameLayout
+            android:id="@+id/frameCart"
             android:layout_gravity="right"
             android:layout_marginRight="10dp"
             android:layout_width="48dp"
