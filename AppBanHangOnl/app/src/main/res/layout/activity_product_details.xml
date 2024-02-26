@@ -29,8 +29,8 @@
             </com.nex3z.notificationbadge.NotificationBadge>
             <ImageView
                 android:layout_marginTop="15dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/baseline_shopping_cart_24" />
         </FrameLayout>
     </androidx.appcompat.widget.Toolbar>

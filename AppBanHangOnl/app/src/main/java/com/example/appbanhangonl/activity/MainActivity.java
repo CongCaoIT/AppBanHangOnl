@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
 import com.google.android.material.navigation.NavigationView;
+import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     ApiBanHang apiBanHang;
     List<ProductModel> productModelList;
     ProductAdapter productAdapter;
+    NotificationBadge notificationBadge;
+    FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,13 +151,37 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         listViewHome = findViewById(R.id.listViewHome);
         drawerLayout = findViewById(R.id.drawerLayout);
+        notificationBadge = findViewById(R.id.menu_quanlity);
         //Khởi tạo list
         categoryModelList = new ArrayList<>();
         productModelList = new ArrayList<>();
-        if(Utils.CartList == null)
-        {
+        frameLayout = findViewById(R.id.frameCart);
+        if (Utils.CartList == null) {
             Utils.CartList = new ArrayList<>();
+        } else {
+            int totalItem = 0;
+            for (int i = 0; i < Utils.CartList.size(); i++) {
+                totalItem = totalItem + Utils.CartList.get(i).getQuality();
+            }
+            notificationBadge.setText(String.valueOf(totalItem));
         }
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cart = new Intent(getApplicationContext(), CartActivity.class);
+                startActivity(cart);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int totalItem = 0;
+        for (int i = 0; i < Utils.CartList.size(); i++) {
+            totalItem = totalItem + Utils.CartList.get(i).getQuality();
+        }
+        notificationBadge.setText(String.valueOf(totalItem));
     }
 
     //Thanh menu

@@ -42,7 +42,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.item_cart_price.setText("Giá: " + decimalFormat.format(cartModel.getPrice()) + " VND");
         long price = cartModel.getQuality() * cartModel.getPrice();
-        holder.item_cart_priceproduct.setText(decimalFormat.format(price));
+        holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price) + " VND");
     }
 
     @Override
