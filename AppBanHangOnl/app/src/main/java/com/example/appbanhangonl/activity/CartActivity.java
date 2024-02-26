@@ -13,9 +13,15 @@ import android.widget.TextView;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.adapter.CartAdapter;
 import com.example.appbanhangonl.model.CartModel;
+import com.example.appbanhangonl.model.EventBus.totalAmountEvent;
 import com.example.appbanhangonl.utils.Utils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -31,6 +37,16 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         initView();
         initControl();
+        totalAmount();
+    }
+
+    private void totalAmount() {
+        long total = 0;
+        for (int i = 0; i < Utils.CartList.size(); i++) {
+            total = total + (Utils.CartList.get(i).getPrice() * Utils.CartList.get(i).getQuality());
+        }
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        textViewTotalPrice.setText(decimalFormat.format(total) + " VND");
     }
 
     private void initControl() {
@@ -47,9 +63,9 @@ public class CartActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        if(Utils.CartList.size() == 0){
+        if (Utils.CartList.size() == 0) {
             textViewCartNull.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             cartAdapter = new CartAdapter(getApplicationContext(), Utils.CartList);
             recyclerView.setAdapter(cartAdapter);
         }
@@ -61,5 +77,25 @@ public class CartActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewCart);
         buttonBuy = findViewById(R.id.btnBuy);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void eventTotal(totalAmountEvent event)
+    {
+        if(event !=null)
+        {
+            totalAmount();
+        }
     }
 }

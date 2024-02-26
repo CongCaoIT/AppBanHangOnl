@@ -17,6 +17,7 @@
             android:id="@+id/item_cart_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:padding="8dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher" />
 
@@ -35,10 +36,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_marginLeft="10dp"
                 android:id="@+id/item_cart_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:text="1000000 VND"
                 android:textColor="#ff00"
                 android:textSize="16dp"
@@ -66,8 +68,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="1"
-                    android:textColor="#ff00"
-                    android:textSize="15dp"
+                    android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -79,10 +80,10 @@
             </LinearLayout>
 
             <TextView
-                android:layout_marginLeft="10dp"
                 android:id="@+id/item_cart_priceproduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="100000 VND"
                 android:textColor="#ff00"
                 android:textSize="16dp"

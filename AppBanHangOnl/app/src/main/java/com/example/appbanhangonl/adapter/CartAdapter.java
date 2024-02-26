@@ -11,8 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.appbanhangonl.Interface.ImageClickListenner;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.CartModel;
+import com.example.appbanhangonl.model.EventBus.totalAmountEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -40,9 +44,29 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.item_cart_quanlity.setText(cartModel.getQuality() + " ");
         Glide.with(context).load(cartModel.getProductImg()).into(holder.item_cart_img);
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.item_cart_price.setText("Giá: " + decimalFormat.format(cartModel.getPrice()) + " VND");
+        holder.item_cart_price.setText("Giá: " + decimalFormat.format(cartModel.getPrice()));
         long price = cartModel.getQuality() * cartModel.getPrice();
-        holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price) + " VND");
+        holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price));
+        holder.setListenner(new ImageClickListenner() {
+            @Override
+            public void onImageClick(View view, int pos, int value) {
+                if (value == 1) {
+                    if (cartModelList.get(pos).getQuality() > 1) {
+                        int numnew = cartModelList.get(pos).getQuality() - 1;
+                        cartModelList.get(pos).setQuality(numnew);
+                    }
+                } else if (value == 2) {
+                    if (cartModelList.get(pos).getQuality() < 10) {
+                        int numnew = cartModelList.get(pos).getQuality() + 1;
+                        cartModelList.get(pos).setQuality(numnew);
+                    }
+                }
+                holder.item_cart_quanlity.setText(cartModelList.get(pos).getQuality() + " ");
+                long price = cartModelList.get(pos).getQuality() * cartModelList.get(pos).getPrice();
+                holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price));
+                EventBus.getDefault().postSticky(new totalAmountEvent());
+            }
+        });
     }
 
     @Override
@@ -51,9 +75,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView item_cart_img;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        ImageView item_cart_img, item_cart_delete, item_cart_add;
         TextView item_cart_name, item_cart_price, item_cart_quanlity, item_cart_priceproduct;
+
+        ImageClickListenner listenner;
+
+        public void setListenner(ImageClickListenner listenner) {
+            this.listenner = listenner;
+        }
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +92,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             item_cart_price = itemView.findViewById(R.id.item_cart_price);
             item_cart_quanlity = itemView.findViewById(R.id.item_cart_quanlity);
             item_cart_priceproduct = itemView.findViewById(R.id.item_cart_priceproduct);
+            item_cart_add = itemView.findViewById(R.id.item_cart_add);
+            item_cart_delete = itemView.findViewById(R.id.item_cart_delete);
+            //event click
+            item_cart_add.setOnClickListener(this);
+            item_cart_delete.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v == item_cart_delete) {
+                listenner.onImageClick(v, getAdapterPosition(), 1);
+                //1 tru
+            } else if (v == item_cart_add) {
+                //2 cong
+                listenner.onImageClick(v, getAdapterPosition(), 2);
+
+            }
         }
     }
 }
