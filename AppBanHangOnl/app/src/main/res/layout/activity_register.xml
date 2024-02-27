@@ -18,6 +18,28 @@
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/line5"
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_person_24"
+            android:drawablePadding="5dp"
+            android:hint="User Name"
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/line1"
         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
         android:layout_width="match_parent"
@@ -27,12 +49,36 @@
         android:layout_marginRight="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/baseline_email_24"
             android:drawablePadding="5dp"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/line6"
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textMobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_phone_24"
+            android:drawablePadding="5dp"
+            android:hint="Mobile Phone"
+            android:inputType="text"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
@@ -49,6 +95,7 @@
         android:layout_marginRight="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/baseline_key_24"
@@ -71,6 +118,7 @@
         android:layout_marginRight="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/baseline_key_24"
@@ -84,13 +132,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="100dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="35dp"
-        android:background="#03A9F4"
+        android:layout_marginRight="100dp"
+        android:background="@drawable/backgroud_button"
         android:text="Đăng ký"
         android:textColor="#fff"
         android:textStyle="bold" />

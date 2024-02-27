@@ -65,10 +65,10 @@
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="100dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="35dp"
-        android:background="#03A9F4"
+        android:layout_marginRight="100dp"
+        android:background="@drawable/backgroud_button"
         android:text="Đăng nhập"
         android:textColor="#fff"
         android:textStyle="bold" />
@@ -89,11 +89,12 @@
             android:textSize="15dp" />
 
         <TextView
+            android:id="@+id/textViewRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đăng ký"
             android:textColor="#ff00"
-            android:textSize="15dp"
+            android:textSize="16dp"
             android:textStyle="bold" />
     </LinearLayout>
 
