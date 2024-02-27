@@ -1,6 +1,7 @@
 package com.example.appbanhangonl.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +17,7 @@ import com.example.appbanhangonl.Interface.ImageClickListenner;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.CartModel;
 import com.example.appbanhangonl.model.EventBus.totalAmountEvent;
+import com.example.appbanhangonl.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -54,17 +57,44 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     if (cartModelList.get(pos).getQuality() > 1) {
                         int numnew = cartModelList.get(pos).getQuality() - 1;
                         cartModelList.get(pos).setQuality(numnew);
+                        //Tính tổng tiền
+                        holder.item_cart_quanlity.setText(cartModelList.get(pos).getQuality() + " ");
+                        long price = cartModelList.get(pos).getQuality() * cartModelList.get(pos).getPrice();
+                        holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price));
+                        EventBus.getDefault().postSticky(new totalAmountEvent());
+                    } else if (cartModelList.get(pos).getQuality() == 1) {
+                        //Thông báo khi xóa sản phẩm
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                        builder.setTitle("Thông báo");
+                        builder.setMessage("Bạn có muốn xóa sản phẩm khỏi giỏ hàng không?");
+                        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Utils.CartList.remove(pos);
+                                notifyDataSetChanged();
+                                EventBus.getDefault().postSticky(new totalAmountEvent());
+                            }
+                        });
+                        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.show();
                     }
                 } else if (value == 2) {
                     if (cartModelList.get(pos).getQuality() < 10) {
                         int numnew = cartModelList.get(pos).getQuality() + 1;
                         cartModelList.get(pos).setQuality(numnew);
                     }
+                    //Tính tổng tiền
+                    holder.item_cart_quanlity.setText(cartModelList.get(pos).getQuality() + " ");
+                    long price = cartModelList.get(pos).getQuality() * cartModelList.get(pos).getPrice();
+                    holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price));
+                    EventBus.getDefault().postSticky(new totalAmountEvent());
                 }
-                holder.item_cart_quanlity.setText(cartModelList.get(pos).getQuality() + " ");
-                long price = cartModelList.get(pos).getQuality() * cartModelList.get(pos).getPrice();
-                holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price));
-                EventBus.getDefault().postSticky(new totalAmountEvent());
+
             }
         });
     }
