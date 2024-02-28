@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText textEmail, textPass;
     Button buttonLogin;
-    TextView textViewRegister;
+    TextView textViewRegister, textViewForgotPass;
     ApiBanHang apiBanHang;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -46,6 +46,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        textViewForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ResetPassActivity.class);
+                startActivity(intent);
+            }
+        });
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         textPass = findViewById(R.id.textPass);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewRegister = findViewById(R.id.textViewRegister);
+        textViewForgotPass = findViewById(R.id.textForgotPass);
         Paper.init(this);
         //read data
         if(Paper.book().read("email") !=null && Paper.book().read("pass") !=null)
