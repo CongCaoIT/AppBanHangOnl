@@ -5,7 +5,15 @@ import java.util.List;
 public class User {
     boolean succes;
     String message;
-    List<User> result;
+    List<UserModel> result;
+
+    public List<UserModel> getResult() {
+        return result;
+    }
+
+    public void setResult(List<UserModel> result) {
+        this.result = result;
+    }
 
     public boolean isSucces() {
         return succes;
@@ -21,13 +29,5 @@ public class User {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public List<User> getResult() {
-        return result;
-    }
-
-    public void setResult(List<User> result) {
-        this.result = result;
     }
 }

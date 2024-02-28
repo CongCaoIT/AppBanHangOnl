@@ -32,4 +32,11 @@ public interface ApiBanHang {
             @Field("username") String username,
             @Field("mobile") String mobile
     );
+
+    @POST("login.php")
+    @FormUrlEncoded
+    Observable<User> loginAPI(
+            @Field("email") String email,
+            @Field("pass") String pass
+    );
 }

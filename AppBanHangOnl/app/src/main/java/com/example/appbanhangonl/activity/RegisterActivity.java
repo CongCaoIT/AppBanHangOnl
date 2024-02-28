@@ -3,10 +3,12 @@ package com.example.appbanhangonl.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appbanhangonl.R;
@@ -21,6 +23,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class RegisterActivity extends AppCompatActivity {
 
     EditText textEmail, textPassword, textConfirmPassword, textMobile, textUserName;
+    TextView textViewLogin;
     AppCompatButton buttonRegister;
     ApiBanHang apiBanHang;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -38,6 +41,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 registerApp();
+            }
+        });
+        textViewLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -68,7 +78,12 @@ public class RegisterActivity extends AppCompatActivity {
                         .subscribe(
                                 user -> {
                                     if(user.isSucces()){
-                                        Toast.makeText(getApplicationContext(), "Thanh cong", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Đăng ký tài khoản thành công!!!", Toast.LENGTH_SHORT).show();
+                                        Utils.user_current.setEmail(str_email);
+                                        Utils.user_current.setPass(str_pass);
+                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                        startActivity(intent);
+                                        finish();
                                     }else{
                                         Toast.makeText(getApplicationContext(), user.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
@@ -84,6 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        textViewLogin = findViewById(R.id.textLogin);
         apiBanHang = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiBanHang.class);
         textEmail = findViewById(R.id.textEmail);
         textPassword = findViewById(R.id.textPassword);
