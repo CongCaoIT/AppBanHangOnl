@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -69,6 +70,14 @@ public class CartActivity extends AppCompatActivity {
             cartAdapter = new CartAdapter(getApplicationContext(), Utils.CartList);
             recyclerView.setAdapter(cartAdapter);
         }
+
+        buttonBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PayActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {
@@ -76,7 +85,7 @@ public class CartActivity extends AppCompatActivity {
         textViewTotalPrice = findViewById(R.id.txbTotalPrice);
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewCart);
-        buttonBuy = findViewById(R.id.btnBuy);
+        buttonBuy = findViewById(R.id.buttonBuy);
     }
 
     @Override
