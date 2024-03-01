@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 27, 2024 lúc 04:14 PM
+-- Thời gian đã tạo: Th3 01, 2024 lúc 05:13 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -20,6 +20,64 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `dataappbanhangonl`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `chitietdonhang`
+--
+
+CREATE TABLE `chitietdonhang` (
+  `iddonhang` int(11) NOT NULL,
+  `idsp` int(11) NOT NULL,
+  `soluong` int(11) NOT NULL,
+  `gia` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `chitietdonhang`
+--
+
+INSERT INTO `chitietdonhang` (`iddonhang`, `idsp`, `soluong`, `gia`) VALUES
+(7, 25, 1, '2399000'),
+(10, 25, 1, '2399000'),
+(11, 25, 1, '2399000'),
+(12, 24, 1, '27399000'),
+(12, 16, 1, '6000000');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `donhang`
+--
+
+CREATE TABLE `donhang` (
+  `id` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `diachi` text NOT NULL,
+  `sodienthoai` varchar(15) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `soluong` int(11) NOT NULL,
+  `tongtien` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `donhang`
+--
+
+INSERT INTO `donhang` (`id`, `iduser`, `diachi`, `sodienthoai`, `email`, `soluong`, `tongtien`) VALUES
+(1, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(2, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(3, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(4, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(5, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(6, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(7, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(8, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(9, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(10, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(11, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
+(12, 3, '17B Tân Trụ', '0362111265', 'letricuong08@gmail.com', 2, '33399000');
 
 -- --------------------------------------------------------
 
@@ -108,12 +166,21 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `pass`, `username`, `mobile`) VALUES
-(1, 'caotancong2003@gmail.com', '123456', 'congcao', '0362111265'),
-(3, 'letricuong08@gmail.com', '123456', 'HiBro', '0362111265');
+(1, 'caotancong2003@gmail.com', '456', 'congcao', '0362111265'),
+(3, 'letricuong08@gmail.com', '123456', 'HiBro', '0362111265'),
+(4, 'thanhdai.vn03@gmail.com', '123456', 'TAOPRO', '0362111265'),
+(5, 'caotancong789632@gmail.com', '123456', 'Taoproit', '0362111265'),
+(6, 'lehuutai090403@gmail.com', '123', 'Tai em', '0362111265');
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `donhang`
+--
+ALTER TABLE `donhang`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `sanpham`
@@ -138,6 +205,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `donhang`
+--
+ALTER TABLE `donhang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT cho bảng `sanpham`
 --
 ALTER TABLE `sanpham`
@@ -153,7 +226,7 @@ ALTER TABLE `sanphammoi`
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
