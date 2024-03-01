@@ -45,4 +45,16 @@ public interface ApiBanHang {
     Observable<User> resetpassAPI(
             @Field("email") String email
     );
+
+    @POST("bill.php")
+    @FormUrlEncoded
+    Observable<User> billAPI(
+            @Field("email") String email,
+            @Field("total") String total,
+            @Field("phone") String phone,
+            @Field("address") String address,
+            @Field("quanlity") int quanlity,
+            @Field("iduser") int iduser,
+            @Field("billinfo") String billinfo
+    );
 }

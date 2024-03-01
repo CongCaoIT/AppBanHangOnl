@@ -31,7 +31,7 @@ public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button buttonBuy;
     CartAdapter cartAdapter;
-
+    long total;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void totalAmount() {
-        long total = 0;
+        total = 0;
         for (int i = 0; i < Utils.CartList.size(); i++) {
             total = total + (Utils.CartList.get(i).getPrice() * Utils.CartList.get(i).getQuality());
         }
@@ -75,6 +75,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PayActivity.class);
+                intent.putExtra("totalprice", total);
                 startActivity(intent);
             }
         });

@@ -46,6 +46,7 @@
                     android:src="@drawable/baseline_monetization_on_24" />
 
                 <TextView
+                    android:id="@+id/textToltalPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="250.000VND"
@@ -73,6 +74,7 @@
                     android:src="@drawable/baseline_phone_24" />
 
                 <TextView
+                    android:id="@+id/textMobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -101,6 +103,7 @@
                     android:src="@drawable/baseline_email_24" />
 
                 <TextView
+                    android:id="@+id/textEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -125,13 +128,13 @@
         app:layout_constraintTop_toBottomOf="@+id/cartView">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textEmail"
+            android:id="@+id/edittextAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/baseline_location_on_24"
             android:drawablePadding="5dp"
             android:hint="Nhập địa chỉ giao hàng"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:paddingLeft="5dp"
             android:paddingRight="5dp">
 
@@ -140,6 +143,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
+        android:id="@+id/buttonPay"
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
@@ -147,7 +151,8 @@
         android:background="@drawable/backgroud_button"
         android:text="Đặt hàng"
         android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/line1">
 
     </androidx.appcompat.widget.AppCompatButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

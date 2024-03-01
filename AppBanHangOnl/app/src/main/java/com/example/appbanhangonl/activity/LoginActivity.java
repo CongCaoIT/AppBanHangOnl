@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView textViewRegister, textViewForgotPass;
     ApiBanHang apiBanHang;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
+    boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,28 +72,9 @@ public class LoginActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(str_pass)) {
             Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!!!", Toast.LENGTH_SHORT).show();
         } else {
-            compositeDisposable.add(apiBanHang.loginAPI(str_email, str_pass)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            user -> {
-                                if (user.isSucces()) {
-                                    //save
-                                    Paper.book().write("email", str_email);
-                                    Paper.book().write("pass", str_pass);
-                                    Utils.user_current = user.getResult().get(0);
-                                    Toast.makeText(getApplicationContext(), "Đăng nhập thành công!!!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!!!", Toast.LENGTH_SHORT).show();
-                                }
-                            },
-                            throwable -> {
-                                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                    ));
+            Paper.book().write("email", str_email);
+            Paper.book().write("pass", str_pass);
+            Login(str_email, str_pass);
         }
     }
 
@@ -104,11 +87,46 @@ public class LoginActivity extends AppCompatActivity {
         textViewForgotPass = findViewById(R.id.textForgotPass);
         Paper.init(this);
         //read data
-        if(Paper.book().read("email") !=null && Paper.book().read("pass") !=null)
-        {
+        if (Paper.book().read("email") != null && Paper.book().read("pass") != null) {
             textEmail.setText(Paper.book().read("email"));
             textPass.setText(Paper.book().read("pass"));
+            if(Paper.book().read("isLogin")!=null){
+                boolean flag = Paper.book().read("isLogin");
+                if(flag){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Login(Paper.book().read("email"), Paper.book().read("pass"));
+                        }
+                    }, 1000);
+                }
+            }
         }
+    }
+
+    private void Login(String email, String pass) {
+        compositeDisposable.add(apiBanHang.loginAPI(email, pass)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        user -> {
+                            if (user.isSucces()) {
+                                //save
+                                isLogin = true;
+                                Paper.book().write("isLogin", isLogin);
+                                Utils.user_current = user.getResult().get(0);
+                                Toast.makeText(getApplicationContext(), "Đăng nhập thành công!!!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!!!", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
     @Override
