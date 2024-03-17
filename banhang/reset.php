@@ -26,7 +26,7 @@ if (empty($result)) {
     //send mail
     $email = ($result[0]["email"]);
     $pass = ($result[0]["pass"]);
-    $link = "<a href='http://10.10.10.61:8081/banhang/reset_pass.php?key=" . $email . "&reset=" . $pass . "'>Nhấn vào đây để thay đổi mật khẩu!</a>";
+    $link = "<a href='http://10.10.10.58:8081/banhang/reset_pass.php?key=" . $email . "&reset=" . $pass . "'>Nhấn vào đây để thay đổi mật khẩu!</a>";
     $mail = new PHPMailer();
     $mail->CharSet =  "utf-8";
     $mail->IsSMTP();
