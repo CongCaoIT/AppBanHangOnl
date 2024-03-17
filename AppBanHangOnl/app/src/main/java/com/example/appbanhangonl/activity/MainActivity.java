@@ -28,6 +28,7 @@ import com.example.appbanhangonl.adapter.CategoryAdapter;
 import com.example.appbanhangonl.adapter.ProductAdapter;
 import com.example.appbanhangonl.model.CategoryModel;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.model.ViewOrders;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -101,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
                     case 4:
                         Intent contact = new Intent(getApplicationContext(), ContactActivity.class);
                         startActivity(contact);
+                        break;
+                    case 5:
+                        Intent viewOrders = new Intent(getApplicationContext(), ViewOrdersActivity.class);
+                        startActivity(viewOrders);
                         break;
                 }
             }

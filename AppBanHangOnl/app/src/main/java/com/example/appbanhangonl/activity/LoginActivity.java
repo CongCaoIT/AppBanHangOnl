@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView textViewRegister, textViewForgotPass;
     ApiBanHang apiBanHang;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    boolean isLogin = false;
+    //boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,17 +90,17 @@ public class LoginActivity extends AppCompatActivity {
         if (Paper.book().read("email") != null && Paper.book().read("pass") != null) {
             textEmail.setText(Paper.book().read("email"));
             textPass.setText(Paper.book().read("pass"));
-            if(Paper.book().read("isLogin")!=null){
-                boolean flag = Paper.book().read("isLogin");
-                if(flag){
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Login(Paper.book().read("email"), Paper.book().read("pass"));
-                        }
-                    }, 1000);
-                }
-            }
+//            if(Paper.book().read("isLogin")!=null){
+//                boolean flag = Paper.book().read("isLogin");
+//                if(flag){
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Login(Paper.book().read("email"), Paper.book().read("pass"));
+//                        }
+//                    }, 1000);
+//                }
+//            }
         }
     }
 
@@ -112,8 +112,8 @@ public class LoginActivity extends AppCompatActivity {
                         user -> {
                             if (user.isSucces()) {
                                 //save
-                                isLogin = true;
-                                Paper.book().write("isLogin", isLogin);
+//                                isLogin = true;
+//                                Paper.book().write("isLogin", isLogin);
                                 Utils.user_current = user.getResult().get(0);
                                 Toast.makeText(getApplicationContext(), "Đăng nhập thành công!!!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

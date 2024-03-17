@@ -3,6 +3,7 @@ package com.example.appbanhangonl.retrofit;
 import com.example.appbanhangonl.model.Category;
 import com.example.appbanhangonl.model.Product;
 import com.example.appbanhangonl.model.User;
+import com.example.appbanhangonl.model.ViewOrders;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Field;
@@ -57,4 +58,11 @@ public interface ApiBanHang {
             @Field("iduser") int iduser,
             @Field("billinfo") String billinfo
     );
+
+    @POST("vieworders.php")
+    @FormUrlEncoded
+    Observable<ViewOrders> viewordersAPI(
+            @Field("iduser") int id
+    );
+
 }
