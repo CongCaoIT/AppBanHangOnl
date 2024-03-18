@@ -137,7 +137,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             } else if (v == item_cart_add) {
                 //2 cong
                 listenner.onImageClick(v, getAdapterPosition(), 2);
-
             }
         }
     }

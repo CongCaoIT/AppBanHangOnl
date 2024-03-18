@@ -96,16 +96,16 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(lapTopProduct);
                         break;
                     case 3:
-                        Intent infomation = new Intent(getApplicationContext(), InfomationActivity.class);
-                        startActivity(infomation);
+                        Intent viewOrders = new Intent(getApplicationContext(), ViewOrdersActivity.class);
+                        startActivity(viewOrders);
                         break;
                     case 4:
                         Intent contact = new Intent(getApplicationContext(), ContactActivity.class);
                         startActivity(contact);
                         break;
                     case 5:
-                        Intent viewOrders = new Intent(getApplicationContext(), ViewOrdersActivity.class);
-                        startActivity(viewOrders);
+                        Intent infomation = new Intent(getApplicationContext(), InfomationActivity.class);
+                        startActivity(infomation);
                         break;
                 }
             }

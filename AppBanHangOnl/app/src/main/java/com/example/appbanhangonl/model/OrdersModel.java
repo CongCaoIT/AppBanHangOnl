@@ -10,6 +10,15 @@ public class OrdersModel {
     String tongtien;
     List<ViewOrdersModel> item;
 
+    public OrdersModel(int id, int iduser, String diachi, String sodienthoai, String tongtien, List<ViewOrdersModel> item) {
+        this.id = id;
+        this.iduser = iduser;
+        this.diachi = diachi;
+        this.sodienthoai = sodienthoai;
+        this.tongtien = tongtien;
+        this.item = item;
+    }
+
     public int getId() {
         return id;
     }
