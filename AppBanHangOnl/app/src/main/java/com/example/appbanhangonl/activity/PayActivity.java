@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.CartModel;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -47,8 +48,8 @@ public class PayActivity extends AppCompatActivity {
 
     private void countItem() {
         totalItem = 0;
-        for (int i = 0; i < Utils.CartList.size(); i++) {
-            totalItem = totalItem + Utils.CartList.get(i).getQuality();
+        for (int i = 0; i < Utils.CartListBuy.size(); i++) {
+            totalItem = totalItem + Utils.CartListBuy.get(i).getQuality();
         }
     }
 
@@ -79,8 +80,13 @@ public class PayActivity extends AppCompatActivity {
                     String str_email = Utils.user_current.getEmail();
                     String str_phone = Utils.user_current.getMobile();
                     int id =Utils.user_current.getId();
-                    Log.d("test", new Gson().toJson(Utils.CartList));
-                    compositeDisposable.add(apiBanHang.billAPI(str_email, String.valueOf(total), str_phone, str_address,totalItem, id, new Gson().toJson(Utils.CartList))
+                    Log.d("test", new Gson().toJson(Utils.CartListBuy));
+                    // Xóa các mục đã mua khỏi CartList
+                    for (CartModel cartItem : Utils.CartListBuy) {
+                        Utils.CartList.remove(cartItem);
+                    }
+                    Utils.CartListBuy.clear(); // Đảm bảo rằng danh sách các mục đã mua đã được xóa hoàn toàn
+                    compositeDisposable.add(apiBanHang.billAPI(str_email, String.valueOf(total), str_phone, str_address,totalItem, id, new Gson().toJson(Utils.CartListBuy))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(

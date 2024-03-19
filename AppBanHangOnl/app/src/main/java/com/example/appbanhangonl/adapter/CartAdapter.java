@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +30,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     Context context;
     List<CartModel> cartModelList;
 
+    // Đặt biến để kiểm tra xem danh sách đã thay đổi hay chưa
+    boolean cartListChanged = false;
     public CartAdapter(Context context, List<CartModel> cartModelList) {
         this.context = context;
         this.cartModelList = cartModelList;
@@ -50,6 +54,25 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.item_cart_price.setText("Giá: " + decimalFormat.format(cartModel.getPrice()));
         long price = cartModel.getQuality() * cartModel.getPrice();
         holder.item_cart_priceproduct.setText("Tiền: " + decimalFormat.format(price));
+        holder.item_cart_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Utils.CartListBuy.add(cartModel);
+                    EventBus.getDefault().postSticky(new totalAmountEvent());
+                    cartListChanged = true; // Đánh dấu rằng danh sách đã thay đổi
+                } else {
+                    for (int i = 0; i < Utils.CartListBuy.size(); i++) {
+                        if (Utils.CartListBuy.get(i).getCartid() == cartModel.getCartid()) {
+                            Utils.CartListBuy.remove(i);
+                            EventBus.getDefault().postSticky(new totalAmountEvent());
+                            cartListChanged = true; // Đánh dấu rằng danh sách đã thay đổi
+                        }
+                    }
+                }
+            }
+        });
+
         holder.setListenner(new ImageClickListenner() {
             @Override
             public void onImageClick(View view, int pos, int value) {
@@ -100,6 +123,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     }
 
     @Override
+    public void onViewDetachedFromWindow(@NonNull MyViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        // Nếu danh sách đã thay đổi, gửi một sự kiện thông báo rằng cần làm mới dữ liệu
+        if (cartListChanged) {
+            EventBus.getDefault().postSticky(new totalAmountEvent());
+            cartListChanged = false; // Đặt lại biến đánh dấu
+        }
+    }
+    @Override
     public int getItemCount() {
         return cartModelList.size();
     }
@@ -108,7 +140,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView item_cart_img, item_cart_delete, item_cart_add;
         TextView item_cart_name, item_cart_price, item_cart_quanlity, item_cart_priceproduct;
-
+        CheckBox item_cart_check;
         ImageClickListenner listenner;
 
         public void setListenner(ImageClickListenner listenner) {
@@ -124,6 +156,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             item_cart_priceproduct = itemView.findViewById(R.id.item_cart_priceproduct);
             item_cart_add = itemView.findViewById(R.id.item_cart_add);
             item_cart_delete = itemView.findViewById(R.id.item_cart_delete);
+            item_cart_check = itemView.findViewById(R.id.item_cart_check);
             //event click
             item_cart_add.setOnClickListener(this);
             item_cart_delete.setOnClickListener(this);

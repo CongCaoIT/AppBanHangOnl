@@ -23,6 +23,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -43,8 +44,8 @@ public class CartActivity extends AppCompatActivity {
 
     private void totalAmount() {
         total = 0;
-        for (int i = 0; i < Utils.CartList.size(); i++) {
-            total = total + (Utils.CartList.get(i).getPrice() * Utils.CartList.get(i).getQuality());
+        for (int i = 0; i < Utils.CartListBuy.size(); i++) {
+            total = total + (Utils.CartListBuy.get(i).getPrice() * Utils.CartListBuy.get(i).getQuality());
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         textViewTotalPrice.setText(decimalFormat.format(total) + " VND");
@@ -74,13 +75,37 @@ public class CartActivity extends AppCompatActivity {
         buttonBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Tạo một danh sách mới để lưu các mục chưa được chọn
+                ArrayList<CartModel> newCartList = new ArrayList<>();
+
+                // Lặp qua từng mục trong CartList
+                for (CartModel item : Utils.CartList) {
+                    // Kiểm tra xem mục này đã được chọn hay không
+                    if (!isItemInCartListBuy(item)) {
+                        // Nếu không được chọn, thêm vào danh sách mới
+                        newCartList.add(item);
+                    }
+                }
+
+                // Gán danh sách mới cho CartList
+                Utils.CartList = newCartList;
+
+                // Tiến hành thanh toán
                 Intent intent = new Intent(getApplicationContext(), PayActivity.class);
                 intent.putExtra("totalprice", total);
                 startActivity(intent);
             }
         });
     }
-
+    // Phương thức kiểm tra xem một mục có trong CartListBuy hay không
+    private boolean isItemInCartListBuy(CartModel item) {
+        for (CartModel buyItem : Utils.CartListBuy) {
+            if (buyItem.getCartid() == item.getCartid()) {
+                return true;
+            }
+        }
+        return false;
+    }
     private void initView() {
         textViewCartNull = findViewById(R.id.txbCartNull);
         textViewTotalPrice = findViewById(R.id.txbTotalPrice);
