@@ -65,4 +65,10 @@ public interface ApiBanHang {
             @Field("iduser") int id
     );
 
+    @POST("search.php")
+    @FormUrlEncoded
+    Observable<Product> searchsAPI(
+            @Field("search") String search
+    );
+
 }

@@ -38,12 +38,6 @@ CREATE TABLE `chitietdonhang` (
 -- Đang đổ dữ liệu cho bảng `chitietdonhang`
 --
 
-INSERT INTO `chitietdonhang` (`iddonhang`, `idsp`, `soluong`, `gia`) VALUES
-(7, 25, 1, '2399000'),
-(10, 25, 1, '2399000'),
-(11, 25, 1, '2399000'),
-(12, 24, 1, '27399000'),
-(12, 16, 1, '6000000');
 
 -- --------------------------------------------------------
 
@@ -65,20 +59,6 @@ CREATE TABLE `donhang` (
 -- Đang đổ dữ liệu cho bảng `donhang`
 --
 
-INSERT INTO `donhang` (`id`, `iduser`, `diachi`, `sodienthoai`, `email`, `soluong`, `tongtien`) VALUES
-(1, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(2, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(3, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(4, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(5, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(6, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(7, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(8, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(9, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(10, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(11, 1, '17B Tân Trụ', '0362111265', 'caotancong2003@gmail.com', 1, '100000'),
-(12, 3, '17B Tân Trụ', '0362111265', 'letricuong08@gmail.com', 2, '33399000');
-
 -- --------------------------------------------------------
 
 --
@@ -98,9 +78,10 @@ CREATE TABLE `sanpham` (
 INSERT INTO `sanpham` (`MaSP`, `TenSP`, `HinhAnh`) VALUES
 (1, 'Trang chủ', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpKKWRnKE-VcrXk05c8y5QvzwQsW_ZR_8CsA&usqp=CAU'),
 (2, 'Điện thoại', 'https://phucanhcdn.com/media/product/250_52659_dien_thoai_thong_minh_apple_iphone_15_pro_max_white_5.jpg'),
-(5, 'Lap Top', 'https://phucanhcdn.com/media/product/250_50198_laptop_hp_pavilion_14_dv2073tu_7c0p2pa_5.jpg'),
-(7, 'Liên hệ', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeTnfBNX78-X4K0CD1NH4vf6FnZRQi6XABOg&usqp=CAU'),
-(9, 'Thông tin', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiSvZckBhDmeSJq-n_1tSbhGXnBH9aDXD6gw&usqp=CAU');
+(3, 'Lap Top', 'https://phucanhcdn.com/media/product/250_50198_laptop_hp_pavilion_14_dv2073tu_7c0p2pa_5.jpg'),
+(4, 'Đơn hàng', 'https://phucanhcdn.com/media/product/250_50198_laptop_hp_pavilion_14_dv2073tu_7c0p2pa_5.jpg'),
+(5, 'Liên hệ', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeTnfBNX78-X4K0CD1NH4vf6FnZRQi6XABOg&usqp=CAU'),
+(6, 'Thông tin', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiSvZckBhDmeSJq-n_1tSbhGXnBH9aDXD6gw&usqp=CAU');
 
 -- --------------------------------------------------------
 

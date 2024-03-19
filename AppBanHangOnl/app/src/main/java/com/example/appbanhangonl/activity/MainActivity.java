@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     ProductAdapter productAdapter;
     NotificationBadge notificationBadge;
     FrameLayout frameLayout;
+    ImageView imageViewSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         listViewHome = findViewById(R.id.listViewHome);
         drawerLayout = findViewById(R.id.drawerLayout);
         notificationBadge = findViewById(R.id.menu_quanlity);
+        imageViewSearch = findViewById(R.id.imageSearch);
         //Khởi tạo list
         categoryModelList = new ArrayList<>();
         productModelList = new ArrayList<>();
@@ -175,6 +177,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent cart = new Intent(getApplicationContext(), CartActivity.class);
                 startActivity(cart);
+            }
+        });
+
+        imageViewSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
             }
         });
     }
