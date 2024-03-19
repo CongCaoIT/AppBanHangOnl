@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 01, 2024 lúc 05:13 AM
+-- Thời gian đã tạo: Th3 19, 2024 lúc 11:47 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -38,6 +38,13 @@ CREATE TABLE `chitietdonhang` (
 -- Đang đổ dữ liệu cho bảng `chitietdonhang`
 --
 
+INSERT INTO `chitietdonhang` (`iddonhang`, `idsp`, `soluong`, `gia`) VALUES
+(13, 24, 1, '27399000'),
+(14, 22, 1, '6000000'),
+(15, 22, 1, '6000000'),
+(16, 25, 1, '2399000'),
+(17, 7, 1, '2399000'),
+(18, 6, 1, '27399000');
 
 -- --------------------------------------------------------
 
@@ -58,6 +65,14 @@ CREATE TABLE `donhang` (
 --
 -- Đang đổ dữ liệu cho bảng `donhang`
 --
+
+INSERT INTO `donhang` (`id`, `iduser`, `diachi`, `sodienthoai`, `email`, `soluong`, `tongtien`) VALUES
+(13, 1, '17B', '0362111265', 'caotancong2003@gmail.com', 1, '27399000'),
+(14, 1, 'hwl', '0362111265', 'caotancong2003@gmail.com', 1, '6000000'),
+(15, 1, 'fgh', '0362111265', 'caotancong2003@gmail.com', 1, '6000000'),
+(16, 1, 'jsbs', '0362111265', 'caotancong2003@gmail.com', 1, '2399000'),
+(17, 0, 'xsd', '', '', 1, '2399000'),
+(18, 1, 'HN khgl', '0362111265', 'caotancong2003@gmail.com', 1, '27399000');
 
 -- --------------------------------------------------------
 
@@ -189,7 +204,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT cho bảng `sanpham`
