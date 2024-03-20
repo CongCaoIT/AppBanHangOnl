@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 19, 2024 lúc 11:47 AM
+-- Thời gian đã tạo: Th3 20, 2024 lúc 11:10 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -44,7 +44,23 @@ INSERT INTO `chitietdonhang` (`iddonhang`, `idsp`, `soluong`, `gia`) VALUES
 (15, 22, 1, '6000000'),
 (16, 25, 1, '2399000'),
 (17, 7, 1, '2399000'),
-(18, 6, 1, '27399000');
+(18, 6, 1, '27399000'),
+(19, 25, 1, '2399000'),
+(19, 24, 1, '27399000'),
+(20, 25, 1, '2399000'),
+(20, 24, 1, '27399000'),
+(22, 25, 1, '2399000'),
+(22, 24, 1, '27399000'),
+(24, 12, 1, '27399000'),
+(25, 24, 1, '27399000'),
+(25, 25, 1, '2399000'),
+(26, 21, 1, '12000000'),
+(27, 21, 1, '12000000'),
+(28, 24, 1, '27399000'),
+(29, 24, 1, '27399000'),
+(32, 25, 2, '4798000'),
+(33, 25, 2, '4798000'),
+(33, 24, 1, '27399000');
 
 -- --------------------------------------------------------
 
@@ -72,7 +88,25 @@ INSERT INTO `donhang` (`id`, `iduser`, `diachi`, `sodienthoai`, `email`, `soluon
 (15, 1, 'fgh', '0362111265', 'caotancong2003@gmail.com', 1, '6000000'),
 (16, 1, 'jsbs', '0362111265', 'caotancong2003@gmail.com', 1, '2399000'),
 (17, 0, 'xsd', '', '', 1, '2399000'),
-(18, 1, 'HN khgl', '0362111265', 'caotancong2003@gmail.com', 1, '27399000');
+(18, 1, 'HN khgl', '0362111265', 'caotancong2003@gmail.com', 1, '27399000'),
+(19, 1, 'aaa', '0362111265', 'caotancong2003@gmail.com', 1, '27399000'),
+(20, 1, 'ada', '0362111265', 'caotancong2003@gmail.com', 0, '27399000'),
+(21, 1, 'sadfa', '0362111265', 'caotancong2003@gmail.com', 1, '27399000'),
+(22, 1, 'fa', '0362111265', 'caotancong2003@gmail.com', 0, '27399000'),
+(23, 1, 'a', '0362111265', 'caotancong2003@gmail.com', 1, '6000000'),
+(24, 1, 'aaa', '0362111265', 'caotancong2003@gmail.com', 1, '27399000'),
+(25, 1, 'aaa', '0362111265', 'caotancong2003@gmail.com', 2, '29798000'),
+(26, 1, 'qqq', '0362111265', 'caotancong2003@gmail.com', 1, '12000000'),
+(27, 1, 'rrr', '0362111265', 'caotancong2003@gmail.com', 1, '12000000'),
+(28, 1, 'aa', '0362111265', 'caotancong2003@gmail.com', 1, '27399000'),
+(29, 1, 'qqq', '0362111265', 'caotancong2003@gmail.com', 1, '27399000'),
+(30, 1, 'aa', '0362111265', 'caotancong2003@gmail.com', 1, '2399000'),
+(31, 1, 'aa', '0362111265', 'caotancong2003@gmail.com', 1, '6000000'),
+(32, 7, 'kkk', '0362111265', 'caocong123@gmail.com', 2, '9596000'),
+(33, 7, '88', '0362111265', 'caocong123@gmail.com', 3, '36995000'),
+(34, 8, '0099', '0362111265', 'cao123@gmail.com', 1, '2399000'),
+(35, 8, 'uu', '0362111265', 'cao123@gmail.com', 2, '29798000'),
+(36, 8, 'c', '0362111265', 'cao123@gmail.com', 1, '27399000');
 
 -- --------------------------------------------------------
 
@@ -96,7 +130,9 @@ INSERT INTO `sanpham` (`MaSP`, `TenSP`, `HinhAnh`) VALUES
 (3, 'Lap Top', 'https://phucanhcdn.com/media/product/250_50198_laptop_hp_pavilion_14_dv2073tu_7c0p2pa_5.jpg'),
 (4, 'Đơn hàng', 'https://phucanhcdn.com/media/product/250_50198_laptop_hp_pavilion_14_dv2073tu_7c0p2pa_5.jpg'),
 (5, 'Liên hệ', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeTnfBNX78-X4K0CD1NH4vf6FnZRQi6XABOg&usqp=CAU'),
-(6, 'Thông tin', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiSvZckBhDmeSJq-n_1tSbhGXnBH9aDXD6gw&usqp=CAU');
+(6, 'Thông tin', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiSvZckBhDmeSJq-n_1tSbhGXnBH9aDXD6gw&usqp=CAU'),
+(10, 'Quản lý', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiSvZckBhDmeSJq-n_1tSbhGXnBH9aDXD6gw&usqp=CAU'),
+(11, 'Đăng xuất', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiSvZckBhDmeSJq-n_1tSbhGXnBH9aDXD6gw&usqp=CAU');
 
 -- --------------------------------------------------------
 
@@ -141,7 +177,7 @@ INSERT INTO `sanphammoi` (`MaSPMoi`, `TenSP`, `GiaSP`, `HinhAnh`, `MoTa`, `Loai`
 (23, 'Laptop HP Pavilion 14-eg2033TU', '16299000', 'https://hanoicomputercdn.com/media/product/68296_aaaaaaa_0004_layer_2.png', 'CPU: Intel® Core™ i5-1235U (3.30 GHz upto 4.40 GHz, 12MB)\r\nRAM: 8GB DDR4-3200 MHz RAM (2 x 4 GB)\r\nỔ cứng: 512GB PCIe® NVMe™ M.2 SSD\r\nVGA: Intel® Iris® Xᵉ Graphics\r\nMàn hình: 14 inch FHD (1920 x 1080), IPS, 250 nits, 45% NTSC\r\nMàu sắc: Vàng', 2),
 (24, 'iPhone 13 Pro 128GB Vàng', '27399000', 'https://hanoicomputercdn.com/media/product/64690_iphone_13_pro_max_2.png', 'Công nghệ màn hình: OLED\r\nĐộ phân giải: 1170 x 2532 Pixels, 2 camera 12 MP, 12 MP\r\nMàn hình rộng: 6.1\"\r\nHệ điều hành: iOS 14\r\nChip xử lý (CPU): Apple A14 Bionic 6 nhân\r\nBộ nhớ trong (ROM): 128GB', 1),
 (25, 'Máy Điện Thoại Alcatel H3P', '2399000', 'https://hanoicomputercdn.com/media/product/68239_may_dien_thoai_alcatel_h3p__2_.jpg', '\"Màn hình 6.78 inch, AMOLED, FHD+, 2448 x 1080 Pixels\r\nCamera sau 50.0 MP + 13.0 MP + 5.0 MP\r\nCamera Selfie 12.0 MP\r\nRAM 12 GB\r\nBộ nhớ trong 256 GB\r\nCPU Snapdragon 8+ Gen 1\"', 1),
-(26, 'Laptop HP Pavilion 15-eg2057TU', '14999000', 'https://hanoicomputercdn.com/media/product/67297_laptop_hp_pavilion_15_10.jpeg', 'CPU: Intel® Core™ i5-1240P (upto 4.40 GHz, 16MB)\r\nRAM: 8GB (2 x 4GB) DDR4-3200 MHz ( 2 khe)\r\nỔ cứng: 256GB PCIe® NVMe™ M.2 SSD\r\nVGA: Intel®iris XE\r\nMàn hình: 15.6 inch FullHD (1920 x 1080), IPS, 250 nits, 45% NTSC\r\nMàu sắc: Bạc', 2);
+(27, 'aaa', '1000', '27.jpg', 'jwsbb', 1);
 
 -- --------------------------------------------------------
 
@@ -154,19 +190,19 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `pass` varchar(255) NOT NULL,
   `username` varchar(100) NOT NULL,
-  `mobile` varchar(15) NOT NULL
+  `mobile` varchar(15) NOT NULL,
+  `uid` text NOT NULL,
+  `token` text NOT NULL,
+  `status` int(2) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `pass`, `username`, `mobile`) VALUES
-(1, 'caotancong2003@gmail.com', '456', 'congcao', '0362111265'),
-(3, 'letricuong08@gmail.com', '123456', 'HiBro', '0362111265'),
-(4, 'thanhdai.vn03@gmail.com', '123456', 'TAOPRO', '0362111265'),
-(5, 'caotancong789632@gmail.com', '123456', 'Taoproit', '0362111265'),
-(6, 'lehuutai090403@gmail.com', '123', 'Tai em', '0362111265');
+INSERT INTO `user` (`id`, `email`, `pass`, `username`, `mobile`, `uid`, `token`, `status`) VALUES
+(7, 'caocong123@gmail.com', '123456', 'TaoProIT', '0362111265', 'HBO7TXpmrvZK52tziEtYVNgbjkC2', 'cu2ocUGbQAeWOg6_-gi-Av:APA91bFhsQqs9znxB5a_4iT2nNINpVoI7iUa5iEGrC5MlKSLRR72C0Dq45NEHNUvtY48jOz-iPImgi4EQPi-wGSCg5cmVIMPYxAcrKgUOQ_GncFCDyjZTAT0REJcS_xklx5QmnlQXu3w', 1),
+(8, 'cao123@gmail.com', '123456', 'taoproo', '0362111265', 'o94FjbESUYYCYKsOTkmQ5eUQrtt1', 'fto2xdQjRICAL7KGRuL0Y1:APA91bE_wCKPHEsSPY61KLsCq-Ny1kN6Pv9rAGh_lWH5cNKXMw_-jSw1gO-A7THfRe9V48Vz3v7Q3EqPN9W5Hnl1NBz4P2Vs1KR8S0eLjac_FRid6vnJ6NRM-HRxQetOt_gM8RnrU1ht', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -204,25 +240,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT cho bảng `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `sanphammoi`
 --
 ALTER TABLE `sanphammoi`
-  MODIFY `MaSPMoi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `MaSPMoi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
