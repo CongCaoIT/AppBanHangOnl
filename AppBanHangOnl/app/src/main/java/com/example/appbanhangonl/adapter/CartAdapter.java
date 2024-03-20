@@ -32,6 +32,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     // Đặt biến để kiểm tra xem danh sách đã thay đổi hay chưa
     boolean cartListChanged = false;
+
     public CartAdapter(Context context, List<CartModel> cartModelList) {
         this.context = context;
         this.cartModelList = cartModelList;
@@ -49,7 +50,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         CartModel cartModel = cartModelList.get(position);
         holder.item_cart_name.setText(cartModel.getProductName());
         holder.item_cart_quanlity.setText(cartModel.getQuality() + " ");
-        Glide.with(context).load(cartModel.getProductImg()).into(holder.item_cart_img);
+
+        if (cartModel.getProductImg().contains("http")) {
+            Glide.with(context).load(cartModel.getProductImg()).into(holder.item_cart_img);
+        }
+        else
+        {
+            String Img = Utils.BASE_URL + "images/" + cartModel.getProductImg();
+            Glide.with(context).load(Img).into(holder.item_cart_img);
+        }
+
+        //Glide.with(context).load(cartModel.getProductImg()).into(holder.item_cart_img);
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.item_cart_price.setText("Giá: " + decimalFormat.format(cartModel.getPrice()));
         long price = cartModel.getQuality() * cartModel.getPrice();
@@ -122,6 +133,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         });
     }
 
+    // Phương thức kiểm tra xem một mục có trong danh sách mua hàng hay không
+    private boolean isItemInCartListBuy(CartModel item) {
+        for (CartModel buyItem : Utils.CartListBuy) {
+            if (buyItem.getCartid() == item.getCartid()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onViewDetachedFromWindow(@NonNull MyViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
@@ -131,6 +152,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             cartListChanged = false; // Đặt lại biến đánh dấu
         }
     }
+
     @Override
     public int getItemCount() {
         return cartModelList.size();

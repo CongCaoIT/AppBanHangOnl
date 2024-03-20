@@ -1,15 +1,20 @@
 package com.example.appbanhangonl.retrofit;
 
 import com.example.appbanhangonl.model.Category;
+import com.example.appbanhangonl.model.MessageModel;
 import com.example.appbanhangonl.model.Product;
 import com.example.appbanhangonl.model.User;
 import com.example.appbanhangonl.model.ViewOrders;
 
 import io.reactivex.rxjava3.core.Observable;
+import okhttp3.MultipartBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiBanHang {
     @GET("getcategory.php")
@@ -31,7 +36,8 @@ public interface ApiBanHang {
             @Field("email") String email,
             @Field("pass") String pass,
             @Field("username") String username,
-            @Field("mobile") String mobile
+            @Field("mobile") String mobile,
+            @Field("uid") String uid
     );
 
     @POST("login.php")
@@ -71,4 +77,41 @@ public interface ApiBanHang {
             @Field("search") String search
     );
 
+    @POST("xoa.php")
+    @FormUrlEncoded
+    Observable<MessageModel> xoaSanPham (
+            @Field("MaSPMoi") int id
+    );
+
+    @POST("insertsp.php")
+    @FormUrlEncoded
+    Observable<MessageModel> insertSp(
+            @Field("tensp") String tensp,
+            @Field("gia") String gia,
+            @Field("hinhanh") String hinhanh,
+            @Field("mota") String mota,
+            @Field("loai") int id
+    );
+
+    @POST("updatesp.php")
+    @FormUrlEncoded
+    Observable<MessageModel> updatesp (
+            @Field("tensp") String tensp,
+            @Field("gia") String gia,
+            @Field("hinhanh") String hinhanh,
+            @Field("mota") String mota,
+            @Field("loai") int idloai,
+            @Field("MaSPMoi") int id
+    );
+
+    @POST("updatetoken.php")
+    @FormUrlEncoded
+    Observable<MessageModel> updateToken (
+            @Field("id") int id,
+            @Field("token") String token
+    );
+
+    @Multipart
+    @POST("upload.php")
+    Call<MessageModel> uploadFile(@Part MultipartBody.Part file);
 }

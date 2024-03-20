@@ -18,6 +18,7 @@ import com.example.appbanhangonl.Interface.ItemClickListener;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.activity.ProductDetailsActivity;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.utils.Utils;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -54,7 +55,15 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
             myViewHolder.textViewPhonePrice.setText("Giá: " + decimalFormat.format(Double.parseDouble(productModel.getGiaSP())) + " VND");
             myViewHolder.textViewPhoneDescribe.setText(productModel.getMoTa());
-            Glide.with(context).load(productModel.getHinhAnh()).into(myViewHolder.imageViewPhone);
+            if (productModel.getHinhAnh().contains("http")) {
+                Glide.with(context).load(productModel.getHinhAnh()).into(myViewHolder.imageViewPhone);
+            }
+            else
+            {
+                String Img = Utils.BASE_URL + "images/" + productModel.getHinhAnh();
+                Glide.with(context).load(Img).into(myViewHolder.imageViewPhone);
+            }
+            //Glide.with(context).load(productModel.getHinhAnh()).into(myViewHolder.imageViewPhone);
             myViewHolder.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int pos, boolean isLongClick) {

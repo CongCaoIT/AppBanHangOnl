@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.CategoryModel;
+import com.example.appbanhangonl.utils.Utils;
 
 import java.util.List;
 
@@ -58,7 +59,16 @@ public class CategoryAdapter extends BaseAdapter {
             viewHoder = (ViewHoder) convertView.getTag();
         }
         viewHoder.textViewCategory.setText(arr.get(position).getTenSP());
-        Glide.with(context).load(arr.get(position).getHinhAnh()).into(viewHoder.imageViewCategory);
+
+        if (arr.get(position).getHinhAnh().contains("http")) {
+            Glide.with(context).load(arr.get(position).getHinhAnh()).into(viewHoder.imageViewCategory);
+        }
+        else
+        {
+            String Img = Utils.BASE_URL + "images/" + arr.get(position).getHinhAnh();
+            Glide.with(context).load(Img).into(viewHoder.imageViewCategory);
+        }
+        //Glide.with(context).load(arr.get(position).getHinhAnh()).into(viewHoder.imageViewCategory);
         return convertView;
     }
 }

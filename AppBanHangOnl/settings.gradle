@@ -10,6 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        jcenter() // 2001210289 - Huỳnh Công Huy - Bài 40
+        maven { url "https://jitpack.io" }
     }
 }
 

@@ -1,11 +1,13 @@
 package com.example.appbanhangonl.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +17,11 @@ import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -26,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView textViewLogin;
     AppCompatButton buttonRegister;
     ApiBanHang apiBanHang;
+    FirebaseAuth firebaseAuth;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
@@ -72,30 +80,61 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             if (str_pass.equals(str_confirmpassword)) {
                 //post data
-                compositeDisposable.add(apiBanHang.registerAPI(str_email, str_pass, str_username, str_mobile)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                user -> {
-                                    if(user.isSucces()){
-                                        Toast.makeText(getApplicationContext(), "Đăng ký tài khoản thành công!!!", Toast.LENGTH_SHORT).show();
-                                        Utils.user_current.setEmail(str_email);
-                                        Utils.user_current.setPass(str_pass);
-                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }else{
-                                        Toast.makeText(getApplicationContext(), user.getMessage(), Toast.LENGTH_SHORT).show();
+                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.createUserWithEmailAndPassword(str_email, str_pass)
+                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful())
+                                {
+                                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                                    if (user != null)
+                                    {
+                                        Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
+                                        Log.d("Hello", "Hello");
+                                        possData(str_email, str_pass, str_username, str_mobile, user.getUid());
                                     }
-                                },
-                                throwable -> {
-                                    Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
-                        ));
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(), "Email đã tồn tại hoặc không thành công", Toast.LENGTH_LONG).show();
+                                    Log.d("Email", "Email đã tồn tại");
+
+                                }
+                            }
+                        });
             } else {
                 Toast.makeText(getApplicationContext(), "Mật khẩu chưa khớp nhau!!!", Toast.LENGTH_SHORT).show();
+                Log.d("Hello", "Hello");
+
             }
         }
+    }
+
+    public void possData(String str_email, String str_pass, String str_username, String str_mobile, String uid)
+    {
+        //post data
+        compositeDisposable.add(apiBanHang.registerAPI(str_email, str_pass, str_username, str_mobile, uid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        user -> {
+                            if(user.isSucces()){
+                                Toast.makeText(getApplicationContext(), "Đăng ký tài khoản thành công!!!", Toast.LENGTH_SHORT).show();
+                                Utils.user_current.setEmail(str_email);
+                                Utils.user_current.setPass(str_pass);
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                Toast.makeText(getApplicationContext(), user.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("Lỗi 404", "- Lỗi: " + throwable.getMessage());
+                        }
+                ));
     }
 
     private void initView() {

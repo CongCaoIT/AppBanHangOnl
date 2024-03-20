@@ -1,11 +1,13 @@
 package com.example.appbanhangonl.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,11 @@ import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -26,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText textEmail, textPass;
     Button buttonLogin;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
     TextView textViewRegister, textViewForgotPass;
     ApiBanHang apiBanHang;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -74,7 +83,25 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Paper.book().write("email", str_email);
             Paper.book().write("pass", str_pass);
-            Login(str_email, str_pass);
+            if (user != null)
+            {
+                // User đã có đăng nhập firebase - 2001210289 - Huỳnh Công Huy - Bài 42: Get token cho app quản lí
+                Login(str_email, str_pass);
+            }
+            else
+            {
+                // User đã đăng xuất - 2001210289 - Huỳnh Công Huy - Bài 42: Get token cho app quản lí
+                firebaseAuth.signInWithEmailAndPassword(str_email, str_pass)
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful())
+                                {
+                                    Login(str_email, str_pass);
+                                }
+                            }
+                        });
+            }
         }
     }
 
@@ -86,6 +113,10 @@ public class LoginActivity extends AppCompatActivity {
         textViewRegister = findViewById(R.id.textViewRegister);
         textViewForgotPass = findViewById(R.id.textForgotPass);
         Paper.init(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
         //read data
         if (Paper.book().read("email") != null && Paper.book().read("pass") != null) {
             textEmail.setText(Paper.book().read("email"));
@@ -96,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Login(Paper.book().read("email"), Paper.book().read("pass"));
+//                            Login(Paper.book().read("email"), Paper.book().read("pass"));
                         }
                     }, 1000);
                 }
@@ -115,6 +146,9 @@ public class LoginActivity extends AppCompatActivity {
                                 isLogin = true;
                                 Paper.book().write("isLogin", isLogin);
                                 Utils.user_current = user.getResult().get(0);
+                                // Lưu lại thông tin người dùng - 2001210289 - Huỳnh Công Huy - Bài 36
+                                Paper.book().write("user", user.getResult().get(0));
+
                                 Toast.makeText(getApplicationContext(), "Đăng nhập thành công!!!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
@@ -125,6 +159,8 @@ public class LoginActivity extends AppCompatActivity {
                         },
                         throwable -> {
                             Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            System.out.println("- Lỗi: " + throwable.getMessage());
+                            Log.d("Lỗi", "Lỗi: " + throwable.getMessage());
                         }
                 ));
     }

@@ -81,17 +81,28 @@ public class PayActivity extends AppCompatActivity {
                     String str_phone = Utils.user_current.getMobile();
                     int id =Utils.user_current.getId();
                     Log.d("test", new Gson().toJson(Utils.CartListBuy));
+
                     // Xóa các mục đã mua khỏi CartList
                     for (CartModel cartItem : Utils.CartListBuy) {
                         Utils.CartList.remove(cartItem);
                     }
                     Utils.CartListBuy.clear(); // Đảm bảo rằng danh sách các mục đã mua đã được xóa hoàn toàn
-                    compositeDisposable.add(apiBanHang.billAPI(str_email, String.valueOf(total), str_phone, str_address,totalItem, id, new Gson().toJson(Utils.CartListBuy))
+
+                    // Sau khi xác nhận giao dịch thành công
+                    compositeDisposable.add(apiBanHang.billAPI(str_email, String.valueOf(total), str_phone, str_address, totalItem, id, new Gson().toJson(Utils.CartListBuy))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     user -> {
                                         Toast.makeText(getApplicationContext(), "Đặt hàng thành công!!!", Toast.LENGTH_SHORT).show();
+
+                                        // Xóa sản phẩm khỏi CartList sau khi giao dịch thành công
+                                        for (CartModel cartItem : Utils.CartListBuy) {
+                                            Utils.CartList.remove(cartItem);
+                                        }
+                                        Utils.CartListBuy.clear(); // Đảm bảo rằng danh sách các mục đã mua đã được xóa hoàn toàn
+
+                                        // Chuyển đến màn hình chính sau khi hoàn tất giao dịch
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(intent);
                                         finish();

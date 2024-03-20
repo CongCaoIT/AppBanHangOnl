@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -28,16 +30,21 @@ import com.example.appbanhangonl.adapter.CategoryAdapter;
 import com.example.appbanhangonl.adapter.ProductAdapter;
 import com.example.appbanhangonl.model.CategoryModel;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.model.UserModel;
 import com.example.appbanhangonl.model.ViewOrders;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -65,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         apiBanHang = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiBanHang.class);
+        Paper.init(this);
+        if (Paper.book().read("user") != null)
+        {
+            UserModel user = Paper.book().read("user");
+            Utils.user_current = user;
+        }
+        getToken();
         Mapping();
         ActionBar();
         if (isConnected(this)) {
@@ -75,6 +89,29 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Không có Internet!!!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (!TextUtils.isEmpty(s))
+                        {
+                            compositeDisposable.add(apiBanHang.updateToken(Utils.user_current.getId(), s)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                            messageModel -> {
+
+                                            },
+                                            throwable -> {
+                                                Log.d("-Lỗi log: ", "- Lỗi: " + throwable.getMessage());
+                                            }
+                                    ));
+                        }
+                    }
+                });
     }
 
     private void getEventClick() {
@@ -107,6 +144,18 @@ public class MainActivity extends AppCompatActivity {
                     case 5:
                         Intent infomation = new Intent(getApplicationContext(), InfomationActivity.class);
                         startActivity(infomation);
+                        break;
+                    case 6:
+                        Intent management = new Intent(getApplicationContext(), ManagementActivity.class);
+                        startActivity(management);
+                        break;
+                    case 7:
+                        // Xóa key user - 2001210289 - Huỳnh Công Huy - Bài 36
+                        Paper.book().delete("user");
+                        FirebaseAuth.getInstance().signOut();
+                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(login);
+                        finish();
                         break;
                 }
             }
