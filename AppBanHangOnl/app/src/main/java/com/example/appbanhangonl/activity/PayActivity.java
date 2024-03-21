@@ -21,6 +21,7 @@ import com.example.appbanhangonl.utils.Utils;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -69,6 +70,8 @@ public class PayActivity extends AppCompatActivity {
         textViewEmail.setText(Utils.user_current.getEmail());
         textViewMobile.setText(Utils.user_current.getMobile());
 
+        // buttonPay onClick
+        // Trong sự kiện onClick() của nút thanh toán, cập nhật tổng giá trị sau khi giao dịch được thực hiện thành công
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,41 +79,37 @@ public class PayActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(str_address)) {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập địa chỉ giao hàng!", Toast.LENGTH_SHORT).show();
                 } else {
-                    //post data
-                    String str_email = Utils.user_current.getEmail();
-                    String str_phone = Utils.user_current.getMobile();
-                    int id =Utils.user_current.getId();
-                    Log.d("test", new Gson().toJson(Utils.CartListBuy));
+                    if (!Utils.CartListBuy.isEmpty()) { // Kiểm tra xem có sản phẩm nào được chọn để mua không
+                        //post data
+                        String str_email = Utils.user_current.getEmail();
+                        String str_phone = Utils.user_current.getMobile();
+                        int id = Utils.user_current.getId();
+                        Log.d("test", new Gson().toJson(Utils.CartListBuy));
 
-                    // Xóa các mục đã mua khỏi CartList
-                    for (CartModel cartItem : Utils.CartListBuy) {
-                        Utils.CartList.remove(cartItem);
-                    }
-                    Utils.CartListBuy.clear(); // Đảm bảo rằng danh sách các mục đã mua đã được xóa hoàn toàn
+                        // Tiến hành thanh toán
+                        compositeDisposable.add(apiBanHang.billAPI(str_email, String.valueOf(total), str_phone, str_address, totalItem, id, new Gson().toJson(Utils.CartListBuy))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        user -> {
+                                            Toast.makeText(getApplicationContext(), "Đặt hàng thành công!!!", Toast.LENGTH_SHORT).show();
 
-                    // Sau khi xác nhận giao dịch thành công
-                    compositeDisposable.add(apiBanHang.billAPI(str_email, String.valueOf(total), str_phone, str_address, totalItem, id, new Gson().toJson(Utils.CartListBuy))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    user -> {
-                                        Toast.makeText(getApplicationContext(), "Đặt hàng thành công!!!", Toast.LENGTH_SHORT).show();
+                                            // Xóa các mục đã mua khỏi CartList sau khi giao dịch thành công
+                                            Utils.CartList.removeAll(Utils.CartListBuy);
+                                            Utils.CartListBuy.clear(); // Xóa danh sách các mục đã mua
 
-                                        // Xóa sản phẩm khỏi CartList sau khi giao dịch thành công
-                                        for (CartModel cartItem : Utils.CartListBuy) {
-                                            Utils.CartList.remove(cartItem);
+                                            // Chuyển đến màn hình chính sau khi hoàn tất giao dịch
+                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        },
+                                        throwable -> {
+                                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
-                                        Utils.CartListBuy.clear(); // Đảm bảo rằng danh sách các mục đã mua đã được xóa hoàn toàn
-
-                                        // Chuyển đến màn hình chính sau khi hoàn tất giao dịch
-                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    },
-                                    throwable -> {
-                                        Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                            ));
+                                ));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Bạn chưa chọn sản phẩm nào để mua!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

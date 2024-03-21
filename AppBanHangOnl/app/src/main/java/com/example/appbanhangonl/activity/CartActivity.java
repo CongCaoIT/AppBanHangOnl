@@ -33,6 +33,7 @@ public class CartActivity extends AppCompatActivity {
     Button buttonBuy;
     CartAdapter cartAdapter;
     long total;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +44,17 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void totalAmount() {
-        total = 0;
-        for (int i = 0; i < Utils.CartListBuy.size(); i++) {
-            total = total + (Utils.CartListBuy.get(i).getPrice() * Utils.CartListBuy.get(i).getQuality());
+        if (!Utils.CartListBuy.isEmpty()) { // Kiểm tra xem có sản phẩm nào được chọn để mua không
+            total = 0;
+            for (int i = 0; i < Utils.CartListBuy.size(); i++) {
+                total = total + (Utils.CartListBuy.get(i).getPrice() * Utils.CartListBuy.get(i).getQuality());
+            }
+            DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+            textViewTotalPrice.setText(decimalFormat.format(total) + " VND");
+        } else {
+            // Nếu không có sản phẩm nào được chọn, đặt tổng giá trị về 0
+            textViewTotalPrice.setText("0 VND");
         }
-        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        textViewTotalPrice.setText(decimalFormat.format(total) + " VND");
     }
 
     private void initControl() {
@@ -57,6 +63,7 @@ public class CartActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.CartListBuy.clear();
                 finish();
             }
         });
@@ -75,21 +82,6 @@ public class CartActivity extends AppCompatActivity {
         buttonBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tạo một danh sách mới để lưu các mục chưa được chọn
-                ArrayList<CartModel> newCartList = new ArrayList<>();
-
-                // Lặp qua từng mục trong CartList
-                for (CartModel item : Utils.CartList) {
-                    // Kiểm tra xem mục này đã được chọn hay không
-                    if (!isItemInCartListBuy(item)) {
-                        // Nếu không được chọn, thêm vào danh sách mới
-                        newCartList.add(item);
-                    }
-                }
-
-                // Gán danh sách mới cho CartList
-                Utils.CartList = newCartList;
-
                 // Tiến hành thanh toán
                 Intent intent = new Intent(getApplicationContext(), PayActivity.class);
                 intent.putExtra("totalprice", total);
@@ -97,15 +89,7 @@ public class CartActivity extends AppCompatActivity {
             }
         });
     }
-    // Phương thức kiểm tra xem một mục có trong CartListBuy hay không
-    private boolean isItemInCartListBuy(CartModel item) {
-        for (CartModel buyItem : Utils.CartListBuy) {
-            if (buyItem.getCartid() == item.getCartid()) {
-                return true;
-            }
-        }
-        return false;
-    }
+
     private void initView() {
         textViewCartNull = findViewById(R.id.txbCartNull);
         textViewTotalPrice = findViewById(R.id.txbTotalPrice);
@@ -125,11 +109,10 @@ public class CartActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void eventTotal(totalAmountEvent event)
-    {
-        if(event !=null)
-        {
+    public void eventTotal(totalAmountEvent event) {
+        if (event != null) {
             totalAmount();
         }
     }

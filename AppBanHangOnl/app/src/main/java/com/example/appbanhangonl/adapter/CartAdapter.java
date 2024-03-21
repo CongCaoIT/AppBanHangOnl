@@ -53,9 +53,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         if (cartModel.getProductImg().contains("http")) {
             Glide.with(context).load(cartModel.getProductImg()).into(holder.item_cart_img);
-        }
-        else
-        {
+        } else {
             String Img = Utils.BASE_URL + "images/" + cartModel.getProductImg();
             Glide.with(context).load(Img).into(holder.item_cart_img);
         }
@@ -73,13 +71,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     EventBus.getDefault().postSticky(new totalAmountEvent());
                     cartListChanged = true; // Đánh dấu rằng danh sách đã thay đổi
                 } else {
-                    for (int i = 0; i < Utils.CartListBuy.size(); i++) {
-                        if (Utils.CartListBuy.get(i).getCartid() == cartModel.getCartid()) {
-                            Utils.CartListBuy.remove(i);
-                            EventBus.getDefault().postSticky(new totalAmountEvent());
-                            cartListChanged = true; // Đánh dấu rằng danh sách đã thay đổi
-                        }
-                    }
+                    Utils.CartListBuy.remove(cartModel);
+                    EventBus.getDefault().postSticky(new totalAmountEvent());
+                    cartListChanged = true; // Đánh dấu rằng danh sách đã thay đổi
                 }
             }
         });
@@ -131,16 +125,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
             }
         });
-    }
-
-    // Phương thức kiểm tra xem một mục có trong danh sách mua hàng hay không
-    private boolean isItemInCartListBuy(CartModel item) {
-        for (CartModel buyItem : Utils.CartListBuy) {
-            if (buyItem.getCartid() == item.getCartid()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
