@@ -90,8 +90,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                     if (user != null)
                                     {
-                                        Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
-                                        Log.d("Hello", "Hello");
                                         possData(str_email, str_pass, str_username, str_mobile, user.getUid());
                                     }
                                 }
@@ -99,14 +97,11 @@ public class RegisterActivity extends AppCompatActivity {
                                 {
                                     Toast.makeText(getApplicationContext(), "Email đã tồn tại hoặc không thành công", Toast.LENGTH_LONG).show();
                                     Log.d("Email", "Email đã tồn tại");
-
                                 }
                             }
                         });
             } else {
                 Toast.makeText(getApplicationContext(), "Mật khẩu chưa khớp nhau!!!", Toast.LENGTH_SHORT).show();
-                Log.d("Hello", "Hello");
-
             }
         }
     }

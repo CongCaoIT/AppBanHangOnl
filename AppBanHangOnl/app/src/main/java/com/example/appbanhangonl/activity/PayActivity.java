@@ -15,13 +15,18 @@ import android.widget.Toast;
 
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.CartModel;
+import com.example.appbanhangonl.model.NotiSendData;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
+import com.example.appbanhangonl.retrofit.ApiPushNotification;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
+import com.example.appbanhangonl.retrofit.RetrofitClientNoti;
 import com.example.appbanhangonl.utils.Utils;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -93,6 +98,7 @@ public class PayActivity extends AppCompatActivity {
                                 .subscribe(
                                         user -> {
                                             Toast.makeText(getApplicationContext(), "Đặt hàng thành công!!!", Toast.LENGTH_SHORT).show();
+                                            pushNotiToUser();
 
                                             // Xóa các mục đã mua khỏi CartList sau khi giao dịch thành công
                                             Utils.CartList.removeAll(Utils.CartListBuy);
@@ -113,6 +119,42 @@ public class PayActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void pushNotiToUser() {
+        // Get token 2001210289 - Huỳnh Công Huy - Bài 45: Gửi thông báo trên app quản lí
+        compositeDisposable.add(apiBanHang.gettoken(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        user -> {
+                            if (user.isSucces()) {
+                                for (int i = 0; i < user.getResult().size(); i++) {
+                                    Map<String, String> data = new HashMap<>();
+                                    data.put("title", "Thông báo");
+                                    data.put("body", "Bạn có đơn hàng mới!!!");
+                                    NotiSendData notiSendData = new NotiSendData(user.getResult().get(i).getToken(), data);
+                                    ApiPushNotification apiPushNotification = RetrofitClientNoti.getInstance().create(ApiPushNotification.class);
+                                    compositeDisposable.add(apiPushNotification.senNotification(notiSendData)
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(
+                                                    notiResponse -> {
+                                                        Toast.makeText(getApplicationContext(), "Thành công", Toast.LENGTH_LONG).show();
+                                                        Log.d("Thành Công", "Thành công");
+                                                    },
+                                                    throwable -> {
+                                                        Toast.makeText(getApplicationContext(), "Lỗi: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                                                        Log.d("- Lỗi", "- Lỗi: " + throwable.getMessage());
+                                                    }
+                                            ));
+                                }
+                            }
+                        },
+                        throwable -> {
+                            Log.d("Lỗi", "Lỗi: " + throwable.getMessage());
+                        }
+                ));
     }
 
     private void initView() {

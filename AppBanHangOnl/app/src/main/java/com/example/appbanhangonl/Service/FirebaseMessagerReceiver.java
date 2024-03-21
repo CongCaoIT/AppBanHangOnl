@@ -55,7 +55,7 @@ public class FirebaseMessagerReceiver extends FirebaseMessagingService {
         RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification);
         remoteViews.setTextViewText(R.id.title_noti, title);
         remoteViews.setTextViewText(R.id.body_noti, body);
-        remoteViews.setImageViewResource(R.id.imgnoti, R.drawable.gcm_icon);
+        remoteViews.setImageViewResource(R.id.imgnoti, R.drawable.baseline_notifications_active_24);
         return remoteViews;
     }
 }
