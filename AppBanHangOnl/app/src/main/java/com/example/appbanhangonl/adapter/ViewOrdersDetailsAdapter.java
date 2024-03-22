@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.ViewOrdersModel;
+import com.example.appbanhangonl.utils.Utils;
 
 import java.util.List;
 
@@ -42,7 +43,15 @@ public class ViewOrdersDetailsAdapter extends RecyclerView.Adapter<ViewOrdersDet
         ViewOrdersModel viewOrdersModel = viewOrdersModelList.get(position);
         holder.textViewName.setText(viewOrdersModel.getTenSP());
         holder.textViewNum.setText(String.valueOf("Số lượng: " + viewOrdersModel.getSoluong()));
-        Glide.with(context).load(viewOrdersModel.getHinhAnh()).into(holder.imageViewDetails);
+
+        if (viewOrdersModel.getHinhAnh().contains("http")) {
+            Glide.with(context).load(viewOrdersModel.getHinhAnh()).into(holder.imageViewDetails);
+        } else {
+            String Img = Utils.BASE_URL + "images/" + viewOrdersModel.getHinhAnh();
+            Glide.with(context).load(Img).into(holder.imageViewDetails);
+        }
+
+        //Glide.with(context).load(viewOrdersModel.getHinhAnh()).into(holder.imageViewDetails);
     }
 
     @Override
