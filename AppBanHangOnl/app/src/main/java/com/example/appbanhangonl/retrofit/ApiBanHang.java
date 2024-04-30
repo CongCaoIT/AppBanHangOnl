@@ -3,6 +3,7 @@ package com.example.appbanhangonl.retrofit;
 import com.example.appbanhangonl.model.Category;
 import com.example.appbanhangonl.model.MessageModel;
 import com.example.appbanhangonl.model.Product;
+import com.example.appbanhangonl.model.ThongKeModel;
 import com.example.appbanhangonl.model.User;
 import com.example.appbanhangonl.model.ViewOrders;
 
@@ -77,9 +78,9 @@ public interface ApiBanHang {
             @Field("search") String search
     );
 
-    @POST("xoa.php")
+    @POST("deletenewproduct.php")
     @FormUrlEncoded
-    Observable<MessageModel> xoaSanPham (
+    Observable<MessageModel> deleteNewProduct (
             @Field("MaSPMoi") int id
     );
 
@@ -118,6 +119,20 @@ public interface ApiBanHang {
     @POST("gettoken.php")
     @FormUrlEncoded
     Observable<User> gettoken (
-            @Field("status") int status
+            @Field("status") int status,
+            @Field("iduser") int iduser
     );
+
+    @POST("updateorders.php")
+    @FormUrlEncoded
+    Observable<MessageModel> updateOrders (
+            @Field("id") int id,
+            @Field("trangthai") int status
+    );
+
+    @GET("thongkethang.php")
+    Observable<ThongKeModel> getthongkeThang();
+
+    @GET("thongke.php")
+    Observable<ThongKeModel> getthongke();
 }

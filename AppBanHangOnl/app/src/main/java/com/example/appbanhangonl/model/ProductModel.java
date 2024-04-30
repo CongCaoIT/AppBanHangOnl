@@ -9,6 +9,15 @@ public class ProductModel implements Serializable {
     String MoTa;
     String HinhAnh;
     int Loai;
+    String LinkVideo;
+
+    public String getLinkVideo() {
+        return LinkVideo;
+    }
+
+    public void setLinkVideo(String linkVideo) {
+        LinkVideo = linkVideo;
+    }
 
     public int getMaSPMoi() {
         return MaSPMoi;

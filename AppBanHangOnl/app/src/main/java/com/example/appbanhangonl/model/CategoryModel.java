@@ -6,6 +6,11 @@ public class CategoryModel {
     String TenSP;
     String HinhAnh;
 
+    public CategoryModel(String tenSP, String hinhAnh) {
+        TenSP = tenSP;
+        HinhAnh = hinhAnh;
+    }
+
     public String getTenSP() {
         return TenSP;
     }
@@ -13,7 +18,6 @@ public class CategoryModel {
     public void setTenSP(String tenSP) {
         TenSP = tenSP;
     }
-
 
     public int getMaSP() {
         return MaSP;

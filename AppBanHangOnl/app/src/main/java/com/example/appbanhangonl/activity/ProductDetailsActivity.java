@@ -26,7 +26,7 @@ import java.text.DecimalFormat;
 public class ProductDetailsActivity extends AppCompatActivity {
 
     TextView textViewName, textViewPrice, textViewDescription;
-    Button buttonAddCart;
+    Button buttonAddCart, btnYoutube;
     ImageView imageViewImg;
     Spinner spinner;
     Toolbar toolbar;
@@ -49,6 +49,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AddCart();
+            }
+        });
+
+        btnYoutube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent youtube = new Intent(getApplicationContext(), YoutubeActivity.class);
+                youtube.putExtra("linkvideo", productModel.getLinkVideo());
+                startActivity(youtube);
             }
         });
     }
@@ -120,6 +129,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         textViewDescription = findViewById(R.id.txbDetailsDescription);
         buttonAddCart = findViewById(R.id.btnAddCart);
         spinner = findViewById(R.id.spinner);
+        btnYoutube = findViewById(R.id.btnYoutube);
         imageViewImg = findViewById(R.id.item_productdetails_img);
         toolbar = findViewById(R.id.toolbarDetails);
         notificationBadge = (NotificationBadge) findViewById(R.id.menu_quanlity);

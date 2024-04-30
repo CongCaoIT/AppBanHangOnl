@@ -61,13 +61,14 @@ dependencies {
     implementation 'io.github.pilgr:paperdb:2.7.2'
     //Gson
     implementation 'com.google.code.gson:gson:2.10.1'
-
     // lottie - 2001210289 - Huỳnh Công Huy - Bài 36
     implementation 'com.airbnb.android:lottie:4.2.2'
-
     // neumorphism - 2001210289 - Huỳnh Công Huy - Bài 37
     implementation 'com.github.fornewid:neumorphism:0.3.0'
-
     // Image pick - 2001210289 - Huỳnh Công Huy - Bài 40
     implementation 'com.github.dhaval2404:imagepicker:2.1'
+    //chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //Youtube
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
 }

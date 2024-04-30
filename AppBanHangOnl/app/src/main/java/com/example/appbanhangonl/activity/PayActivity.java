@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.CartModel;
 import com.example.appbanhangonl.model.NotiSendData;
+import com.example.appbanhangonl.model.UserModel;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.ApiPushNotification;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
@@ -97,6 +98,7 @@ public class PayActivity extends AppCompatActivity {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(
                                         user -> {
+                                            pushNotiToUser();
                                             Toast.makeText(getApplicationContext(), "Đặt hàng thành công!!!", Toast.LENGTH_SHORT).show();
                                             pushNotiToUser();
 
@@ -123,7 +125,7 @@ public class PayActivity extends AppCompatActivity {
 
     private void pushNotiToUser() {
         // Get token 2001210289 - Huỳnh Công Huy - Bài 45: Gửi thông báo trên app quản lí
-        compositeDisposable.add(apiBanHang.gettoken(1)
+        compositeDisposable.add(apiBanHang.gettoken(1, Utils.user_current.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -149,6 +151,10 @@ public class PayActivity extends AppCompatActivity {
                                                     }
                                             ));
                                 }
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "Không nhận được thông báo", Toast.LENGTH_LONG).show();
+                                Log.d("- Lỗi", "Không nhận được thông báo");
                             }
                         },
                         throwable -> {

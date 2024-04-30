@@ -150,6 +150,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(management);
                         break;
                     case 7:
+                        Intent tk = new Intent(getApplicationContext(), ThongKeActivity.class);
+                        startActivity(tk);
+                        break;
+                    case 8:
                         // Xóa key user - 2001210289 - Huỳnh Công Huy - Bài 36
                         Paper.book().delete("user");
                         FirebaseAuth.getInstance().signOut();
@@ -188,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
                         category -> {
                             if (category.isSucces()) {
                                 categoryModelList = category.getResult();
+                                categoryModelList.add(new CategoryModel("Thống kê", ""));
+                                categoryModelList.add(new CategoryModel("Đăng xuất", ""));
                                 categoryAdapter = new CategoryAdapter(getApplicationContext(), categoryModelList);
                                 listViewHome.setAdapter(categoryAdapter);
                             }

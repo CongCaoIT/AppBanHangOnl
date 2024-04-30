@@ -5,18 +5,27 @@ import java.util.List;
 public class OrdersModel {
     int id;
     int iduser;
-    String diachi;
-    String sodienthoai;
-    String tongtien;
+    String address;
+    String phone;
+    String total;
+    int status;
     List<ViewOrdersModel> item;
 
-    public OrdersModel(int id, int iduser, String diachi, String sodienthoai, String tongtien, List<ViewOrdersModel> item) {
+    public OrdersModel(int id, int iduser, String address, String sodienthoai, String tongtien, List<ViewOrdersModel> item) {
         this.id = id;
         this.iduser = iduser;
-        this.diachi = diachi;
-        this.sodienthoai = sodienthoai;
-        this.tongtien = tongtien;
+        this.address = address;
+        this.phone = sodienthoai;
+        this.total = tongtien;
         this.item = item;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -35,28 +44,28 @@ public class OrdersModel {
         this.iduser = iduser;
     }
 
-    public String getDiachi() {
-        return diachi;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDiachi(String diachi) {
-        this.diachi = diachi;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getSodienthoai() {
-        return sodienthoai;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setSodienthoai(String sodienthoai) {
-        this.sodienthoai = sodienthoai;
+    public void setPhone(String Phone) {
+        this.phone = Phone;
     }
 
-    public String getTongtien() {
-        return tongtien;
+    public String getTotal() {
+        return total;
     }
 
-    public void setTongtien(String tongtien) {
-        this.tongtien = tongtien;
+    public void setTotal(String total) {
+        this.total = total;
     }
 
     public List<ViewOrdersModel> getItem() {
