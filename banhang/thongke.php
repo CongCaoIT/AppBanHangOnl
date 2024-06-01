@@ -1,6 +1,6 @@
 <?php
 include "connect.php";
-$query = "SELECT * FROM `danhmuc`";
+$query = "SELECT idsp, sanpham.TenSP, COUNT(`soluong`) AS tong FROM `chitietdonhang` INNER JOIN sanpham ON sanpham.MaSP = chitietdonhang.idsp GROUP BY `idsp`;";
 $data = mysqli_query($conn, $query);
 $result = array();
 while ($row = mysqli_fetch_assoc($data)) {

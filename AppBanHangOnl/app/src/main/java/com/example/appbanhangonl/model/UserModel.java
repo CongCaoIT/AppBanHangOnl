@@ -7,6 +7,35 @@ public class UserModel {
     String username;
     String mobile;
     String token;
+    int status;
+    String ImageUser;
+
+    public UserModel() {
+
+    }
+
+    public UserModel(String email, String username, String mobile, String str_hinhanh) {
+        this.email = email;
+        this.username = username;
+        this.mobile = mobile;
+        ImageUser = str_hinhanh;
+    }
+
+    public String getImageUser() {
+        return ImageUser;
+    }
+
+    public void setImageUser(String imageUser) {
+        this.ImageUser = imageUser;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getToken() {
         return token;

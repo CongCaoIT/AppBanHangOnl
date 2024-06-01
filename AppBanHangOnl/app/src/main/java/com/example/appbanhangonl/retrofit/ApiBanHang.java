@@ -16,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface ApiBanHang {
     @GET("getcategory.php")
@@ -81,7 +82,7 @@ public interface ApiBanHang {
     @POST("deletenewproduct.php")
     @FormUrlEncoded
     Observable<MessageModel> deleteNewProduct (
-            @Field("MaSPMoi") int id
+            @Field("MaSP") int id
     );
 
     @POST("insertsp.php")
@@ -102,7 +103,7 @@ public interface ApiBanHang {
             @Field("hinhanh") String hinhanh,
             @Field("mota") String mota,
             @Field("loai") int idloai,
-            @Field("MaSPMoi") int id
+            @Field("MaSP") int id
     );
 
     @POST("updatetoken.php")
@@ -135,4 +136,16 @@ public interface ApiBanHang {
 
     @GET("thongke.php")
     Observable<ThongKeModel> getthongke();
+
+    @GET("updateprofile.php")
+    Call<Void> updateUserProfile(
+            @Query("email") String email,
+            @Query("username") String username,
+            @Query("mobile") String mobile,
+            @Query("ImageUser") String ImageUser
+    );
+
+    @Multipart
+    @POST("uploadImage.php")
+    Call<String> uploadImage(@Part MultipartBody.Part image);
 }

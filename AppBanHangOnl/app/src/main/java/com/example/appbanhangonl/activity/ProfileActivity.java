@@ -1,0 +1,235 @@
+package com.example.appbanhangonl.activity;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
+import com.bumptech.glide.Glide;
+import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.User;
+import com.example.appbanhangonl.model.UserModel;
+import com.example.appbanhangonl.retrofit.ApiBanHang;
+import com.example.appbanhangonl.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class ProfileActivity extends AppCompatActivity {
+
+    private EditText editTextEmail, editTextUsername, editTextMobile, editTextImageUser;
+    private ImageView imageViewProfilePicture;
+    private Button buttonUpdate, buttonLogout, buttonChangePicture;
+
+    private static final int REQUEST_STORAGE_PERMISSION = 100;
+
+    private void Mapping() {
+        editTextEmail = findViewById(R.id.editText_Email);
+        editTextUsername = findViewById(R.id.editText_Username);
+        editTextMobile = findViewById(R.id.editText_Mobile);
+        editTextImageUser = findViewById(R.id.editText_ImageUser);
+        imageViewProfilePicture = findViewById(R.id.imageView_ProfilePicture);
+        buttonUpdate = findViewById(R.id.button_Update);
+        buttonLogout = findViewById(R.id.button_Logout);
+        buttonChangePicture = findViewById(R.id.button_ChangePicture);
+    }
+
+    private void UpdateProfile() {
+        buttonUpdate.setOnClickListener(v -> updateUserProfile());
+    }
+
+    private void LogoutProfile() {
+        buttonLogout.setOnClickListener(v -> logout());
+    }
+
+    private void ChangeImageProfile() {
+        buttonChangePicture.setOnClickListener(v -> changeProfilePicture());
+    }
+
+    private void getDataUserInfo() {
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("Email");
+        String username = intent.getStringExtra("Username");
+        String imageUser = intent.getStringExtra("ImageUser");
+        String mobile = intent.getStringExtra("Mobile");
+
+        editTextEmail.setText(email);
+        editTextUsername.setText(username);
+        editTextMobile.setText(mobile);
+        editTextImageUser.setText(imageUser);
+
+        // Load image from Firebase Storage using the URL
+        Glide.with(getApplicationContext()).load(imageUser).into(imageViewProfilePicture);
+    }
+
+    private void updateUserProfile() {
+        try {
+            String email = editTextEmail.getText().toString();
+            String username = editTextUsername.getText().toString();
+            String mobile = editTextMobile.getText().toString();
+            String str_hinhanh = editTextImageUser.getText().toString().trim();
+
+            ApiBanHang dataClient = Utils.getData();
+            Call<Void> call = dataClient.updateUserProfile(email, username, mobile, str_hinhanh);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        // Cập nhật thông tin người dùng vào Realtime Database
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        UserModel user = new UserModel(email, username, mobile, str_hinhanh);
+                        databaseReference.child(userId).setValue(user);
+
+                        Toast.makeText(getApplicationContext(), "Cập nhật thông tin user thành công", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void Event() {
+        UpdateProfile();
+        LogoutProfile();
+        getDataUserInfo();
+        ChangeImageProfile();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+
+        Mapping();
+        requestStoragePermission();
+        Event();
+    }
+
+    private void requestStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_STORAGE_PERMISSION);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permissions granted
+            } else {
+                Toast.makeText(this, "Permissions Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void logout() {
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void changeProfilePicture() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+    }
+
+    private String getRealPathFromURI(Uri uri) {
+        String result;
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        if (cursor == null) {
+            result = uri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+    private void saveImageToDatabase(Uri imageUri) {
+        String imagePath = getRealPathFromURI(imageUri);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child("images/" + new File(imagePath).getName());
+
+        UploadTask uploadTask = imageRef.putFile(imageUri);
+        uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            String downloadUrl = uri.toString();
+            editTextImageUser.setText(downloadUrl);
+
+            Glide.with(ProfileActivity.this).load(downloadUrl).into(imageViewProfilePicture);
+            Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thành công", Toast.LENGTH_SHORT).show();
+        })).addOnFailureListener(exception -> {
+            Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thất bại: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            Uri selectedImageUri = data.getData();
+            saveImageToDatabase(selectedImageUri);
+
+            displayImage(selectedImageUri);
+        }
+    }
+
+    private void displayImage(Uri imageUri) {
+        Glide.with(this).load(imageUri).into(imageViewProfilePicture);
+    }
+}

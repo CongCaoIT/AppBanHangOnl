@@ -3,7 +3,7 @@ package com.example.appbanhangonl.model;
 import java.io.Serializable;
 
 public class ProductModel implements Serializable {
-    int MaSPMoi;
+    int MaSP;
     String TenSP;
     String GiaSP;
     String MoTa;
@@ -11,20 +11,12 @@ public class ProductModel implements Serializable {
     int Loai;
     String LinkVideo;
 
-    public String getLinkVideo() {
-        return LinkVideo;
+    public int getMaSP() {
+        return MaSP;
     }
 
-    public void setLinkVideo(String linkVideo) {
-        LinkVideo = linkVideo;
-    }
-
-    public int getMaSPMoi() {
-        return MaSPMoi;
-    }
-
-    public void setMaSPMoi(int maSPMoi) {
-        MaSPMoi = maSPMoi;
+    public void setMaSP(int maSP) {
+        MaSP = maSP;
     }
 
     public String getTenSP() {
@@ -65,5 +57,13 @@ public class ProductModel implements Serializable {
 
     public void setLoai(int loai) {
         Loai = loai;
+    }
+
+    public String getLinkVideo() {
+        return LinkVideo;
+    }
+
+    public void setLinkVideo(String linkVideo) {
+        LinkVideo = linkVideo;
     }
 }

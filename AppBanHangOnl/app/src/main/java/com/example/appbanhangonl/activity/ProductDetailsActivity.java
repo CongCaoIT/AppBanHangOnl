@@ -67,7 +67,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             boolean flag = false;
             int num = Integer.parseInt(spinner.getSelectedItem().toString());
             for (int i = 0; i < Utils.CartList.size(); i++) {
-                if (Utils.CartList.get(i).getCartid() == productModel.getMaSPMoi()) {
+                if (Utils.CartList.get(i).getCartid() == productModel.getMaSP()) {
                     Utils.CartList.get(i).setQuality(num + Utils.CartList.get(i).getQuality());
                     long price = Long.parseLong(productModel.getGiaSP()) * Utils.CartList.get(i).getQuality();
                     Utils.CartList.get(i).setPrice(price);
@@ -79,7 +79,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 CartModel cartModel = new CartModel();
                 cartModel.setPrice(price);
                 cartModel.setQuality(num);
-                cartModel.setCartid(productModel.getMaSPMoi());
+                cartModel.setCartid(productModel.getMaSP());
                 cartModel.setProductName(productModel.getTenSP());
                 cartModel.setProductImg(productModel.getHinhAnh());
                 Utils.CartList.add(cartModel);
@@ -90,7 +90,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             CartModel cartModel = new CartModel();
             cartModel.setPrice(price);
             cartModel.setQuality(num);
-            cartModel.setCartid(productModel.getMaSPMoi());
+            cartModel.setCartid(productModel.getMaSP());
             cartModel.setProductName(productModel.getTenSP());
             cartModel.setProductImg(productModel.getHinhAnh());
             Utils.CartList.add(cartModel);

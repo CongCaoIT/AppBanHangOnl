@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     NotificationBadge notificationBadge;
     FrameLayout frameLayout;
     ImageView imageViewSearch;
+    ImageView imageView_HinhAnhUser;
+    TextView textView_TenNguoiDung;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Không có Internet!!!", Toast.LENGTH_SHORT).show();
         }
+
+        ShowEmailNavigation();
     }
 
     private void getToken() {
@@ -200,7 +205,34 @@ public class MainActivity extends AppCompatActivity {
                         }
                 ));
     }
+    private void ShowEmailNavigation() {
+        // Lấy header view từ NavigationView
+        View headerView = navigationView.getHeaderView(0);
 
+        // Tìm TextView trong header view
+        textView_TenNguoiDung = headerView.findViewById(R.id.textView_TenNguoiDung);
+        imageView_HinhAnhUser = headerView.findViewById(R.id.imageView_HinhAnhUser);
+
+        if (textView_TenNguoiDung != null) {
+            // Hiển thị email trong TextView
+            textView_TenNguoiDung.setText(Utils.user_current.getUsername());
+            Glide.with(getApplicationContext()).load(Utils.user_current.getImageUser()).into(imageView_HinhAnhUser);
+            imageView_HinhAnhUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intent.putExtra("Email", Utils.user_current.getEmail());
+                    intent.putExtra("Username", Utils.user_current.getUsername());
+                    intent.putExtra("Mobile", Utils.user_current.getMobile());
+                    intent.putExtra("ImageUser", Utils.user_current.getImageUser());
+                    startActivity(intent);
+                }
+            });
+        } else {
+            // Nếu không tìm thấy TextView, hiển thị thông báo lỗi
+            Toast.makeText(getApplicationContext(), "Không tìm thấy TextView", Toast.LENGTH_SHORT).show();
+        }
+    }
     //Ánh xạ
     private void Mapping() {
         toolbar = findViewById(R.id.toolBarHome);

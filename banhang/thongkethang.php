@@ -1,6 +1,6 @@
 <?php
 include "connect.php";
-$query = "SELECT * FROM `danhmuc`";
+$query = "SELECT *, SUM(tongtien) AS tongtienthang, MONTH(`ngaydat`) AS thang FROM `donhang`GROUP BY YEAR(`ngaydat`),MONTH(`ngaydat`);";
 $data = mysqli_query($conn, $query);
 $result = array();
 while ($row = mysqli_fetch_assoc($data)) {

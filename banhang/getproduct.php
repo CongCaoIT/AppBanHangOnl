@@ -1,19 +1,19 @@
 <?php
 include "connect.php";
-$query = "SELECT * FROM `SANPHAMMOI` ORDER BY MaSPMoi DESC";
+$query = "SELECT * FROM `sanpham` ORDER BY MaSP DESC";
 $data = mysqli_query($conn, $query);
 $result = array();
-while($row = mysqli_fetch_assoc($data)){
+while ($row = mysqli_fetch_assoc($data)) {
     $result[] = ($row);
 }
 
-if(!empty($result)){
+if (!empty($result)) {
     $arr = [
         'succes' => true,
         'message' => "thanh cong",
         'result' => $result
     ];
-}else{
+} else {
     $arr = [
         'succes' => false,
         'message' => "khong thanh cong",
@@ -21,4 +21,3 @@ if(!empty($result)){
     ];
 }
 print_r(json_encode($arr));
-?>

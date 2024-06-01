@@ -101,18 +101,20 @@
             android:id="@+id/navigationView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:headerLayout="@layout/header"
             android:layout_gravity="start">
 
             <ListView
                 android:id="@+id/listViewHome"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="90pt"
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="1dp">
 
             </ListView>
 
         </com.google.android.material.navigation.NavigationView>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

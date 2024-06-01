@@ -114,7 +114,7 @@ public class ManagementActivity extends AppCompatActivity {
     }
 
     private void DeleteProduct() {
-        compositeDisposable.add(apiBanHang.deleteNewProduct(productModelEdit_Delete.getMaSPMoi())
+        compositeDisposable.add(apiBanHang.deleteNewProduct(productModelEdit_Delete.getMaSP())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

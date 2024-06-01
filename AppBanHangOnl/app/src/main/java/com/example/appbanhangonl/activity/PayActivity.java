@@ -25,7 +25,9 @@ import com.example.appbanhangonl.utils.Utils;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +38,7 @@ import retrofit2.Retrofit;
 
 public class PayActivity extends AppCompatActivity {
     Toolbar toolbar;
-    TextView textViewTotalPrice, textViewMobile, textViewEmail;
+    TextView textViewTotalPrice, textViewMobile, textViewEmail, textCurrentDate;
     EditText editTextAddress;
     AppCompatButton buttonPay;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -75,6 +77,14 @@ public class PayActivity extends AppCompatActivity {
         textViewTotalPrice.setText(decimalFormat.format(total));
         textViewEmail.setText(Utils.user_current.getEmail());
         textViewMobile.setText(Utils.user_current.getMobile());
+
+        Date currentDate = new Date();
+
+        // Định dạng thời gian
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        // Đặt thời gian vào text của TextView
+        textCurrentDate.setText(dateFormat.format(currentDate));
 
         // buttonPay onClick
         // Trong sự kiện onClick() của nút thanh toán, cập nhật tổng giá trị sau khi giao dịch được thực hiện thành công
@@ -171,6 +181,7 @@ public class PayActivity extends AppCompatActivity {
         textViewEmail = findViewById(R.id.textEmail);
         editTextAddress = findViewById(R.id.edittextAddress);
         buttonPay = findViewById(R.id.buttonPay);
+        textCurrentDate = findViewById(R.id.textCurrentDate);
     }
 
     @Override

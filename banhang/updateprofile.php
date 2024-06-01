@@ -1,14 +1,12 @@
 <?php
 include "connect.php";
-$tensp = $_POST['tensp'];
-$gia = $_POST['gia'];
-$hinhanh = $_POST['hinhanh'];
-$mota = $_POST['mota'];
-$loai = $_POST['loai'];
-$id = $_POST['MaSP'];
+$email = $_GET["email"];
+$username = $_GET["username"];
+$mobile = $_GET["mobile"];
+$ImageUser = $_GET["ImageUser"];
 
 //check data - 2001210289 - Huỳnh Công Huy - Bài 41
-$query = "UPDATE `sanpham` SET `TenSP`='$tensp', `GiaSP`='$gia', `HinhAnh`='$hinhanh', `MoTa`='$mota', `Loai`='$loai' WHERE `MaSP` = '$id'";
+$query = "UPDATE `user` SET `username`='$username', `mobile`='$mobile', `ImageUser`='$ImageUser' WHERE `email` = '$email'";
 $data = mysqli_query($conn, $query);
 
 if ($data == true) {

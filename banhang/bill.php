@@ -19,19 +19,19 @@ if ($data == true) {
     while ($row = mysqli_fetch_assoc($data)) {
         $idbill = ($row);
     }
-    if(!empty($idbill)){
+    if (!empty($idbill)) {
         //co don hang
         $billinfo = json_decode($billinfo, true);
-        foreach($billinfo as $key => $value){
-            $query1= "INSERT INTO `chitietdonhang`(`iddonhang`, `idsp`, `soluong`, `gia`) VALUES ('{$idbill["iddonhang"]}','{$value["cartid"]}','{$value["quality"]}','{$value["price"]}')";
+        foreach ($billinfo as $key => $value) {
+            $query1 = "INSERT INTO `chitietdonhang`(`iddonhang`, `idsp`, `soluong`, `gia`) VALUES ('{$idbill["iddonhang"]}','{$value["cartid"]}','{$value["quality"]}','{$value["price"]}')";
             $data = mysqli_query($conn, $query1);
         }
-        if($data == true){
+        if ($data == true) {
             $arr = [
                 'succes' => true,
                 'message' => "thanh cong"
             ];
-        }else{
+        } else {
             $arr = [
                 'succes' => false,
                 'message' => "khong thanh cong"
@@ -46,4 +46,3 @@ if ($data == true) {
     ];
     print_r(json_encode($arr));
 }
-

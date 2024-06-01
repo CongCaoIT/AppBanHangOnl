@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".activity.ProfileActivity">
+
+    <!-- Hình đại diện người dùng -->
+    <com.google.android.material.imageview.ShapeableImageView
+        app:shapeAppearanceOverlay="@style/circular"
+        android:id="@+id/imageView_ProfilePicture"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@drawable/huy"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Nút Thay đổi ảnh -->
+    <Button
+        android:id="@+id/button_ChangePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thay đổi ảnh"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#79AC78"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- EditText cho Email -->
+    <EditText
+        android:enabled="false"
+        android:id="@+id/editText_Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- EditText cho Username -->
+    <EditText
+        android:id="@+id/editText_Username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:inputType="text"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- EditText cho Mobile -->
+    <EditText
+        android:id="@+id/editText_Mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mobile"
+        android:inputType="phone"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/editText_ImageUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ImageUser"
+        android:inputType="phone"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Nút Cập nhật -->
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_marginRight="130dp"
+            android:id="@+id/button_Update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#007bff"
+            android:text="Cập nhật"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/button_Logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#FF5252"
+            android:text="Thoát"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <!-- Nút Thoát -->
+
+</LinearLayout>

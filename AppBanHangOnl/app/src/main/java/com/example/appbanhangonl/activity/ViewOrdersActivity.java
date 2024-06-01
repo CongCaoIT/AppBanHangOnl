@@ -61,7 +61,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
     }
 
     private void getOrders() {
-        compositeDisposable.add(apiBanHang.viewordersAPI(0)
+        compositeDisposable.add(apiBanHang.viewordersAPI(Utils.user_current.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
