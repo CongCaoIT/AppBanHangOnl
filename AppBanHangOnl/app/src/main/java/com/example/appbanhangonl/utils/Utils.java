@@ -11,7 +11,7 @@ import java.util.List;
 public class Utils {
     //public static final  String BASE_URL = "http://tcshop.id.vn/banhang/";
     public static final String BASE_URL = "http://10.10.10.42:8081/banhang/";
-    public static List<CartModel> CartList;
+    public static List<CartModel> CartList = new ArrayList<>();
     public static List<CartModel> CartListBuy = new ArrayList<>();
     public static UserModel user_current = new UserModel();
 

@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -79,15 +80,9 @@ public class PayActivity extends AppCompatActivity {
         textViewMobile.setText(Utils.user_current.getMobile());
 
         Date currentDate = new Date();
-
-        // Định dạng thời gian
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-        // Đặt thời gian vào text của TextView
         textCurrentDate.setText(dateFormat.format(currentDate));
 
-        // buttonPay onClick
-        // Trong sự kiện onClick() của nút thanh toán, cập nhật tổng giá trị sau khi giao dịch được thực hiện thành công
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,28 +90,28 @@ public class PayActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(str_address)) {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập địa chỉ giao hàng!", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (!Utils.CartListBuy.isEmpty()) { // Kiểm tra xem có sản phẩm nào được chọn để mua không
-                        //post data
-                        String str_email = Utils.user_current.getEmail();
-                        String str_phone = Utils.user_current.getMobile();
-                        int id = Utils.user_current.getId();
-                        Log.d("test", new Gson().toJson(Utils.CartListBuy));
-
-                        // Tiến hành thanh toán
-                        compositeDisposable.add(apiBanHang.billAPI(str_email, String.valueOf(total), str_phone, str_address, totalItem, id, new Gson().toJson(Utils.CartListBuy))
+                    if (!Utils.CartListBuy.isEmpty()) {
+                        // Tiến hành đặt hàng
+                        compositeDisposable.add(apiBanHang.billAPI(Utils.user_current.getEmail(), String.valueOf(total), Utils.user_current.getMobile(), str_address, totalItem, Utils.user_current.getId(), new Gson().toJson(Utils.CartListBuy))
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(
                                         user -> {
                                             pushNotiToUser();
                                             Toast.makeText(getApplicationContext(), "Đặt hàng thành công!!!", Toast.LENGTH_SHORT).show();
-                                            pushNotiToUser();
 
-                                            // Xóa các mục đã mua khỏi CartList sau khi giao dịch thành công
-                                            Utils.CartList.removeAll(Utils.CartListBuy);
+                                            // Cập nhật lại giỏ hàng
+                                            List<CartModel> remainingItems = new ArrayList<>();
+                                            for (CartModel cartModel : Utils.CartList) {
+                                                if (!Utils.CartListBuy.contains(cartModel)) {
+                                                    remainingItems.add(cartModel);
+                                                }
+                                            }
+                                            Utils.CartList.clear();
+                                            Utils.CartList.addAll(remainingItems);
                                             Utils.CartListBuy.clear(); // Xóa danh sách các mục đã mua
 
-                                            // Chuyển đến màn hình chính sau khi hoàn tất giao dịch
+                                            // Điều hướng về MainActivity
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                             startActivity(intent);
                                             finish();
@@ -134,7 +129,6 @@ public class PayActivity extends AppCompatActivity {
     }
 
     private void pushNotiToUser() {
-        // Get token 2001210289 - Huỳnh Công Huy - Bài 45: Gửi thông báo trên app quản lí
         compositeDisposable.add(apiBanHang.gettoken(1, Utils.user_current.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

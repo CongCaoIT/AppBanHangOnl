@@ -6,6 +6,7 @@ public class CartModel {
     long price;
     String productImg;
     int quality;
+    private boolean isSelected;
 
     public CartModel(){}
     public CartModel(int cartid, String productName, long price, String productImg, int quality) {
@@ -15,7 +16,13 @@ public class CartModel {
         this.productImg = productImg;
         this.quality = quality;
     }
+    public boolean isSelected() {
+        return isSelected;
+    }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
     public int getCartid() {
         return cartid;
     }
