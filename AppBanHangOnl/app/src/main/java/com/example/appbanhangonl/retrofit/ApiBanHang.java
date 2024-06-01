@@ -131,7 +131,7 @@ public interface ApiBanHang {
             @Field("trangthai") int status
     );
 
-    @GET("thongkethang.php")
+    @GET("thongkehang.php")
     Observable<ThongKeModel> getthongkeThang();
 
     @GET("thongke.php")

@@ -20,6 +20,7 @@ import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -35,8 +36,12 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -49,6 +54,9 @@ public class ThongKeActivity extends AppCompatActivity {
     BarChart barChart;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ApiBanHang apiBanHang;
+
+    private static final String CHART_TITLE_MONTHLY = "Thống kê theo tháng";
+    private static final String CHART_TITLE_BEST_SELLING = "Sản phẩm bán chạy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +73,41 @@ public class ThongKeActivity extends AppCompatActivity {
     private void settingBarchart() {
         barChart.getDescription().setEnabled(false);
         barChart.setDrawValueAboveBar(false);
+        barChart.setPinchZoom(true);
+        barChart.setDrawGridBackground(false);
+        barChart.setFitBars(true);
+
         XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
         xAxis.setAxisMinimum(1);
         xAxis.setAxisMaximum(12);
+        xAxis.setLabelCount(12);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setTextSize(12f);
+
         YAxis yAxisRight = barChart.getAxisRight();
         yAxisRight.setAxisMinimum(0);
+        yAxisRight.setDrawGridLines(false);
+        yAxisRight.setDrawLabels(false);
+
         YAxis yAxisLeft = barChart.getAxisLeft();
         yAxisLeft.setAxisMinimum(0);
+        yAxisLeft.setTextColor(Color.BLACK);
+        yAxisLeft.setTextSize(12f);
+        yAxisLeft.setGranularity(1f);
+
+        Legend legend = barChart.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setDrawInside(false);
+        legend.setTextColor(Color.BLACK);
+        legend.setTextSize(12f);
+
+        barChart.animateXY(2000, 2000);
+        barChart.invalidate();
     }
 
     @Override
@@ -86,9 +122,23 @@ public class ThongKeActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.tkthang) {
             getTkThang();
+            barChart.setVisibility(View.VISIBLE);
+            pieChart.setVisibility(View.GONE); // Hide pie chart
+            updateTitle(CHART_TITLE_MONTHLY);
             return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        } else if (id == R.id.tkbanchay) {
+            getdataChart();
+            pieChart.setVisibility(View.VISIBLE);
+            barChart.setVisibility(View.GONE); // Hide bar chart
+            updateTitle(CHART_TITLE_BEST_SELLING);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
         }
     }
 
@@ -100,22 +150,23 @@ public class ThongKeActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         thongKeModel -> {
-                            List<BarEntry> listdata = new ArrayList<>();
-                            for (int i = 0; i < thongKeModel.getResult().size(); i++) {
-                                String tongtien = String.valueOf(thongKeModel.getResult().get(i).getTong());
-                                String thang = thongKeModel.getResult().get(i).getTongtienthang();
-                                listdata.add(new BarEntry(Integer.parseInt(thang), Float.parseFloat(tongtien)));
+                            if (thongKeModel.isSucces()) {
+                                List<BarEntry> listdata = new ArrayList<>();
+                                for (int i = 0; i < thongKeModel.getResult().size(); i++) {
+                                    String tongtien = String.valueOf(thongKeModel.getResult().get(i).getTongtienthang());
+                                    String thang = thongKeModel.getResult().get(i).getThang();
+                                    listdata.add(new BarEntry(Integer.parseInt(thang), Float.parseFloat(tongtien)));
+                                }
+                                BarDataSet barDataSet = new BarDataSet(listdata, "Tổng tiền");
+                                barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+                                barDataSet.setValueTextSize(14f);
+                                barDataSet.setValueTextColor(Color.RED);
+
+                                BarData data = new BarData(barDataSet);
+                                barChart.animateXY(2000, 2000);
+                                barChart.setData(data);
+                                barChart.invalidate();
                             }
-                            BarDataSet barDataSet = new BarDataSet(listdata, "Thống kê");
-                            barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-                            barDataSet.setValueTextSize(14f);
-                            barDataSet.setValueTextColor(Color.RED);
-
-                            BarData data = new BarData((barDataSet));
-                            barChart.animateXY(2000, 2000);
-                            barChart.setData(data);
-                            barChart.invalidate();
-
                         },
                         throwable -> {
                             Log.d("logg", throwable.getMessage());
@@ -124,10 +175,13 @@ public class ThongKeActivity extends AppCompatActivity {
         );
     }
 
-    // Trong phương thức getdataChart()
     private void getdataChart() {
+        updateTitle(CHART_TITLE_BEST_SELLING);
         List<PieEntry> listdata = new ArrayList<>();
         List<String> productNames = new ArrayList<>(); // Danh sách tên sản phẩm
+        Map<String, Integer> productPrices = new HashMap<>(); // Map to store product prices
+        Map<String, Integer> productQuantities = new HashMap<>(); // Map to store product quantities
+
         compositeDisposable.add(apiBanHang.getthongke()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -139,12 +193,14 @@ public class ThongKeActivity extends AppCompatActivity {
                                     int tong = thongKeModel.getResult().get(i).getTong();
                                     total += tong;
                                     String tenSP = thongKeModel.getResult().get(i).getTenSP();
+                                    int giaSP = thongKeModel.getResult().get(i).getGiaSP(); // Get product price
                                     productNames.add(tenSP); // Thêm tên sản phẩm vào danh sách
-                                    listdata.add(new PieEntry(tong));
+                                    productPrices.put(tenSP, giaSP); // Add product price to map
+                                    productQuantities.put(tenSP, tong); // Add product quantity to map
+                                    listdata.add(new PieEntry(tong, tenSP)); // Include product name in PieEntry
                                 }
                                 PieDataSet pieDataSet = new PieDataSet(listdata, "");
-                                PieData data = new PieData();
-                                data.setDataSet(pieDataSet);
+                                PieData data = new PieData(pieDataSet);
                                 data.setValueTextSize(12f);
                                 data.setValueFormatter(new PercentFormatter(pieChart));
                                 pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
@@ -160,14 +216,16 @@ public class ThongKeActivity extends AppCompatActivity {
                                     @Override
                                     public void onValueSelected(Entry e, Highlight h) {
                                         PieEntry selectedEntry = (PieEntry) e;
-                                        int selectedValue = (int)selectedEntry.getValue();
+                                        int selectedValue = (int) selectedEntry.getValue();
                                         float percentage = (selectedValue / finalTotal) * 100;
 
-                                        // Lấy vị trí của giá trị đã chọn
-                                        int selectedIndex = listdata.indexOf(selectedEntry);
-                                        String productName = productNames.get(selectedIndex); // Lấy tên sản phẩm tương ứng
-
-                                        showDetailInfo(productName, selectedValue, percentage);
+                                        String productName = selectedEntry.getLabel(); // Get product name from label
+                                        if (productQuantities.containsKey(productName) && productPrices.containsKey(productName)) {
+                                            int totalQuantity = productQuantities.get(productName); // Get product quantity
+                                            int productPrice = productPrices.get(productName); // Get product price
+                                            int totalSalesAmount = totalQuantity * productPrice; // Calculate total sales amount
+                                            showDetailInfo(productName, selectedValue, percentage, totalSalesAmount);
+                                        }
                                     }
 
                                     @Override
@@ -200,17 +258,25 @@ public class ThongKeActivity extends AppCompatActivity {
         barChart = findViewById(R.id.barchart);
     }
 
-    private void showDetailInfo(String productName, int selectedValue, float percentage) {
+    private void showDetailInfo(String productName, int selectedValue, float percentage, int totalSalesAmount) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ThongKeActivity.this);
         bottomSheetDialog.setContentView(R.layout.layout_detail_info);
 
         TextView txtProductName = bottomSheetDialog.findViewById(R.id.txt_product_name);
         TextView txtSelectedValue = bottomSheetDialog.findViewById(R.id.txt_selected_value);
         TextView txtPercentage = bottomSheetDialog.findViewById(R.id.txt_percentage);
+        TextView txtSoluongSp = bottomSheetDialog.findViewById(R.id.txt_soluongsanpham);
+        TextView txtTotalSales = bottomSheetDialog.findViewById(R.id.txt_total_sales);
 
         txtProductName.setText(productName);
-        txtSelectedValue.setText("Tổng số lượng bán ra: " + selectedValue + " chiếc");
-        txtPercentage.setText("Phần trăm: " + percentage + "%");
+        txtSelectedValue.setText("Tổng số lượng sản phẩm đã bán: " + selectedValue + " sản phẩm");
+        txtPercentage.setText("Phần trăm: " + String.format("%.2f", percentage) + "%");
+        txtSoluongSp.setText("Tổng số lượng sản phẩm có trong kho: " + selectedValue + " sản phẩm");
+
+        // Định dạng số tiền theo kiểu VND
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        String formattedTotalSalesAmount = formatter.format(totalSalesAmount) + " VND";
+        txtTotalSales.setText("Tổng số tiền thu được: " + formattedTotalSalesAmount);
 
         bottomSheetDialog.show();
     }
