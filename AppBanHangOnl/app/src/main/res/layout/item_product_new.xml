@@ -14,10 +14,8 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
+            android:layout_gravity="top|end"
             android:elevation="10dp"
-            android:layout_gravity="top|right"
             android:src="@drawable/newicon" />
 
         <LinearLayout
@@ -29,7 +27,7 @@
                 android:id="@+id/item_productImage"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:padding="4dp"
+                android:padding="10dp"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView

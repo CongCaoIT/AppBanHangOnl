@@ -42,8 +42,6 @@ import retrofit2.Response;
 
 public class CreateProductActivity extends AppCompatActivity {
 
-    // 2001210289 - Huỳnh Công Huy - Bài 39: Post data thêm sản phẩm lên sever
-    // 2001210289 - Huỳnh Công Huy - Bài 40: Upload hình sản phẩm lên sever
     Spinner spinner;
     int loai = 0;
     ActivityCreateProductBinding binding;
@@ -70,14 +68,10 @@ public class CreateProductActivity extends AppCompatActivity {
         editproduct = (ProductModel) intent.getSerializableExtra("sua");
 
         if (editproduct == null) {
-            // Thêm mới - 2001210289 - Huỳnh Công Huy - Bài 41: Sửa và xóa sản phẩm
             flag = false;
         } else {
-            // Sửa - 2001210289 - Huỳnh Công Huy - Bài 41: Sửa và xóa sản phẩm
             flag = true;
             binding.btnthem.setText("Sửa sản phẩm");
-
-            // Show Data - 2001210289 - Huỳnh Công Huy - Bài 41: Sửa và xóa sản phẩm
             binding.mota.setText(editproduct.getMoTa());
             binding.giasp.setText(editproduct.getGiaSP() + "");
             binding.tensp.setText(editproduct.getTenSP());
@@ -132,7 +126,6 @@ public class CreateProductActivity extends AppCompatActivity {
         binding.imgcamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 2001210289 - Huỳnh Công Huy - Bài 40: Upload hình sản phẩm lên sever
                 ImagePicker.with(CreateProductActivity.this)
                         .crop()                    //Crop image(Optional), Check Customization for more option
                         .compress(1024)            //Final image size will be less than 1 MB(Optional)
@@ -158,6 +151,9 @@ public class CreateProductActivity extends AppCompatActivity {
                             messageModel -> {
                                 if (messageModel.isSucces()) {
                                     Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
+                                    Intent management = new Intent(getApplicationContext(), ManagementActivity.class);
+                                    startActivity(management);
+                                    finish();
                                 } else {
                                     Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
                                 }
@@ -193,6 +189,9 @@ public class CreateProductActivity extends AppCompatActivity {
                             messageModel -> {
                                 if (messageModel.isSucces()) {
                                     Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
+                                    Intent management = new Intent(getApplicationContext(), ManagementActivity.class);
+                                    startActivity(management);
+                                    finish();
                                 } else {
                                     Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
                                 }
@@ -221,7 +220,6 @@ public class CreateProductActivity extends AppCompatActivity {
         return result;
     }
 
-    // Uploading Image/Video - 2001210289 - Huỳnh Công Huy - Bài 40
     private void uploadMultipleFiles() {
 
         Uri uri = Uri.parse(mediaPath);

@@ -90,20 +90,14 @@ public class LoginActivity extends AppCompatActivity {
 
             Paper.book().write("email", str_email);
             Paper.book().write("pass", str_pass);
-            if (user != null)
-            {
-                // User đã có đăng nhập firebase - 2001210289 - Huỳnh Công Huy - Bài 42: Get token cho app quản lí
+            if (user != null) {
                 Login(str_email, str_pass);
-            }
-            else
-            {
-                // User đã đăng xuất - 2001210289 - Huỳnh Công Huy - Bài 42: Get token cho app quản lí
+            } else {
                 firebaseAuth.signInWithEmailAndPassword(str_email, str_pass)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful())
-                                {
+                                if (task.isSuccessful()) {
                                     Login(str_email, str_pass);
                                 }
                             }
@@ -128,13 +122,13 @@ public class LoginActivity extends AppCompatActivity {
         if (Paper.book().read("email") != null && Paper.book().read("pass") != null) {
             textEmail.setText(Paper.book().read("email"));
             textPass.setText(Paper.book().read("pass"));
-            if(Paper.book().read("isLogin")!=null){
+            if (Paper.book().read("isLogin") != null) {
                 boolean flag = Paper.book().read("isLogin");
-                if(flag){
+                if (flag) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                           Login(Paper.book().read("email"), Paper.book().read("pass"));
+                            Login(Paper.book().read("email"), Paper.book().read("pass"));
                         }
                     }, 1000);
                 }
@@ -153,7 +147,6 @@ public class LoginActivity extends AppCompatActivity {
                                 isLogin = true;
                                 Paper.book().write("isLogin", isLogin);
                                 Utils.user_current = user.getResult().get(0);
-                                // Lưu lại thông tin người dùng - 2001210289 - Huỳnh Công Huy - Bài 36
                                 Paper.book().write("user", user.getResult().get(0));
 
                                 Toast.makeText(getApplicationContext(), "Đăng nhập thành công!!!", Toast.LENGTH_SHORT).show();

@@ -41,6 +41,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import io.paperdb.Paper;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -115,9 +116,14 @@ public class ProfileActivity extends AppCompatActivity {
                         UserModel user = new UserModel(email, username, mobile, str_hinhanh);
                         databaseReference.child(userId).setValue(user);
 
+                        Utils.user_current = user; // Cập nhật thông tin vào biến user_current
+
+                        // Trả kết quả về MainActivity
+                        Intent resultIntent = new Intent();
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
+
                         Toast.makeText(getApplicationContext(), "Cập nhật thông tin user thành công", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
                     }
@@ -131,6 +137,15 @@ public class ProfileActivity extends AppCompatActivity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void updateUIAfterUpdateSuccess() {
+        editTextEmail.setText(Utils.user_current.getEmail());
+        editTextUsername.setText(Utils.user_current.getUsername());
+        editTextMobile.setText(Utils.user_current.getMobile());
+        editTextImageUser.setText(Utils.user_current.getImageUser());
+
+        Glide.with(getApplicationContext()).load(Utils.user_current.getImageUser()).into(imageViewProfilePicture);
     }
 
     private void Event() {
@@ -174,8 +189,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-        startActivity(intent);
         finish();
     }
 
@@ -200,22 +213,26 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void saveImageToDatabase(Uri imageUri) {
-        String imagePath = getRealPathFromURI(imageUri);
+        if (!isDestroyed()) { // Kiểm tra trạng thái của hoạt động
+            String imagePath = getRealPathFromURI(imageUri);
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child("images/" + new File(imagePath).getName());
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference imageRef = storageRef.child("images/" + new File(imagePath).getName());
 
-        UploadTask uploadTask = imageRef.putFile(imageUri);
-        uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            String downloadUrl = uri.toString();
-            editTextImageUser.setText(downloadUrl);
+            UploadTask uploadTask = imageRef.putFile(imageUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String downloadUrl = uri.toString();
+                editTextImageUser.setText(downloadUrl);
 
-            Glide.with(ProfileActivity.this).load(downloadUrl).into(imageViewProfilePicture);
-            Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thành công", Toast.LENGTH_SHORT).show();
-        })).addOnFailureListener(exception -> {
-            Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thất bại: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
-        });
+                if (!isDestroyed()) { // Kiểm tra trạng thái của hoạt động trước khi sử dụng Glide
+                    Glide.with(ProfileActivity.this).load(downloadUrl).into(imageViewProfilePicture);
+                    Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thành công", Toast.LENGTH_SHORT).show();
+                }
+            })).addOnFailureListener(exception -> {
+                Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thất bại: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     @Override
@@ -226,6 +243,9 @@ public class ProfileActivity extends AppCompatActivity {
             saveImageToDatabase(selectedImageUri);
 
             displayImage(selectedImageUri);
+
+            String imagePath = getRealPathFromURI(selectedImageUri);
+            editTextImageUser.setText(imagePath);
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.appbanhangonl.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -89,6 +90,7 @@ public class ManagementActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateProductActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -96,7 +98,7 @@ public class ManagementActivity extends AppCompatActivity {
     private void initView() {
         img_createproduct = findViewById(R.id.img_createproduct);
         recyclerView = findViewById(R.id.recycleview_ql);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2); // Sử dụng GridLayoutManager với 2 cột
         recyclerView.setHasFixedSize(true);
         toolbar = findViewById(R.id.toolbar);
         recyclerView.setLayoutManager(layoutManager);
@@ -106,6 +108,7 @@ public class ManagementActivity extends AppCompatActivity {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getTitle().equals("Sửa")) {
             EditProduct();
+            finish();
         } else if (item.getTitle().equals("Xóa")) {
             DeleteProduct();
         }

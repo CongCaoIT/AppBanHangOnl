@@ -78,6 +78,5 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:32.0.0') // Sử dụng BoM để quản lý phiên bản
     implementation 'com.google.firebase:firebase-storage'
-    implementation 'com.google.firebase:firebase-database' // Nếu bạn sử dụng Firebase Realtime Database
-
+    implementation 'com.google.firebase:firebase-database' // Nếu bạn sử dụng Firebase
 }

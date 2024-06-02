@@ -1,5 +1,6 @@
 package com.example.appbanhangonl.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageViewSearch;
     ImageView imageView_HinhAnhUser;
     TextView textView_TenNguoiDung;
+    private static final int REQUEST_CODE_PROFILE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         apiBanHang = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiBanHang.class);
         Paper.init(this);
-        if (Paper.book().read("user") != null)
-        {
+        if (Paper.book().read("user") != null) {
             UserModel user = Paper.book().read("user");
             Utils.user_current = user;
         }
@@ -101,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        if (!TextUtils.isEmpty(s))
-                        {
+                        if (!TextUtils.isEmpty(s)) {
                             compositeDisposable.add(apiBanHang.updateToken(Utils.user_current.getId(), s)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -159,7 +159,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(tk);
                         break;
                     case 8:
-                        // Xóa key user - 2001210289 - Huỳnh Công Huy - Bài 36
+
+                        break;
+                    case 9:
+
+                        break;
+                    case 10:
                         Paper.book().delete("user");
                         FirebaseAuth.getInstance().signOut();
                         Intent login = new Intent(getApplicationContext(), LoginActivity.class);
@@ -197,14 +202,21 @@ public class MainActivity extends AppCompatActivity {
                         category -> {
                             if (category.isSucces()) {
                                 categoryModelList = category.getResult();
-                                categoryModelList.add(new CategoryModel("Thống kê", ""));
-                                categoryModelList.add(new CategoryModel("Đăng xuất", ""));
+                                categoryModelList.add(new CategoryModel("Đơn hàng", "orther.png"));
+                                categoryModelList.add(new CategoryModel("Liên hệ", "contact.png"));
+                                categoryModelList.add(new CategoryModel("Thông tin", "info.png"));
+                                categoryModelList.add(new CategoryModel("Quản lý", "management.png"));
+                                categoryModelList.add(new CategoryModel("Thống kê", "statistical.png"));
+                                categoryModelList.add(new CategoryModel("Live", "livestream.png"));
+                                categoryModelList.add(new CategoryModel("Xem Live", "live.png"));
+                                categoryModelList.add(new CategoryModel("Đăng xuất", "out.png"));
                                 categoryAdapter = new CategoryAdapter(getApplicationContext(), categoryModelList);
                                 listViewHome.setAdapter(categoryAdapter);
                             }
                         }
                 ));
     }
+
     private void ShowEmailNavigation() {
         // Lấy header view từ NavigationView
         View headerView = navigationView.getHeaderView(0);
@@ -225,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("Username", Utils.user_current.getUsername());
                     intent.putExtra("Mobile", Utils.user_current.getMobile());
                     intent.putExtra("ImageUser", Utils.user_current.getImageUser());
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_PROFILE);
                 }
             });
         } else {
@@ -233,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Không tìm thấy TextView", Toast.LENGTH_SHORT).show();
         }
     }
+
     //Ánh xạ
     private void Mapping() {
         toolbar = findViewById(R.id.toolBarHome);
@@ -329,6 +342,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PROFILE && resultCode == RESULT_OK) {
+            // Cập nhật giao diện với thông tin người dùng mới
+            ShowEmailNavigation();
         }
     }
 
