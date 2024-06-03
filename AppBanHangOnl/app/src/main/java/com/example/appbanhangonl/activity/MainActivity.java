@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case 10:
-                        Paper.book().delete("user");
+                        Paper.book().delete("email");
                         FirebaseAuth.getInstance().signOut();
                         Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(login);

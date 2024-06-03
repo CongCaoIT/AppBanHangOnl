@@ -30,7 +30,7 @@
         app:fontFamily="@font/aclonica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App bán hàng điện thoại"
+        android:text="App bán hàng điện thoại và lap top"
         android:textSize="14sp" />
 
 </LinearLayout>
