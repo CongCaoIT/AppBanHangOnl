@@ -8,7 +8,7 @@ public class OrdersModel {
     String address;
     String phone;
     String total;
-    int status;
+    int trangthai;
     List<ViewOrdersModel> item;
 
     public OrdersModel(int id, int iduser, String address, String sodienthoai, String tongtien, List<ViewOrdersModel> item) {
@@ -20,12 +20,12 @@ public class OrdersModel {
         this.item = item;
     }
 
-    public int getStatus() {
-        return status;
+    public int getTrangthai() {
+        return trangthai;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setTrangthai(int trangthai) {
+        this.trangthai = trangthai;
     }
 
     public int getId() {

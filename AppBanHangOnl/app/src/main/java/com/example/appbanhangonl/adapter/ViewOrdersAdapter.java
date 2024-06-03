@@ -43,6 +43,7 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         OrdersModel ordersModel = list.get(position);
         holder.textViewOrders.setText("Đơn hàng: " + ordersModel.getId());
+        holder.status.setText(orderStatus(ordersModel.getTrangthai()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 holder.recyclerViewDetails.getContext(),
                 LinearLayoutManager.VERTICAL,
@@ -63,6 +64,35 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
                 }
             }
         });
+    }
+
+    private String orderStatus(int status)
+    {
+        String result = "";
+
+        switch (status)
+        {
+            case 0:
+                result = "Đơn hàng đang được xử lí";
+                break;
+            case 1:
+                result = "Đơn hàng đã chấp nhận";
+                break;
+            case 2:
+                result = "Đơn hàng đã giao cho đơn vị vận chuyển";
+                break;
+            case 3:
+                result = "Thành công";
+                break;
+            case 4:
+                result = "Đơn hàng đã hủy";
+                break;
+            default:
+                result = "Đơn hàng đang được xử lí";
+                break;
+        }
+
+        return result;
     }
 
     @Override

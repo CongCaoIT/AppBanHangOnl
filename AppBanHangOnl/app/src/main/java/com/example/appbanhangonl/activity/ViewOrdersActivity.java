@@ -155,7 +155,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, list);
         spinner.setAdapter(adapter);
 
-        spinner.setSelection(ordersModel.getStatus());
+        spinner.setSelection(ordersModel.getTrangthai());
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
