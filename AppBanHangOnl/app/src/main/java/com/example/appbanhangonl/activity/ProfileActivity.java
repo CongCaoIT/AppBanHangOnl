@@ -55,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText editTextEmail, editTextUsername, editTextMobile, editTextImageUser;
     private ImageView imageViewProfilePicture;
     private Button buttonUpdate, buttonLogout, buttonChangePicture;
-
     private static final int REQUEST_STORAGE_PERMISSION = 100;
 
     private void Mapping() {

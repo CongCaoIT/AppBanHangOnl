@@ -20,10 +20,8 @@ import com.example.appbanhangonl.utils.Utils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -41,6 +39,7 @@ public class CartActivity extends AppCompatActivity {
         initView();
         initControl();
         totalAmount();
+        updateBuyButtonState();
     }
 
     private void totalAmount() {
@@ -114,6 +113,11 @@ public class CartActivity extends AppCompatActivity {
     public void eventTotal(totalAmountEvent event) {
         if (event != null) {
             totalAmount();
+            updateBuyButtonState();
         }
+    }
+
+    private void updateBuyButtonState() {
+        buttonBuy.setEnabled(!Utils.CartListBuy.isEmpty());
     }
 }
