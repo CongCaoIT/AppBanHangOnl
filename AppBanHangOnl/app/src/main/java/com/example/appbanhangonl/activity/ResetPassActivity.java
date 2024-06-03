@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -48,7 +49,7 @@ public class ResetPassActivity extends AppCompatActivity {
     private void ResetPassApp() {
         String str_email = editTextResetPassEmail.getText().toString().trim();
         if (TextUtils.isEmpty(str_email)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập mail", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập Email !!!");
         } else {
             progressBar.setVisibility(View.VISIBLE);
             compositeDisposable.add(apiBanHang.resetpassAPI(str_email)
@@ -57,12 +58,12 @@ public class ResetPassActivity extends AppCompatActivity {
                     .subscribe(
                             user -> {
                                 if (user.isSucces()) {
-                                    Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra mail của bạn!", Toast.LENGTH_SHORT).show();
+                                    ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng kiểm tra email của bạn !!!");
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Email không chính xác!!!", Toast.LENGTH_SHORT).show();
+                                    ToastHelper.showCustomToast(getApplicationContext(), "Email không chính xác !!!");
                                 }
                                 progressBar.setVisibility(View.INVISIBLE);
                             },

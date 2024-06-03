@@ -25,6 +25,7 @@ import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.model.User;
 import com.example.appbanhangonl.model.UserModel;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
@@ -123,12 +124,11 @@ public class ProfileActivity extends AppCompatActivity {
                         setResult(RESULT_OK, resultIntent);
                         finish();
 
-                        Toast.makeText(getApplicationContext(), "Cập nhật thông tin user thành công", Toast.LENGTH_SHORT).show();
+                        ToastHelper.showCustomToast(getApplicationContext(), "Cập nhật thông tin thành công !!!");
                     } else {
-                        Toast.makeText(getApplicationContext(), "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
+                        ToastHelper.showCustomToast(getApplicationContext(), "Cập nhật thông tin thất bại !!!");
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -183,7 +183,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permissions granted
             } else {
-                Toast.makeText(this, "Permissions Denied", Toast.LENGTH_SHORT).show();
+                ToastHelper.showCustomToast(this, "Không có quyền truy cập !!!");
             }
         }
     }
@@ -227,10 +227,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if (!isDestroyed()) { // Kiểm tra trạng thái của hoạt động trước khi sử dụng Glide
                     Glide.with(ProfileActivity.this).load(downloadUrl).into(imageViewProfilePicture);
-                    Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thành công", Toast.LENGTH_SHORT).show();
+
+                    ToastHelper.showCustomToast(ProfileActivity.this, "Cập nhật ảnh đại diện thành công !!!");
                 }
             })).addOnFailureListener(exception -> {
-                Toast.makeText(ProfileActivity.this, "Cập nhật ảnh đại diện thất bại: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                ToastHelper.showCustomToast(ProfileActivity.this, "Cập nhật ảnh đại diện thất bại: " + exception.getMessage());
             });
         }
     }

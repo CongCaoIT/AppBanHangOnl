@@ -16,6 +16,7 @@ import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.adapter.PhoneAdapter;
 import com.example.appbanhangonl.model.Product;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -125,7 +126,7 @@ public class PhoneProductActivity extends AppCompatActivity {
                                     phoneAdapter.notifyItemRangeChanged(pos, num);
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "Hết hàng", Toast.LENGTH_SHORT).show();
+                                ToastHelper.showCustomToast(getApplicationContext(), "Hết hàng !!!");
                                 isLoading = true;
                             }
                         },

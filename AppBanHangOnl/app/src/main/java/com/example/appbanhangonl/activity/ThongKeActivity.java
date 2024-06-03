@@ -55,7 +55,7 @@ public class ThongKeActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ApiBanHang apiBanHang;
 
-    private static final String CHART_TITLE_MONTHLY = "Thống kê theo tháng";
+    private static final String CHART_TITLE_MONTHLY = "Doanh thu theo tháng";
     private static final String CHART_TITLE_BEST_SELLING = "Sản phẩm bán chạy";
 
     @Override

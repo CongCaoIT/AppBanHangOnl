@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -78,9 +79,9 @@ public class LoginActivity extends AppCompatActivity {
         String str_pass = textPass.getText().toString().trim();
 
         if (TextUtils.isEmpty(str_email)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập Email!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(this, "Vui lòng nhập Email !!!");
         } else if (TextUtils.isEmpty(str_pass)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(this, "Vui lòng nhập Mật khẩu !!!");
         } else {
 
             SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -149,12 +150,12 @@ public class LoginActivity extends AppCompatActivity {
                                 Utils.user_current = user.getResult().get(0);
                                 Paper.book().write("user", user.getResult().get(0));
 
-                                Toast.makeText(getApplicationContext(), "Đăng nhập thành công!!!", Toast.LENGTH_SHORT).show();
+                                ToastHelper.showCustomToast(this, "Đăng nhập thành công !!!");
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!!!", Toast.LENGTH_SHORT).show();
+                                ToastHelper.showCustomToast(this, "Vui lòng kiểm tra lại tài khoản hoặc mật khẩu !!!");
                             }
                         },
                         throwable -> {

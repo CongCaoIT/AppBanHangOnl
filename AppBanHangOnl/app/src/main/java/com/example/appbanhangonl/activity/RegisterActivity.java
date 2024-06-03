@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -68,15 +69,15 @@ public class RegisterActivity extends AppCompatActivity {
         String str_username = textUserName.getText().toString().trim();
 
         if (TextUtils.isEmpty(str_username)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập tên tài khoản!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập tên tài khoản !!!");
         } else if (TextUtils.isEmpty(str_email)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập Email!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập tên Email !!!");
         } else if (TextUtils.isEmpty(str_mobile)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập số điện thoại!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập số điện thoại !!!");
         } else if (TextUtils.isEmpty(str_pass)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập mật khẩu !!!");
         } else if (TextUtils.isEmpty(str_confirmpassword)) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập lại mật khẩu!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập lại mật khẩu !!!");
         } else {
             if (str_pass.equals(str_confirmpassword)) {
                 //post data
@@ -95,13 +96,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                                 else
                                 {
-                                    Toast.makeText(getApplicationContext(), "Email đã tồn tại hoặc không thành công", Toast.LENGTH_LONG).show();
-                                    Log.d("Email", "Email đã tồn tại");
+                                    ToastHelper.showCustomToast(getApplicationContext(), "Email đã tồn tại !!!");
                                 }
                             }
                         });
             } else {
-                Toast.makeText(getApplicationContext(), "Mật khẩu chưa khớp nhau!!!", Toast.LENGTH_SHORT).show();
+                ToastHelper.showCustomToast(getApplicationContext(), "Mật khẩu không khớp nhau !!!");
             }
         }
     }
@@ -115,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .subscribe(
                         user -> {
                             if(user.isSucces()){
-                                Toast.makeText(getApplicationContext(), "Đăng ký tài khoản thành công!!!", Toast.LENGTH_SHORT).show();
+                                ToastHelper.showCustomToast(getApplicationContext(), "Đăng ký tài khoản thành công !!!");
                                 Utils.user_current.setEmail(str_email);
                                 Utils.user_current.setPass(str_pass);
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

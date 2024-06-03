@@ -21,6 +21,7 @@ import com.example.appbanhangonl.adapter.ViewOrdersAdapter;
 import com.example.appbanhangonl.model.EventBus.OrdersEvent;
 import com.example.appbanhangonl.model.NotiSendData;
 import com.example.appbanhangonl.model.OrdersModel;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.ApiPushNotification;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
@@ -95,7 +96,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(
                                                     notiResponse -> {
-                                                        Toast.makeText(getApplicationContext(), "Thành công", Toast.LENGTH_LONG).show();
+                                                        ToastHelper.showCustomToast(getApplicationContext(), "Thành công !!!");
                                                         Log.d("Thành Công", "Thành công");
                                                     },
                                                     throwable -> {
@@ -188,7 +189,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
                 .subscribe(
                         messageModel -> {
                             getOrders();
-                            Toast.makeText(getApplicationContext(), "Cập nhật đơn hàng thành công", Toast.LENGTH_LONG).show();
+                            ToastHelper.showCustomToast(getApplicationContext(), "Cập nhật đơn hàng thành công !!!");
                             Log.d("Thành công", "Cập nhật đơn hàng thành công");
                             dialog.dismiss();
                             pushNotiToUser();

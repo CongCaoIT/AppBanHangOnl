@@ -21,6 +21,7 @@ import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.databinding.ActivityCreateProductBinding;
 import com.example.appbanhangonl.model.MessageModel;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -142,7 +143,7 @@ public class CreateProductActivity extends AppCompatActivity {
         String str_hinhanh = binding.hinhanh.getText().toString().trim();
         String str_mota = binding.mota.getText().toString().trim();
         if (TextUtils.isEmpty(str_ten) || TextUtils.isEmpty(str_gia) || TextUtils.isEmpty(str_mota) || TextUtils.isEmpty(str_hinhanh) || loai == 0) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_LONG).show();
+            ToastHelper.showCustomToast(this, "Vui lòng điền đầy đủ thông tin !!!");
         } else {
             compositeDisposable.add(apiBanHang.updatesp(str_ten, str_gia, str_hinhanh, str_mota, (loai), editproduct.getMaSP())
                     .subscribeOn(Schedulers.io())
@@ -180,7 +181,7 @@ public class CreateProductActivity extends AppCompatActivity {
         String str_hinhanh = binding.hinhanh.getText().toString().trim();
         String str_mota = binding.mota.getText().toString().trim();
         if (TextUtils.isEmpty(str_ten) || TextUtils.isEmpty(str_gia) || TextUtils.isEmpty(str_mota) || TextUtils.isEmpty(str_hinhanh) || loai == 0) {
-            Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_LONG).show();
+            ToastHelper.showCustomToast(this, "Vui lòng điền đầy đủ thông tin !!!");
         } else {
             compositeDisposable.add(apiBanHang.insertSp(str_ten, str_gia, str_hinhanh, str_mota, (loai))
                     .subscribeOn(Schedulers.io())

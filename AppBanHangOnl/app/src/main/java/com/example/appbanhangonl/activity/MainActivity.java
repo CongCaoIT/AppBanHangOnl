@@ -32,6 +32,7 @@ import com.example.appbanhangonl.adapter.CategoryAdapter;
 import com.example.appbanhangonl.adapter.ProductAdapter;
 import com.example.appbanhangonl.model.CategoryModel;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.model.UserModel;
 import com.example.appbanhangonl.model.ViewOrders;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             getProduct();
             getEventClick();
         } else {
-            Toast.makeText(getApplicationContext(), "Không có Internet!!!", Toast.LENGTH_SHORT).show();
+            ToastHelper.showCustomToast(this, "Không có Internet !!!");
         }
 
         ShowEmailNavigation();
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         },
                         throwable -> {
-                            Toast.makeText(getApplicationContext(), "Không kết nối được" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            ToastHelper.showCustomToast(this, "Không kết nối được" + throwable.getMessage());
                         }
                 ));
     }
@@ -241,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // Nếu không tìm thấy TextView, hiển thị thông báo lỗi
             Toast.makeText(getApplicationContext(), "Không tìm thấy TextView", Toast.LENGTH_SHORT).show();
         }
     }

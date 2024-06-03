@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.CartModel;
 import com.example.appbanhangonl.model.NotiSendData;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.model.UserModel;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.ApiPushNotification;
@@ -88,7 +89,7 @@ public class PayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String str_address = editTextAddress.getText().toString().trim();
                 if (TextUtils.isEmpty(str_address)) {
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập địa chỉ giao hàng!", Toast.LENGTH_SHORT).show();
+                    ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập địa chỉ giao hàng !!!");
                 } else {
                     if (!Utils.CartListBuy.isEmpty()) {
                         // Tiến hành đặt hàng
@@ -98,7 +99,7 @@ public class PayActivity extends AppCompatActivity {
                                 .subscribe(
                                         user -> {
                                             pushNotiToUser();
-                                            Toast.makeText(getApplicationContext(), "Đặt hàng thành công!!!", Toast.LENGTH_SHORT).show();
+                                            ToastHelper.showCustomToast(getApplicationContext(), "Đặt hàng thành công !!!");
 
                                             // Cập nhật lại giỏ hàng
                                             List<CartModel> remainingItems = new ArrayList<>();
@@ -121,7 +122,7 @@ public class PayActivity extends AppCompatActivity {
                                         }
                                 ));
                     } else {
-                        Toast.makeText(getApplicationContext(), "Bạn chưa chọn sản phẩm nào để mua!", Toast.LENGTH_SHORT).show();
+                        ToastHelper.showCustomToast(getApplicationContext(), "Bạn chưa chọn sản phẩm nào để mua !!!");
                     }
                 }
             }
