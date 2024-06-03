@@ -11,10 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appbanhangonl.Interface.ItemClickListener;
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.model.EventBus.OrdersEvent;
 import com.example.appbanhangonl.model.OrdersModel;
 import com.example.appbanhangonl.model.ViewOrders;
 import com.example.appbanhangonl.model.ViewOrdersModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -50,21 +54,44 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
         holder.recyclerViewDetails.setLayoutManager(layoutManager);
         holder.recyclerViewDetails.setAdapter(viewOrdersDetailsAdapter);
         holder.recyclerViewDetails.setRecycledViewPool(viewPool);
+        holder.setListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int pos, boolean isLongClick) {
+                if (isLongClick)
+                {
+                    EventBus.getDefault().postSticky(new OrdersEvent(ordersModel));
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewOrders;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+        // Đặt biến bằng tiếng việt - 2001210289 - Huỳnh Công Huy - Bài 45: Gửi thông báo trên app quản lí
+        TextView textViewOrders, status;
         RecyclerView recyclerViewDetails;
+        ItemClickListener listener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewOrders = itemView.findViewById(R.id.idvieworders);
+            status = itemView.findViewById(R.id.state);
             recyclerViewDetails = itemView.findViewById(R.id.recyclerView_details);
+            itemView.setOnLongClickListener(this);
+        }
+
+        public void setListener(ItemClickListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public boolean onLongClick(View view)
+        {
+            listener.onClick(view, getAdapterPosition(), true);
+            return false;
         }
     }
 }
