@@ -1,12 +1,11 @@
 <?php
 include "connect.php";
-$email = $_GET["email"];
-$username = $_GET["username"];
-$mobile = $_GET["mobile"];
-$ImageUser = $_GET["ImageUser"];
+$id = $_POST['id'];
+$trangthai = $_POST['trangthai'];
 
 //check data - 2001210289 - Huỳnh Công Huy - Bài 41
-$query = "UPDATE `user` SET `username`='{$username}', `mobile`='{$mobile}', `ImageUser`='{$ImageUser}' WHERE `email` = '{$email}'";
+$query = "UPDATE `donhang` SET `trangthai` = '{$trangthai}' WHERE `id` = '{$id}'";
+
 $data = mysqli_query($conn, $query);
 
 if ($data == true) {

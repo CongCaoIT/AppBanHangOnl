@@ -1,12 +1,9 @@
 <?php
 include "connect.php";
-$email = $_GET["email"];
-$username = $_GET["username"];
-$mobile = $_GET["mobile"];
-$ImageUser = $_GET["ImageUser"];
+$token = $_POST['token'];
+$meetingId = $_POST['meetingId'];
 
-//check data - 2001210289 - Huỳnh Công Huy - Bài 41
-$query = "UPDATE `user` SET `username`='{$username}', `mobile`='{$mobile}', `ImageUser`='{$ImageUser}' WHERE `email` = '{$email}'";
+$query = "INSERT INTO `meeting`(`meetingId`, `token`) VALUES ('$meetingId','$token')";
 $data = mysqli_query($conn, $query);
 
 if ($data == true) {
