@@ -148,4 +148,7 @@ public interface ApiBanHang {
     @Multipart
     @POST("uploadImage.php")
     Call<String> uploadImage(@Part MultipartBody.Part image);
+
+    @GET("getalltoken.php")
+    Observable<User> getAllToken();
 }

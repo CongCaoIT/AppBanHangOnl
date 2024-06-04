@@ -160,10 +160,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(tk);
                         break;
                     case 8:
-
+                        startActivity(new Intent(getApplicationContext(), JoinActivity.class));
+                        finish();
                         break;
                     case 9:
-
+                        startActivity(new Intent(getApplicationContext(), MeetingUserActivity.class));
+                        finish();
                         break;
                     case 10:
                         Paper.book().delete("email");
