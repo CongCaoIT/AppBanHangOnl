@@ -100,7 +100,6 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
         return list.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
-        // Đặt biến bằng tiếng việt - 2001210289 - Huỳnh Công Huy - Bài 45: Gửi thông báo trên app quản lí
         TextView textViewOrders, status;
         RecyclerView recyclerViewDetails;
         ItemClickListener listener;

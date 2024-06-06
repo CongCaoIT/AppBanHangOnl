@@ -77,7 +77,6 @@ public class ViewOrdersActivity extends AppCompatActivity {
     }
 
     private void pushNotiToUser() {
-        // Get token 2001210289 - Huỳnh Công Huy - Bài 45: Gửi thông báo trên app quản lí
         compositeDisposable.add(apiBanHang.gettoken(0, ordersModel.getIduser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

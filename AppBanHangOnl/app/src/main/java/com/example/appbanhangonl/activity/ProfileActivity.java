@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -21,12 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.ToastHelper;
-import com.example.appbanhangonl.model.User;
 import com.example.appbanhangonl.model.UserModel;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.utils.Utils;
@@ -38,14 +35,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import io.paperdb.Paper;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -116,7 +107,8 @@ public class ProfileActivity extends AppCompatActivity {
                         UserModel user = new UserModel(email, username, mobile, str_hinhanh);
                         databaseReference.child(userId).setValue(user);
 
-                        Utils.user_current = user; // Cập nhật thông tin vào biến user_current
+                        // Cập nhật thông tin vào biến user_current và lưu vào PaperDB
+                        Utils.user_current = user;
 
                         // Trả kết quả về MainActivity
                         Intent resultIntent = new Intent();
@@ -137,6 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
     }
+
 
     private void updateUIAfterUpdateSuccess() {
         editTextEmail.setText(Utils.user_current.getEmail());
@@ -241,15 +234,6 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
             saveImageToDatabase(selectedImageUri);
-
-            displayImage(selectedImageUri);
-
-            String imagePath = getRealPathFromURI(selectedImageUri);
-            editTextImageUser.setText(imagePath);
         }
-    }
-
-    private void displayImage(Uri imageUri) {
-        Glide.with(this).load(imageUri).into(imageViewProfilePicture);
     }
 }

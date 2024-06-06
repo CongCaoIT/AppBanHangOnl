@@ -124,57 +124,52 @@ public class MainActivity extends AppCompatActivity {
         listViewHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        Intent home = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(home);
+                String categoryName = categoryModelList.get(position).getTenSP();
+                Intent intent;
+                switch (categoryName) {
+                    case "Trang chủ":
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
                         break;
-                    case 1:
-                        Intent phoneProduct = new Intent(getApplicationContext(), PhoneProductActivity.class);
-                        phoneProduct.putExtra("Loai", 1);
-                        startActivity(phoneProduct);
+                    case "Điện thoại":
+                        intent = new Intent(getApplicationContext(), PhoneProductActivity.class);
+                        intent.putExtra("Loai", 1);
                         break;
-                    case 2:
-                        Intent lapTopProduct = new Intent(getApplicationContext(), PhoneProductActivity.class);
-                        lapTopProduct.putExtra("Loai", 2);
-                        startActivity(lapTopProduct);
+                    case "Lap Top":
+                        intent = new Intent(getApplicationContext(), PhoneProductActivity.class);
+                        intent.putExtra("Loai", 2);
                         break;
-                    case 3:
-                        Intent viewOrders = new Intent(getApplicationContext(), ViewOrdersActivity.class);
-                        startActivity(viewOrders);
+                    case "Đơn hàng":
+                        intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);
                         break;
-                    case 4:
-                        Intent contact = new Intent(getApplicationContext(), ContactActivity.class);
-                        startActivity(contact);
+                    case "Liên hệ":
+                        intent = new Intent(getApplicationContext(), ContactActivity.class);
                         break;
-                    case 5:
-                        Intent infomation = new Intent(getApplicationContext(), InfomationActivity.class);
-                        startActivity(infomation);
+                    case "Thông tin":
+                        intent = new Intent(getApplicationContext(), InfomationActivity.class);
                         break;
-                    case 6:
-                        Intent management = new Intent(getApplicationContext(), ManagementActivity.class);
-                        startActivity(management);
+                    case "Quản lý":
+                        intent = new Intent(getApplicationContext(), ManagementActivity.class);
                         break;
-                    case 7:
-                        Intent tk = new Intent(getApplicationContext(), ThongKeActivity.class);
-                        startActivity(tk);
+                    case "Thống kê":
+                        intent = new Intent(getApplicationContext(), ThongKeActivity.class);
                         break;
-                    case 8:
-                        startActivity(new Intent(getApplicationContext(), JoinActivity.class));
-                        finish();
+                    case "Live":
+                        intent = new Intent(getApplicationContext(), JoinActivity.class);
                         break;
-                    case 9:
-                        startActivity(new Intent(getApplicationContext(), MeetingUserActivity.class));
-                        finish();
+                    case "Xem Live":
+                        intent = new Intent(getApplicationContext(), MeetingUserActivity.class);
                         break;
-                    case 10:
+                    case "Đăng xuất":
                         Paper.book().delete("email");
                         FirebaseAuth.getInstance().signOut();
-                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(login);
-                        finish();
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
                         break;
+                    default:
+                        return;
                 }
+
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -205,17 +200,27 @@ public class MainActivity extends AppCompatActivity {
                         category -> {
                             if (category.isSucces()) {
                                 categoryModelList = category.getResult();
+
+                                // Thêm các mục không bị ẩn bất kể trạng thái tài khoản
                                 categoryModelList.add(new CategoryModel("Đơn hàng", "orther.png"));
                                 categoryModelList.add(new CategoryModel("Liên hệ", "contact.png"));
                                 categoryModelList.add(new CategoryModel("Thông tin", "info.png"));
-                                categoryModelList.add(new CategoryModel("Quản lý", "management.png"));
-                                categoryModelList.add(new CategoryModel("Thống kê", "statistical.png"));
-                                categoryModelList.add(new CategoryModel("Live", "livestream.png"));
+
+                                // Kiểm tra trạng thái tài khoản
+                                if (Utils.user_current.getStatus() != 0) {
+                                    categoryModelList.add(new CategoryModel("Quản lý", "management.png"));
+                                    categoryModelList.add(new CategoryModel("Thống kê", "statistical.png"));
+                                    categoryModelList.add(new CategoryModel("Live", "livestream.png"));
+                                }
+
                                 categoryModelList.add(new CategoryModel("Xem Live", "live.png"));
                                 categoryModelList.add(new CategoryModel("Đăng xuất", "out.png"));
                                 categoryAdapter = new CategoryAdapter(getApplicationContext(), categoryModelList);
                                 listViewHome.setAdapter(categoryAdapter);
                             }
+                        },
+                        throwable -> {
+                            // Handle error
                         }
                 ));
     }
