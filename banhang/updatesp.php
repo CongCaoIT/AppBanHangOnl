@@ -6,9 +6,10 @@ $hinhanh = $_POST['hinhanh'];
 $mota = $_POST['mota'];
 $loai = $_POST['loai'];
 $id = $_POST['MaSP'];
+$soLuongTon = $_POST['soLuongTon'];
 
-//check data - 2001210289 - Huỳnh Công Huy - Bài 41
-$query = "UPDATE `sanpham` SET `TenSP`='$tensp', `GiaSP`='$gia', `HinhAnh`='$hinhanh', `MoTa`='$mota', `Loai`='$loai' WHERE `MaSP` = '$id'";
+$query = "UPDATE `sanpham` SET `TenSP`='$tensp', `GiaSP`='$gia', `HinhAnh`='$hinhanh', `MoTa`='$mota', `Loai`='$loai', `SoLuongTon` = $soLuongTon WHERE `MaSP` = '$id'";
+
 $data = mysqli_query($conn, $query);
 
 if ($data == true) {

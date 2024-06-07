@@ -25,6 +25,15 @@ if ($data == true) {
         foreach ($billinfo as $key => $value) {
             $query1 = "INSERT INTO `chitietdonhang`(`iddonhang`, `idsp`, `soluong`, `gia`) VALUES ('{$idbill["iddonhang"]}','{$value["cartid"]}','{$value["quality"]}','{$value["price"]}')";
             $data = mysqli_query($conn, $query1);
+
+            $queryStock = "SELECT `SoLuongTon` FROM `sanpham` WHERE `MaSP`= '{$value["cartid"]}'";
+            $dataQuantityInStock = mysqli_query($conn, $queryStock);
+            $quantityInStock = mysqli_fetch_assoc($dataQuantityInStock);
+
+            $newQuantityInStock = $quantityInStock["SoLuongTon"] - $value["quality"];
+
+            $queryUpdateStock = "UPDATE `sanpham` SET `SoLuongTon`= $newQuantityInStock WHERE `MaSP`= '{$value["cartid"]}'";
+            $dataUpdate = mysqli_query($conn, $queryUpdateStock);
         }
         if ($data == true) {
             $arr = [

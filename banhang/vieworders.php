@@ -2,7 +2,12 @@
 include "connect.php";
 $iduser = $_POST['iduser'];
 
-$query = "SELECT * FROM `donhang` WHERE `iduser` = '{$iduser}'";
+if ($iduser == 0) {
+    $query = "SELECT donhang.*, user.username FROM `donhang` INNER JOIN user ON donhang.iduser = user.id ORDER BY donhang.id DESC";
+} else {
+    $query = "SELECT donhang.*, user.username FROM `donhang` INNER JOIN user ON donhang.iduser = user.id WHERE `iduser` = '{$iduser}' ORDER BY donhang.id DESC";
+}
+
 $data = mysqli_query($conn, $query);
 $result = array();
 

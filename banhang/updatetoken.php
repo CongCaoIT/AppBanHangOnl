@@ -3,7 +3,6 @@ include "connect.php";
 $token = $_POST['token'];
 $id = $_POST['id'];
 
-//check data - 2001210289 - Huỳnh Công Huy - Bài 41
 $query = "UPDATE `user` SET `token`='$token' WHERE `id`= '$id'";
 $data = mysqli_query($conn, $query);
 

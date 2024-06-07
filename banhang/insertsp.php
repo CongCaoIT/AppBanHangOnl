@@ -5,9 +5,10 @@ $gia = $_POST['gia'];
 $hinhanh = $_POST['hinhanh'];
 $mota = $_POST['mota'];
 $loai = $_POST['loai'];
+$soLuongTon = $_POST['soLuongTon'];
 
-//check data - 2001210289 - Huỳnh Công Huy - Bài 39
-$query = "INSERT INTO `sanpham`(`TenSP`, `GiaSP`, `HinhAnh`, `MoTa`, `Loai`) VALUES ('$tensp', $gia, '$hinhanh', '$mota', $loai)";
+$query = "INSERT INTO `sanpham`(`TenSP`, `GiaSP`, `HinhAnh`, `MoTa`, `Loai`, `SoLuongTon`) VALUES ('$tensp', $gia, '$hinhanh', '$mota', $loai, $soLuongTon)";
+
 $data = mysqli_query($conn, $query);
 
 if ($data == true) {
