@@ -26,12 +26,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.adapter.CategoryAdapter;
 import com.example.appbanhangonl.adapter.ProductAdapter;
 import com.example.appbanhangonl.model.CategoryModel;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.model.PromotionModel;
 import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.model.UserModel;
 import com.example.appbanhangonl.model.ViewOrders;
@@ -51,6 +58,15 @@ import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
+import com.denzcoskun.imageslider.models.SlideModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView_HinhAnhUser;
     TextView textView_TenNguoiDung;
     private static final int REQUEST_CODE_PROFILE = 1;
+    ImageSlider imageSliderBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +156,11 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("Loai", 2);
                         break;
                     case "Đơn hàng":
-                        intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);
+                        if (Utils.user_current.getStatus() == 1) {
+                            intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);
+                        } else {
+                            intent = new Intent(getApplicationContext(), ViewOrdersUserActivity.class);
+                        }
                         break;
                     case "Liên hệ":
                         intent = new Intent(getApplicationContext(), ContactActivity.class);
@@ -169,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -256,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     //Ánh xạ
     private void Mapping() {
         toolbar = findViewById(R.id.toolBarHome);
-        viewFlipper = findViewById(R.id.viewFlipper);
+        imageSliderBanner = findViewById(R.id.imageSliderBanner);
         recyclerViewHome = (RecyclerView) findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
         recyclerViewHome.setLayoutManager(layoutManager);
@@ -321,23 +341,51 @@ public class MainActivity extends AppCompatActivity {
 
     //Chạy quảng cáo
     private void ActionViewFliper() {
-        List<Integer> arrAdvertisement = new ArrayList<>();
-        arrAdvertisement.add(R.drawable.quangcao1);
-        arrAdvertisement.add(R.drawable.quangcao2);
-        arrAdvertisement.add(R.drawable.quangcao3);
+        List<SlideModel> slideModels = new ArrayList<>();
 
-        for (int i = 0; i < arrAdvertisement.size(); i++) {
-            ImageView imageView = new ImageView(getApplicationContext());
-            Glide.with(getApplicationContext()).load(arrAdvertisement.get(i)).into(imageView);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            viewFlipper.addView(imageView);
-        }
-        viewFlipper.setFlipInterval(3000);
-        viewFlipper.setAutoStart(true);
-        Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right);
-        Animation slide_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right);
-        viewFlipper.setInAnimation(slide_in);
-        viewFlipper.setOutAnimation(slide_out);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Utils.BASE_URL + "promotion.php", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                try {
+                    if (jsonObject.getBoolean("succes")) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("result");
+                        ArrayList<PromotionModel> promotionModels = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObjectPromotion = jsonArray.getJSONObject(i);
+                            promotionModels.add(new PromotionModel(jsonObjectPromotion.getInt("id"), jsonObjectPromotion.getString("url"), jsonObjectPromotion.getString("information")));
+                            slideModels.add(new SlideModel(jsonArray.getJSONObject(i).getString("url"), null));
+                        }
+                        imageSliderBanner.setImageList(slideModels, ScaleTypes.FIT);
+
+                        imageSliderBanner.setItemClickListener(new ItemClickListener() {
+                            @Override
+                            public void onItemSelected(int i) {
+                                Intent intent = new Intent(getApplicationContext(), PromotionActivity.class);
+                                intent.putExtra("information", promotionModels.get(i).getInformation());
+                                intent.putExtra("url", promotionModels.get(i).getUrl());
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void doubleClick(int i) {
+
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getApplicationContext(), "Không kết nối được", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
     }
 
     //Kiểm tra kết nối Internet

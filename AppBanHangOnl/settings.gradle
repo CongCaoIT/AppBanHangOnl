@@ -10,11 +10,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // 2001210289 - Huỳnh Công Huy - Bài 40
-        maven { url "https://jitpack.io" }
-
+        jcenter()
         // livestream
         maven { url "https://maven.aliyun.com/repository/jcenter" }
+
+        maven { url "https://jitpack.io" }
     }
 }
 

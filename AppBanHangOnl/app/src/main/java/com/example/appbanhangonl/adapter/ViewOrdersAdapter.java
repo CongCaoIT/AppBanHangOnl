@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,17 +14,15 @@ import com.example.appbanhangonl.Interface.ItemClickListener;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.model.EventBus.OrdersEvent;
 import com.example.appbanhangonl.model.OrdersModel;
-import com.example.appbanhangonl.model.ViewOrders;
-import com.example.appbanhangonl.model.ViewOrdersModel;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.MyViewHolder> {
-    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
     Context context;
     List<OrdersModel> list;
+    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
     public ViewOrdersAdapter(Context context, List<OrdersModel> list) {
         this.context = context;
@@ -43,6 +40,8 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         OrdersModel ordersModel = list.get(position);
         holder.textViewOrders.setText("Đơn hàng: " + ordersModel.getId());
+        holder.textViewAddress.setText("Địa chỉ: " + ordersModel.getDiachi());
+        holder.textViewUsername.setText("Người đặt: " + ordersModel.getUsername());
         holder.status.setText(orderStatus(ordersModel.getTrangthai()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 holder.recyclerViewDetails.getContext(),
@@ -58,20 +57,17 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
         holder.setListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int pos, boolean isLongClick) {
-                if (isLongClick)
-                {
+                if (isLongClick) {
                     EventBus.getDefault().postSticky(new OrdersEvent(ordersModel));
                 }
             }
         });
     }
 
-    private String orderStatus(int status)
-    {
+    private String orderStatus(int status) {
         String result = "";
 
-        switch (status)
-        {
+        switch (status) {
             case 0:
                 result = "Đơn hàng đang được xử lí";
                 break;
@@ -99,8 +95,9 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
     public int getItemCount() {
         return list.size();
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
-        TextView textViewOrders, status;
+        TextView textViewOrders, status, textViewAddress, textViewUsername;
         RecyclerView recyclerViewDetails;
         ItemClickListener listener;
 
@@ -109,6 +106,8 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
             textViewOrders = itemView.findViewById(R.id.idvieworders);
             status = itemView.findViewById(R.id.state);
             recyclerViewDetails = itemView.findViewById(R.id.recyclerView_details);
+            textViewAddress = itemView.findViewById(R.id.textViewAddress);
+            textViewUsername = itemView.findViewById(R.id.textViewUsername);
             itemView.setOnLongClickListener(this);
         }
 
@@ -117,8 +116,7 @@ public class ViewOrdersAdapter extends RecyclerView.Adapter<ViewOrdersAdapter.My
         }
 
         @Override
-        public boolean onLongClick(View view)
-        {
+        public boolean onLongClick(View view) {
             listener.onClick(view, getAdapterPosition(), true);
             return false;
         }

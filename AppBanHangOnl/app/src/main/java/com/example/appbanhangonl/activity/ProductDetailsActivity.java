@@ -22,6 +22,8 @@ import com.example.appbanhangonl.utils.Utils;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -82,6 +84,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 cartModel.setCartid(productModel.getMaSP());
                 cartModel.setProductName(productModel.getTenSP());
                 cartModel.setProductImg(productModel.getHinhAnh());
+                cartModel.setQuantityInStock(productModel.getSoLuongTon());
                 Utils.CartList.add(cartModel);
             }
         } else {
@@ -93,6 +96,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             cartModel.setCartid(productModel.getMaSP());
             cartModel.setProductName(productModel.getTenSP());
             cartModel.setProductImg(productModel.getHinhAnh());
+            cartModel.setQuantityInStock(productModel.getSoLuongTon());
             Utils.CartList.add(cartModel);
         }
         int totalItem = 0;
@@ -118,7 +122,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
             Glide.with(getApplicationContext()).load(Img).into(imageViewImg);
         }
         //Glide.with(getApplicationContext()).load(productModel.getHinhAnh()).into(imageViewImg);
-        Integer[] num = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        List<Integer> num = new ArrayList<>();
+        for (int i = 1; i <= productModel.getSoLuongTon(); i++) {
+            num.add(i);
+        }
+        if(productModel.getSoLuongTon() == 0){
+            num.add(0);
+        }
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, num);
         spinner.setAdapter(arrayAdapter);
     }

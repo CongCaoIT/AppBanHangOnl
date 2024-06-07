@@ -62,7 +62,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
     }
 
     private void getOrders() {
-        compositeDisposable.add(apiBanHang.viewordersAPI(Utils.user_current.getId())
+        compositeDisposable.add(apiBanHang.viewordersAPI(0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -96,21 +96,17 @@ public class ViewOrdersActivity extends AppCompatActivity {
                                             .subscribe(
                                                     notiResponse -> {
                                                         ToastHelper.showCustomToast(getApplicationContext(), "Thành công !!!");
-                                                        Log.d("Thành Công", "Thành công");
                                                     },
                                                     throwable -> {
                                                         Toast.makeText(getApplicationContext(), "Lỗi: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
-                                                        Log.d("- Lỗi", "- Lỗi: " + throwable.getMessage());
                                                     }
                                             ));
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "Không nhận được thông báo", Toast.LENGTH_LONG).show();
-                                Log.d("- Lỗi", "Không nhận được thông báo");
+                                ToastHelper.showCustomToast(getApplicationContext(), "Không nhận được thông báo !!!");
                             }
                         },
                         throwable -> {
-                            Log.d("Lỗi", "Lỗi: " + throwable.getMessage());
                         }
                 ));
     }
@@ -227,7 +223,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
         return result;
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = false, threadMode = ThreadMode.MAIN)
     public void evenOrders(OrdersEvent event) {
         if (event != null) {
             ordersModel = event.getOrder();

@@ -7,6 +7,15 @@ public class CartModel {
     String productImg;
     int quality;
     private boolean isSelected;
+    int quantityInStock;
+
+    public int getQuantityInStock() {
+        return quantityInStock;
+    }
+
+    public void setQuantityInStock(int quantityInStock) {
+        this.quantityInStock = quantityInStock;
+    }
 
     public CartModel(){}
     public CartModel(int cartid, String productName, long price, String productImg, int quality) {

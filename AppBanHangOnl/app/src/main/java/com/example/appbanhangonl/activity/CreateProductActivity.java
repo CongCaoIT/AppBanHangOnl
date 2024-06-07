@@ -76,6 +76,7 @@ public class CreateProductActivity extends AppCompatActivity {
             binding.mota.setText(editproduct.getMoTa());
             binding.giasp.setText(editproduct.getGiaSP() + "");
             binding.tensp.setText(editproduct.getTenSP());
+            binding.textInputEditTextQuantityInStock.setText(editproduct.getSoLuongTon() + "");
             binding.hinhanh.setText(editproduct.getHinhAnh());
             binding.spinnerLoai.setSelection(editproduct.getLoai());
         }
@@ -141,11 +142,12 @@ public class CreateProductActivity extends AppCompatActivity {
         String str_ten = binding.tensp.getText().toString().trim();
         String str_gia = binding.giasp.getText().toString().trim();
         String str_hinhanh = binding.hinhanh.getText().toString().trim();
+        String quantityInStockString = binding.textInputEditTextQuantityInStock.getText().toString().trim();
         String str_mota = binding.mota.getText().toString().trim();
-        if (TextUtils.isEmpty(str_ten) || TextUtils.isEmpty(str_gia) || TextUtils.isEmpty(str_mota) || TextUtils.isEmpty(str_hinhanh) || loai == 0) {
+        if (TextUtils.isEmpty(quantityInStockString) || TextUtils.isEmpty(str_ten) || TextUtils.isEmpty(str_gia) || TextUtils.isEmpty(str_mota) || TextUtils.isEmpty(str_hinhanh) || loai == 0) {
             ToastHelper.showCustomToast(this, "Vui lòng điền đầy đủ thông tin !!!");
         } else {
-            compositeDisposable.add(apiBanHang.updatesp(str_ten, str_gia, str_hinhanh, str_mota, (loai), editproduct.getMaSP())
+            compositeDisposable.add(apiBanHang.updatesp(str_ten, str_gia, str_hinhanh, str_mota, (loai), editproduct.getMaSP(), Integer.parseInt(quantityInStockString))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -172,7 +174,6 @@ public class CreateProductActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         mediaPath = data.getDataString();
         uploadMultipleFiles();
-        Log.d("log", "onActiviResult: " + mediaPath);
     }
 
     private void CreateProduct() {
@@ -180,10 +181,11 @@ public class CreateProductActivity extends AppCompatActivity {
         String str_gia = binding.giasp.getText().toString().trim();
         String str_hinhanh = binding.hinhanh.getText().toString().trim();
         String str_mota = binding.mota.getText().toString().trim();
-        if (TextUtils.isEmpty(str_ten) || TextUtils.isEmpty(str_gia) || TextUtils.isEmpty(str_mota) || TextUtils.isEmpty(str_hinhanh) || loai == 0) {
+        String quantityInStockString = binding.textInputEditTextQuantityInStock.getText().toString().trim();
+        if (TextUtils.isEmpty(quantityInStockString) || TextUtils.isEmpty(str_ten) || TextUtils.isEmpty(str_gia) || TextUtils.isEmpty(str_mota) || TextUtils.isEmpty(str_hinhanh) || loai == 0) {
             ToastHelper.showCustomToast(this, "Vui lòng điền đầy đủ thông tin !!!");
         } else {
-            compositeDisposable.add(apiBanHang.insertSp(str_ten, str_gia, str_hinhanh, str_mota, (loai))
+            compositeDisposable.add(apiBanHang.insertSp(str_ten, str_gia, str_hinhanh, str_mota, (loai), Integer.parseInt(quantityInStockString))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -241,7 +243,6 @@ public class CreateProductActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.v("Response", serverResponse.toString());
                 }
             }
 

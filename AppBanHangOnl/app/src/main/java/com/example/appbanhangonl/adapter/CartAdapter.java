@@ -112,7 +112,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                         builder.show();
                     }
                 } else if (value == 2) {
-                    if (cartModelList.get(pos).getQuality() < 10) {
+                    if (cartModelList.get(pos).getQuality() < cartModelList.get(pos).getQuantityInStock()) {
                         int numnew = cartModelList.get(pos).getQuality() + 1;
                         cartModelList.get(pos).setQuality(numnew);
                     }

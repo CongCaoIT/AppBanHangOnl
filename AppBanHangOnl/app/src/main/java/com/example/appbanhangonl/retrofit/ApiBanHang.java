@@ -92,7 +92,8 @@ public interface ApiBanHang {
             @Field("gia") String gia,
             @Field("hinhanh") String hinhanh,
             @Field("mota") String mota,
-            @Field("loai") int id
+            @Field("loai") int id,
+            @Field("soLuongTon") int soLuongTon
     );
 
     @POST("updatesp.php")
@@ -103,7 +104,8 @@ public interface ApiBanHang {
             @Field("hinhanh") String hinhanh,
             @Field("mota") String mota,
             @Field("loai") int idloai,
-            @Field("MaSP") int id
+            @Field("MaSP") int id,
+            @Field("soLuongTon") int soLuongTon
     );
 
     @POST("updatetoken.php")

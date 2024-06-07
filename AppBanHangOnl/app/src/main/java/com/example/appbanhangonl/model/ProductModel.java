@@ -10,6 +10,15 @@ public class ProductModel implements Serializable {
     String HinhAnh;
     int Loai;
     String LinkVideo;
+    int SoLuongTon;
+
+    public int getSoLuongTon() {
+        return SoLuongTon;
+    }
+
+    public void setSoLuongTon(int soLuongTon) {
+        SoLuongTon = soLuongTon;
+    }
 
     public int getMaSP() {
         return MaSP;

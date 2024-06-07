@@ -5,28 +5,12 @@ import java.util.List;
 public class OrdersModel {
     int id;
     int iduser;
-    String address;
-    String phone;
-    String total;
+    String diachi;
+    String sodienthoai;
+    String tongtien;
     int trangthai;
+    String username;
     List<ViewOrdersModel> item;
-
-    public OrdersModel(int id, int iduser, String address, String sodienthoai, String tongtien, List<ViewOrdersModel> item) {
-        this.id = id;
-        this.iduser = iduser;
-        this.address = address;
-        this.phone = sodienthoai;
-        this.total = tongtien;
-        this.item = item;
-    }
-
-    public int getTrangthai() {
-        return trangthai;
-    }
-
-    public void setTrangthai(int trangthai) {
-        this.trangthai = trangthai;
-    }
 
     public int getId() {
         return id;
@@ -44,28 +28,44 @@ public class OrdersModel {
         this.iduser = iduser;
     }
 
-    public String getAddress() {
-        return address;
+    public String getDiachi() {
+        return diachi;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getSodienthoai() {
+        return sodienthoai;
     }
 
-    public void setPhone(String Phone) {
-        this.phone = Phone;
+    public void setSodienthoai(String sodienthoai) {
+        this.sodienthoai = sodienthoai;
     }
 
-    public String getTotal() {
-        return total;
+    public String getTongtien() {
+        return tongtien;
     }
 
-    public void setTotal(String total) {
-        this.total = total;
+    public void setTongtien(String tongtien) {
+        this.tongtien = tongtien;
+    }
+
+    public int getTrangthai() {
+        return trangthai;
+    }
+
+    public void setTrangthai(int trangthai) {
+        this.trangthai = trangthai;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<ViewOrdersModel> getItem() {
@@ -73,6 +73,17 @@ public class OrdersModel {
     }
 
     public void setItem(List<ViewOrdersModel> item) {
+        this.item = item;
+    }
+
+    public OrdersModel(int id, int iduser, String diachi, String sodienthoai, String tongtien, int trangthai, String username, List<ViewOrdersModel> item) {
+        this.id = id;
+        this.iduser = iduser;
+        this.diachi = diachi;
+        this.sodienthoai = sodienthoai;
+        this.tongtien = tongtien;
+        this.trangthai = trangthai;
+        this.username = username;
         this.item = item;
     }
 }
