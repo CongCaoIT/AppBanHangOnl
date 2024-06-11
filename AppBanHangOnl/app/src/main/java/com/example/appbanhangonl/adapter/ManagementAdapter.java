@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +17,6 @@ import com.example.appbanhangonl.Interface.ItemClickListener;
 import com.example.appbanhangonl.R;
 import com.example.appbanhangonl.activity.ProductDetailsActivity;
 import com.example.appbanhangonl.model.EventBus.Edit_DeleteEvent;
-import com.example.appbanhangonl.model.Product;
 import com.example.appbanhangonl.model.ProductModel;
 import com.example.appbanhangonl.utils.Utils;
 
@@ -27,12 +25,12 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
+public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.MyViewHolder> {
 
     Context context;
     List<ProductModel> arr;
 
-    public ProductAdapter(Context context, List<ProductModel> arr) {
+    public ManagementAdapter(Context context, List<ProductModel> arr) {
         this.context = context;
         this.arr = arr;
     }
@@ -54,7 +52,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             Glide.with(context).load(productModel.getHinhAnh()).into(holder.imageViewImage);
         } else {
             String hinh = Utils.BASE_URL + "images/" + productModel.getHinhAnh();
-            Glide.with(context).load(hinh).into(holder.imageViewImage);
+            Glide.with(context).load(productModel.getHinhAnh()).into(holder.imageViewImage);
         }
         //Glide.with(context).load(productModel.getHinhAnh()).into(holder.imageViewImage);
         holder.setItemClickListener(new ItemClickListener() {
@@ -105,8 +103,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//            contextMenu.add(0, 0, getAdapterPosition(), "Sửa");
-//            contextMenu.add(0, 1, getAdapterPosition(), "Xóa");
+            contextMenu.add(0, 0, getAdapterPosition(), "Sửa");
+            contextMenu.add(0, 1, getAdapterPosition(), "Xóa");
         }
 
         @Override

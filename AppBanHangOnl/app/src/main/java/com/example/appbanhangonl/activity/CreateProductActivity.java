@@ -26,10 +26,14 @@ import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -53,7 +57,6 @@ public class CreateProductActivity extends AppCompatActivity {
     boolean flag = false;
     Toolbar toolbar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,7 @@ public class CreateProductActivity extends AppCompatActivity {
             flag = false;
         } else {
             flag = true;
+            binding.toolbar.setTitle("Sửa sản phẩm");
             binding.btnthem.setText("Sửa sản phẩm");
             binding.mota.setText(editproduct.getMoTa());
             binding.giasp.setText(editproduct.getGiaSP() + "");
@@ -226,29 +230,27 @@ public class CreateProductActivity extends AppCompatActivity {
     private void uploadMultipleFiles() {
 
         Uri uri = Uri.parse(mediaPath);
-
         File file = new File(getPath(uri));
 
-        RequestBody requestBody1 = RequestBody.create(MediaType.parse("*/*"), file);
-        MultipartBody.Part fileToUpload1 = MultipartBody.Part.createFormData("file", file.getName(), requestBody1);
-        Call<MessageModel> call = apiBanHang.uploadFile(fileToUpload1);
-        call.enqueue(new Callback<MessageModel>() {
-            @Override
-            public void onResponse(Call<MessageModel> call, Response<MessageModel> response) {
-                MessageModel serverResponse = response.body();
-                if (serverResponse != null) {
-                    if (serverResponse.isSucces()) {
-                        binding.hinhanh.setText(serverResponse.getName());
-                    } else {
-                        Toast.makeText(getApplicationContext(), serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                }
+        String randomName = UUID.randomUUID().toString();
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images/" + randomName);
+        UploadTask uploadTask = storageRef.putFile(Uri.fromFile(file));
+
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
             }
 
-            @Override
-            public void onFailure(Call<MessageModel> call, Throwable t) {
-                Log.d("log", t.getMessage());
+            return storageRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                String imageUrl = downloadUri.toString();
+                binding.hinhanh.setText(imageUrl);
+                ToastHelper.showCustomToast(getApplicationContext(), "Upload thành công !!!");
+            } else {
+                ToastHelper.showCustomToast(getApplicationContext(), "Upload thất bại !!!");
             }
         });
     }

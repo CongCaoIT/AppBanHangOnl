@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.appbanhangonl.R;
+import com.example.appbanhangonl.adapter.ManagementAdapter;
 import com.example.appbanhangonl.adapter.ProductAdapter;
 import com.example.appbanhangonl.model.EventBus.Edit_DeleteEvent;
 import com.example.appbanhangonl.model.ProductModel;
@@ -39,7 +40,7 @@ public class ManagementActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ApiBanHang apiBanHang;
     List<ProductModel> list;
-    ProductAdapter adapter;
+    ManagementAdapter adapter;
     ProductModel productModelEdit_Delete;
     Toolbar toolbar;
 
@@ -74,7 +75,7 @@ public class ManagementActivity extends AppCompatActivity {
                         product -> {
                             if (product.isSucces()) {
                                 list = product.getResult();
-                                adapter = new ProductAdapter(getApplicationContext(), list);
+                                adapter = new ManagementAdapter(getApplicationContext(), list);
                                 recyclerView.setAdapter(adapter);
                             }
                         },
