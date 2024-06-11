@@ -83,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(str_pass)) {
             ToastHelper.showCustomToast(this, "Vui lòng nhập Mật khẩu !!!");
         } else {
-
             SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("email", str_email);
@@ -100,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Login(str_email, str_pass);
+                                } else {
+                                    ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng kiểm tra lại Email or Mật khẩu !!!");
                                 }
                             }
                         });
@@ -119,11 +120,11 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        //read data
+        // read data
         if (Paper.book().read("email") != null && Paper.book().read("pass") != null) {
             textEmail.setText(Paper.book().read("email"));
             textPass.setText(Paper.book().read("pass"));
-            if (Paper.book().read("isLogin") != null) {
+            if (Paper.book().read("isLogin") != null && Paper.book().read("user") != null) {
                 boolean flag = Paper.book().read("isLogin");
                 if (flag) {
                     new Handler().postDelayed(new Runnable() {
@@ -160,8 +161,6 @@ public class LoginActivity extends AppCompatActivity {
                         },
                         throwable -> {
                             Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                            System.out.println("- Lỗi: " + throwable.getMessage());
-                            Log.d("Lỗi", "Lỗi: " + throwable.getMessage());
                         }
                 ));
     }

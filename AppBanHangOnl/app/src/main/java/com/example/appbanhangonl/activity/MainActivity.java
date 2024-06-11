@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), MeetingUserActivity.class);
                         break;
                     case "Đăng xuất":
-                        Paper.book().delete("email");
+                        Paper.book().delete("user");
                         FirebaseAuth.getInstance().signOut();
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
                         break;

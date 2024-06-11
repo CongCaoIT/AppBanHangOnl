@@ -16,6 +16,7 @@ import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -52,26 +53,40 @@ public class ResetPassActivity extends AppCompatActivity {
             ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng nhập Email !!!");
         } else {
             progressBar.setVisibility(View.VISIBLE);
-            compositeDisposable.add(apiBanHang.resetpassAPI(str_email)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            user -> {
-                                if (user.isSucces()) {
-                                    ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng kiểm tra email của bạn !!!");
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    ToastHelper.showCustomToast(getApplicationContext(), "Email không chính xác !!!");
-                                }
-                                progressBar.setVisibility(View.INVISIBLE);
-                            },
-                            throwable -> {
-                                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
-                    ));
+
+            FirebaseAuth.getInstance().sendPasswordResetEmail(str_email)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng kiểm tra Email của bạn !!!");
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            ToastHelper.showCustomToast(getApplicationContext(), "Email không chính xác !!!");
+                        }
+                    });
+
+// Thay đổi pass ở host
+//            compositeDisposable.add(apiBanHang.resetpassAPI(str_email)
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(
+//                            user -> {
+//                                if (user.isSucces()) {
+//                                    ToastHelper.showCustomToast(getApplicationContext(), "Vui lòng kiểm tra email của bạn !!!");
+//                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//                                    startActivity(intent);
+//                                    finish();
+//                                } else {
+//                                    ToastHelper.showCustomToast(getApplicationContext(), "Email không chính xác !!!");
+//                                }
+//                                progressBar.setVisibility(View.INVISIBLE);
+//                            },
+//                            throwable -> {
+//                                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+//                                progressBar.setVisibility(View.INVISIBLE);
+//                            }
+//                    ));
         }
     }
 

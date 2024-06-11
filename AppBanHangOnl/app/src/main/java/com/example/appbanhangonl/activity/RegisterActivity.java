@@ -109,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void possData(String str_email, String str_pass, String str_username, String str_mobile, String uid)
     {
         //post data
-        compositeDisposable.add(apiBanHang.registerAPI(str_email, str_pass, str_username, str_mobile, uid)
+        compositeDisposable.add(apiBanHang.registerAPI(str_email, "onfibase", str_username, str_mobile, uid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -117,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if(user.isSucces()){
                                 ToastHelper.showCustomToast(getApplicationContext(), "Đăng ký tài khoản thành công !!!");
                                 Utils.user_current.setEmail(str_email);
-                                Utils.user_current.setPass(str_pass);
+                                Utils.user_current.setPass("onfibase");
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 startActivity(intent);
                                 finish();
