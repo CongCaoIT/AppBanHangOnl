@@ -30,6 +30,7 @@ import com.example.appbanhangonl.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -120,6 +121,7 @@ public class ProfileActivity extends AppCompatActivity {
                         ToastHelper.showCustomToast(getApplicationContext(), "Cập nhật thông tin thất bại !!!");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -220,12 +222,26 @@ public class ProfileActivity extends AppCompatActivity {
                 if (!isDestroyed()) { // Kiểm tra trạng thái của hoạt động trước khi sử dụng Glide
                     Glide.with(ProfileActivity.this).load(downloadUrl).into(imageViewProfilePicture);
 
+                    // Cập nhật URL vào Firestore Database
+                    updateImageURLInFirestore(downloadUrl);
+
                     ToastHelper.showCustomToast(ProfileActivity.this, "Cập nhật ảnh đại diện thành công !!!");
                 }
             })).addOnFailureListener(exception -> {
                 ToastHelper.showCustomToast(ProfileActivity.this, "Cập nhật ảnh đại diện thất bại: " + exception.getMessage());
             });
         }
+    }
+
+    private void updateImageURLInFirestore(String downloadUrl) {
+        String userIdFromXampp = String.valueOf(Utils.user_current.getId());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Tìm người dùng với userId và cập nhật URL hình ảnh
+        db.collection("users").document(userIdFromXampp)
+                .update("imageuser", downloadUrl)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Cập nhật ảnh đại diện vào Firestore thành công!"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Cập nhật ảnh đại diện vào Firestore thất bại: " + e.getMessage()));
     }
 
     @Override

@@ -84,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
     ProductAdapter productAdapter;
     NotificationBadge notificationBadge;
     FrameLayout frameLayout;
-    ImageView imageViewSearch;
-    ImageView imageView_HinhAnhUser;
+    ImageView imageViewSearch, imageView_HinhAnhUser, imageChat;
     TextView textView_TenNguoiDung;
     private static final int REQUEST_CODE_PROFILE = 1;
     ImageSlider imageSliderBanner;
@@ -135,6 +134,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        //Chat cần cái này
+        compositeDisposable.add(apiBanHang.gettoken(1, Utils.user_current.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(userModel -> {
+                    if (userModel.isSucces()) {
+                        Utils.ID_RECEIVED = "7";
+                    }
+                }, throwable -> {
+                }));
     }
 
     private void getEventClick() {
@@ -286,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         notificationBadge = findViewById(R.id.menu_quanlity);
         imageViewSearch = findViewById(R.id.imageSearch);
+        imageChat = findViewById(R.id.imageChat);
         //Khởi tạo list
         categoryModelList = new ArrayList<>();
         productModelList = new ArrayList<>();
@@ -312,6 +323,27 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        imageChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (Utils.user_current.getStatus() == 1)    //nếu là admin vào
+                { // tài khoản status == 1 là admin chat
+                    Intent intent = new Intent(getApplicationContext(), AdminChatActivity.class);
+                    // id== 7 dùng để chat, nhiều admin có thể cùng xử lý 1 khách hàng
+                    intent.putExtra("idsend", 12);
+                    startActivity(intent);
+                } else    //nếu không phải admin
+                {
+                    Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                    intent.putExtra("idsend", Utils.user_current.getId());
+                    // id== 7 dùng để chat, nhiều admin có thể cùng xử lý 1 khách hàng
+                    intent.putExtra("idreceive", 12);
+                    startActivity(intent);
+                }
             }
         });
     }

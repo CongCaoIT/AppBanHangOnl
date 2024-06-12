@@ -55,7 +55,7 @@ public class JoinActivity extends AppCompatActivity {
     Button btnCreate;
     Button btnJoinHost;
     EditText etMeetingId;
-    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0OWNlMjM4MS0wMTBkLTRjNDctYjFiZS04MGI4YTg4NGQzZTUiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcxNzI3Mzk4MCwiZXhwIjoxNzE3ODc4NzgwfQ.XG7yWceek8pMNc9bg0KR0FI-cBG0Kd-u5VmdUIfLCEA";
+    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI0OWNlMjM4MS0wMTBkLTRjNDctYjFiZS04MGI4YTg4NGQzZTUiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcxODA5NjkxOSwiZXhwIjoxODc1ODg0OTE5fQ.SO_HQ0xcT3ji_Le4WHisQTki_1OYFDvKijqeR0gkPy4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
