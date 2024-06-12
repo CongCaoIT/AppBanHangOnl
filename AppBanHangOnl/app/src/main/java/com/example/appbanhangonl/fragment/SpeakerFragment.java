@@ -43,10 +43,10 @@ public class SpeakerFragment extends Fragment {
             //unpin local participant
             meeting.getLocalParticipant().unpin("SHARE_AND_CAM");
             if (isAdded()) {
-                Intent intents = new Intent(mContext, JoinActivity.class);
-                intents.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intents);
+//                Intent intents = new Intent(mContext, JoinActivity.class);
+//                intents.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                        | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intents);
                 mActivity.finish();
             }
         }

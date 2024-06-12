@@ -48,10 +48,10 @@ public class ViewerFragment extends Fragment {
         @Override
         public void onMeetingLeft() {
             if (isAdded()) {
-                Intent intents = new Intent(mContext, JoinActivity.class);
-                intents.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intents);
+//                Intent intents = new Intent(mContext, JoinActivity.class);
+//                intents.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                        | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intents);
                 mActivity.finish();
             }
         }
