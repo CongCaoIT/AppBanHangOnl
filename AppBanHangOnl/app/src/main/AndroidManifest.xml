@@ -30,6 +30,16 @@
         <activity
             android:name=".activity.ChatActivity"
             android:exported="false" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".activity.AdminChatActivity"
             android:exported="false" />
@@ -71,7 +81,19 @@
             android:exported="false" />
         <activity
             android:name=".activity.PayActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="app"
+                    android:scheme="demozpdk" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.ResetPassActivity"
             android:exported="false" />

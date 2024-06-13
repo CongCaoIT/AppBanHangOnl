@@ -67,6 +67,19 @@ public interface ApiBanHang {
             @Field("billinfo") String billinfo
     );
 
+    @POST("bill.php")
+    @FormUrlEncoded
+    Observable<MessageModel> billAPI_ZaloPay
+            (
+              @Field("email") String email,
+              @Field("total") String total,
+              @Field("phone") String phone,
+              @Field("address") String address,
+              @Field("quanlity") int quanlity,
+              @Field("iduser") int iduser,
+              @Field("billinfo") String billinfo
+            );
+
     @POST("vieworders.php")
     @FormUrlEncoded
     Observable<ViewOrders> viewordersAPI(
@@ -81,7 +94,7 @@ public interface ApiBanHang {
 
     @POST("deletenewproduct.php")
     @FormUrlEncoded
-    Observable<MessageModel> deleteNewProduct (
+    Observable<MessageModel> deleteNewProduct(
             @Field("MaSP") int id
     );
 
@@ -98,7 +111,7 @@ public interface ApiBanHang {
 
     @POST("updatesp.php")
     @FormUrlEncoded
-    Observable<MessageModel> updatesp (
+    Observable<MessageModel> updatesp(
             @Field("tensp") String tensp,
             @Field("gia") String gia,
             @Field("hinhanh") String hinhanh,
@@ -110,7 +123,14 @@ public interface ApiBanHang {
 
     @POST("updatetoken.php")
     @FormUrlEncoded
-    Observable<MessageModel> updateToken (
+    Observable<MessageModel> updateToken(
+            @Field("id") int id,
+            @Field("token") String token
+    );
+
+    @POST("updatezalopay.php")// Zalo pay
+    @FormUrlEncoded
+    Observable<MessageModel> updateTokenZaloPay(
             @Field("id") int id,
             @Field("token") String token
     );
@@ -121,14 +141,14 @@ public interface ApiBanHang {
 
     @POST("gettoken.php")
     @FormUrlEncoded
-    Observable<User> gettoken (
+    Observable<User> gettoken(
             @Field("status") int status,
             @Field("iduser") int iduser
     );
 
     @POST("updateorders.php")
     @FormUrlEncoded
-    Observable<MessageModel> updateOrders (
+    Observable<MessageModel> updateOrders(
             @Field("id") int id,
             @Field("trangthai") int status
     );
