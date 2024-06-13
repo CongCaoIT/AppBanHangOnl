@@ -193,7 +193,7 @@ public class ChatActivity extends AppCompatActivity {
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(
                                                     notiResponse -> {
-                                                        ToastHelper.showCustomToast(getApplicationContext(), "Đã gửi CSKH");
+//                                                        ToastHelper.showCustomToast(getApplicationContext(), "Đã gửi CSKH");
                                                     },
                                                     throwable -> {
                                                         ToastHelper.showCustomToast(getApplicationContext(), "Lỗi: " + throwable.getMessage());
@@ -231,7 +231,7 @@ public class ChatActivity extends AppCompatActivity {
                                                 .observeOn(AndroidSchedulers.mainThread())
                                                 .subscribe(
                                                         notiResponse -> {
-                                                            ToastHelper.showCustomToast(getApplicationContext(), "Đã gửi tới " + user.getResult().get(positon).getUsername());
+//                                                            ToastHelper.showCustomToast(getApplicationContext(), "Đã gửi tới " + user.getResult().get(positon).getUsername());
                                                         },
                                                         throwable -> {
                                                             ToastHelper.showCustomToast(getApplicationContext(), "Lỗi: " + throwable.getMessage());

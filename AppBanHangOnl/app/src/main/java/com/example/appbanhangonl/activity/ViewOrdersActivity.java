@@ -89,13 +89,12 @@ public class ViewOrdersActivity extends AppCompatActivity {
                                     data.put("body", orderStatus(state));
                                     NotiSendData notiSendData = new NotiSendData(user.getResult().get(i).getToken(), data);
                                     ApiPushNotification apiPushNotification = RetrofitClientNoti.getInstance().create(ApiPushNotification.class);
-                                    Log.d("Biến", "pushNotiToUser: " + notiSendData);
                                     compositeDisposable.add(apiPushNotification.senNotification(notiSendData)
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(
                                                     notiResponse -> {
-                                                        ToastHelper.showCustomToast(getApplicationContext(), "Thành công !!!");
+//                                                        ToastHelper.showCustomToast(getApplicationContext(), "Thành công !!!");
                                                     },
                                                     throwable -> {
                                                         Toast.makeText(getApplicationContext(), "Lỗi: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
@@ -185,13 +184,11 @@ public class ViewOrdersActivity extends AppCompatActivity {
                         messageModel -> {
                             getOrders();
                             ToastHelper.showCustomToast(getApplicationContext(), "Cập nhật đơn hàng thành công !!!");
-                            Log.d("Thành công", "Cập nhật đơn hàng thành công");
                             dialog.dismiss();
                             pushNotiToUser();
                         },
                         throwable -> {
                             Toast.makeText(getApplicationContext(), "Lỗi: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
-                            Log.d("Lỗi", "Lỗi: " + throwable.getMessage());
                         }
                 ));
     }
