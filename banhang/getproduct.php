@@ -1,6 +1,6 @@
 <?php
 include "connect.php";
-$query = "SELECT * FROM `sanpham` ORDER BY MaSP DESC";
+$query = "SELECT * FROM `sanpham` WHERE `DaXoa` = 0 ORDER BY MaSP DESC";
 $data = mysqli_query($conn, $query);
 $result = array();
 while ($row = mysqli_fetch_assoc($data)) {

@@ -20,10 +20,10 @@ if ($data == true) {
         $idbill = ($row);
     }
     if (!empty($idbill)) {
-        //co don hang
+        $iddonhang = $idbill['iddonhang'];  // Extract the actual ID value
         $billinfo = json_decode($billinfo, true);
         foreach ($billinfo as $key => $value) {
-            $query1 = "INSERT INTO `chitietdonhang`(`iddonhang`, `idsp`, `soluong`, `gia`) VALUES ('{$idbill["iddonhang"]}','{$value["cartid"]}','{$value["quality"]}','{$value["price"]}')";
+            $query1 = "INSERT INTO `chitietdonhang`(`iddonhang`, `idsp`, `soluong`, `gia`) VALUES ('{$iddonhang}','{$value["cartid"]}','{$value["quality"]}','{$value["price"]}')";
             $data = mysqli_query($conn, $query1);
 
             $queryStock = "SELECT `SoLuongTon` FROM `sanpham` WHERE `MaSP`= '{$value["cartid"]}'";
@@ -38,7 +38,8 @@ if ($data == true) {
         if ($data == true) {
             $arr = [
                 'succes' => true,
-                'message' => "thanh cong"
+                'message' => "thanh cong",
+                'iddonhang' => $iddonhang  // Use the actual ID value
             ];
         } else {
             $arr = [

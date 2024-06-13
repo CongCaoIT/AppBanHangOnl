@@ -1,7 +1,7 @@
 <?php
 include "connect.php";
 $id = $_POST['MaSP'];
-$query = "DELETE FROM `sanpham` WHERE `MaSP` = '$id'";
+$query = "UPDATE `sanpham` SET `DaXoa` = 1 WHERE `MaSP` = '$id'";
 $data = mysqli_query($conn, $query);
 
 if ($data == true) {

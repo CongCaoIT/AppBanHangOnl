@@ -7,7 +7,7 @@ if (empty($search)) {
         'message' => "khong thanh cong"
     ];
 } else {
-    $query = "SELECT * FROM `sanpham` WHERE `TenSP` LIKE '%{$search}%'";
+    $query = "SELECT * FROM `sanpham` WHERE `DaXoa` = 0 AND `TenSP` LIKE '%{$search}%'";
     $data = mysqli_query($conn, $query);
     $result = array();
 

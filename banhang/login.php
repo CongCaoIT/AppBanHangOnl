@@ -3,7 +3,7 @@ include "connect.php";
 $email = $_POST['email'];
 $pass = $_POST['pass'];
 
-$query = "SELECT * FROM `user` WHERE `email`='{$email}' AND `pass`='{$pass}'";
+$query = "SELECT * FROM `user` WHERE `email`='{$email}'";
 $data = mysqli_query($conn, $query);
 $result = array();
 while ($row = mysqli_fetch_assoc($data)) {
