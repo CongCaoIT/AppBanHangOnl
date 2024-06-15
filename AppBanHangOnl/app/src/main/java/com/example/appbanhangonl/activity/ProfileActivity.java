@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,7 +36,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,6 +47,17 @@ public class ProfileActivity extends AppCompatActivity {
     private Button buttonUpdate, buttonLogout, buttonChangePicture;
     private static final int REQUEST_STORAGE_PERMISSION = 100;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+
+        Mapping();
+        requestStoragePermission();
+        Event();
+        getDataUserInfo();
+    }
+
     private void Mapping() {
         editTextEmail = findViewById(R.id.editText_Email);
         editTextUsername = findViewById(R.id.editText_Username);
@@ -58,6 +67,12 @@ public class ProfileActivity extends AppCompatActivity {
         buttonUpdate = findViewById(R.id.button_Update);
         buttonLogout = findViewById(R.id.button_Logout);
         buttonChangePicture = findViewById(R.id.button_ChangePicture);
+    }
+
+    private void Event() {
+        UpdateProfile();
+        LogoutProfile();
+        ChangeImageProfile();
     }
 
     private void UpdateProfile() {
@@ -102,21 +117,23 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        // Cập nhật thông tin người dùng vào Realtime Database
+                        // Update user information in Realtime Database
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
                         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         UserModel user = new UserModel(email, username, mobile, str_hinhanh);
                         databaseReference.child(userId).setValue(user);
 
-                        // Cập nhật thông tin vào biến user_current và lưu vào PaperDB
+                        // Update user information in Firestore Database
+                        updateUsernameInFirestore(username, String.valueOf(Utils.user_current.getId()));
+
+                        // Update user_current variable and store in PaperDB
                         Utils.user_current = user;
 
-                        // Trả kết quả về MainActivity
+                        // Return result to MainActivity
                         Intent resultIntent = new Intent();
                         setResult(RESULT_OK, resultIntent);
-                        finish();
-
                         ToastHelper.showCustomToast(getApplicationContext(), "Cập nhật thông tin thành công !!!");
+                        finish();
                     } else {
                         ToastHelper.showCustomToast(getApplicationContext(), "Cập nhật thông tin thất bại !!!");
                     }
@@ -132,31 +149,14 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    private void updateUsernameInFirestore(String username, String userId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private void updateUIAfterUpdateSuccess() {
-        editTextEmail.setText(Utils.user_current.getEmail());
-        editTextUsername.setText(Utils.user_current.getUsername());
-        editTextMobile.setText(Utils.user_current.getMobile());
-        editTextImageUser.setText(Utils.user_current.getImageUser());
-
-        Glide.with(getApplicationContext()).load(Utils.user_current.getImageUser()).into(imageViewProfilePicture);
-    }
-
-    private void Event() {
-        UpdateProfile();
-        LogoutProfile();
-        getDataUserInfo();
-        ChangeImageProfile();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-
-        Mapping();
-        requestStoragePermission();
-        Event();
+        // Update username in Firestore
+        db.collection("users").document(userId)
+                .update("username", username)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Cập nhật tên người dùng vào Firestore thành công!"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Cập nhật tên người dùng vào Firestore thất bại: " + e.getMessage()));
     }
 
     private void requestStoragePermission() {
@@ -207,7 +207,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void saveImageToDatabase(Uri imageUri) {
-        if (!isDestroyed()) { // Kiểm tra trạng thái của hoạt động
+        if (!isDestroyed()) { // Check activity state
             String imagePath = getRealPathFromURI(imageUri);
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -219,12 +219,11 @@ public class ProfileActivity extends AppCompatActivity {
                 String downloadUrl = uri.toString();
                 editTextImageUser.setText(downloadUrl);
 
-                if (!isDestroyed()) { // Kiểm tra trạng thái của hoạt động trước khi sử dụng Glide
+                if (!isDestroyed()) { // Check activity state before using Glide
                     Glide.with(ProfileActivity.this).load(downloadUrl).into(imageViewProfilePicture);
 
-                    // Cập nhật URL vào Firestore Database
+                    // Update URL in Firestore Database
                     updateImageURLInFirestore(downloadUrl);
-
                     ToastHelper.showCustomToast(ProfileActivity.this, "Cập nhật ảnh đại diện thành công !!!");
                 }
             })).addOnFailureListener(exception -> {
@@ -237,7 +236,7 @@ public class ProfileActivity extends AppCompatActivity {
         String userIdFromXampp = String.valueOf(Utils.user_current.getId());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Tìm người dùng với userId và cập nhật URL hình ảnh
+        // Find user with userId and update image URL
         db.collection("users").document(userIdFromXampp)
                 .update("imageuser", downloadUrl)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Cập nhật ảnh đại diện vào Firestore thành công!"))

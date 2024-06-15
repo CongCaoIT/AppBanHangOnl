@@ -20,6 +20,7 @@ import com.example.appbanhangonl.adapter.ManagementAdapter;
 import com.example.appbanhangonl.adapter.ProductAdapter;
 import com.example.appbanhangonl.model.EventBus.Edit_DeleteEvent;
 import com.example.appbanhangonl.model.ProductModel;
+import com.example.appbanhangonl.model.ToastHelper;
 import com.example.appbanhangonl.retrofit.ApiBanHang;
 import com.example.appbanhangonl.retrofit.RetrofitClient;
 import com.example.appbanhangonl.utils.Utils;
@@ -124,14 +125,13 @@ public class ManagementActivity extends AppCompatActivity {
                 .subscribe(
                         messageModel -> {
                             if (messageModel.isSucces()) {
-                                Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
+                                ToastHelper.showCustomToast(getApplicationContext(), "Xóa sản phẩm thành công!!!");
                                 getProductNew();
                             } else {
                                 Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         },
                         throwable -> {
-                            Log.d("log", "- Lỗi: " + throwable.getMessage());
                         }
                 ));
     }

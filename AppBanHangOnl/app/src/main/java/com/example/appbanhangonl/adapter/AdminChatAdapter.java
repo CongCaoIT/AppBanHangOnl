@@ -56,6 +56,7 @@ public class AdminChatAdapter extends RecyclerView.Adapter<AdminChatAdapter.MyVi
                 if (!isLongClick) {
                     Intent intent = new Intent(context, ChatActivity.class);
                     intent.putExtra("idreceive", user.getId());
+                    intent.putExtra("username", user.getUsername());
                     // id== 7 dùng để chat, nhiều admin có thể cùng xử lý 1 khách hàng
                     intent.putExtra("idsend", 12);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -157,7 +157,7 @@ public class CreateProductActivity extends AppCompatActivity {
                     .subscribe(
                             messageModel -> {
                                 if (messageModel.isSucces()) {
-                                    Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
+                                    ToastHelper.showCustomToast(getApplicationContext(), "Sửa sản phẩm thành công !!!");
                                     Intent management = new Intent(getApplicationContext(), ManagementActivity.class);
                                     startActivity(management);
                                     finish();
@@ -195,7 +195,7 @@ public class CreateProductActivity extends AppCompatActivity {
                     .subscribe(
                             messageModel -> {
                                 if (messageModel.isSucces()) {
-                                    Toast.makeText(getApplicationContext(), messageModel.getMessage(), Toast.LENGTH_LONG).show();
+                                    ToastHelper.showCustomToast(getApplicationContext(), "Thêm sản phẩm thành công !!!");
                                     Intent management = new Intent(getApplicationContext(), ManagementActivity.class);
                                     startActivity(management);
                                     finish();

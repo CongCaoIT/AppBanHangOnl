@@ -74,20 +74,18 @@ public class ChatActivity extends AppCompatActivity {
 
         listenMess();
 
-        ActionToolBar();
-
-        //insertUser();       // thêm user đang dùng vào trong danh sách user của trang admin
-    }
-
-    private void ActionToolBar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Get the username from the intent
+        String username = getIntent().getStringExtra("username");
+        if (username != null) {
+            // Set the ActionBar title to the username
+            getSupportActionBar().setTitle(username);
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void insertUser() {     // thêm user đang dùng vào trong danh sách user của trang admin
