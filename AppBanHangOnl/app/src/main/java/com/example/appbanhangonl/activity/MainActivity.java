@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                     case "Đăng xuất":
                         Paper.book().delete("user");
                         FirebaseAuth.getInstance().signOut();
+                        Utils.CartList.clear();
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
                         break;
                     default:
