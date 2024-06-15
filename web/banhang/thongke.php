@@ -1,6 +1,6 @@
 <?php
 include "connect.php";
-$query = "SELECT idsp, sanpham.TenSP, SUM(chitietdonhang.soluong) AS tong, sanpham.GiaSP FROM `chitietdonhang` INNER JOIN sanpham ON sanpham.MaSP = chitietdonhang.idsp GROUP BY `idsp`;";
+$query = "SELECT idsp, sanpham.TenSP, SUM(chitietdonhang.soluong) AS tong, sanpham.GiaSP, sanpham.SoLuongTon FROM `chitietdonhang` INNER JOIN sanpham ON sanpham.MaSP = chitietdonhang.idsp GROUP BY `idsp`;";
 $data = mysqli_query($conn, $query);
 $result = array();
 while ($row = mysqli_fetch_assoc($data)) {
