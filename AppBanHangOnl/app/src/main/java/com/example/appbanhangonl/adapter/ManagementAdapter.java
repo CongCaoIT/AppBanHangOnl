@@ -52,7 +52,7 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.My
             Glide.with(context).load(productModel.getHinhAnh()).into(holder.imageViewImage);
         } else {
             String hinh = Utils.BASE_URL + "images/" + productModel.getHinhAnh();
-            Glide.with(context).load(productModel.getHinhAnh()).into(holder.imageViewImage);
+            Glide.with(context).load(hinh).into(holder.imageViewImage);
         }
         //Glide.with(context).load(productModel.getHinhAnh()).into(holder.imageViewImage);
         holder.setItemClickListener(new ItemClickListener() {
