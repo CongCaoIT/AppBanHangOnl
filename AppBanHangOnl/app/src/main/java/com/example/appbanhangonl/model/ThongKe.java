@@ -8,8 +8,17 @@ public class ThongKe {
     private int soluong;
     private int tongtien;
     private int GiaSP;
+    private int SoLuongTon;
 
-    public ThongKe(String tenSP, int tong, String thang, String tongtienthang, int soluong, int tongtien, int giaSP) {
+    public int getSoLuongTon() {
+        return SoLuongTon;
+    }
+
+    public void setSoLuongTon(int soLuongTon) {
+        SoLuongTon = soLuongTon;
+    }
+
+    public ThongKe(String tenSP, int tong, String thang, String tongtienthang, int soluong, int tongtien, int giaSP, int soLuongTon) {
         TenSP = tenSP;
         this.tong = tong;
         this.thang = thang;
@@ -17,6 +26,7 @@ public class ThongKe {
         this.soluong = soluong;
         this.tongtien = tongtien;
         GiaSP = giaSP;
+        SoLuongTon = soLuongTon;
     }
 
     public String getTenSP() {

@@ -25,9 +25,7 @@
                 android:id="@+id/menu_quanlity"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_gravity="top|right">
-
-            </com.nex3z.notificationbadge.NotificationBadge>
+                android:layout_gravity="top|right" />
 
             <ImageView
                 android:layout_width="30dp"
@@ -48,13 +46,14 @@
         <ImageView
             android:id="@+id/item_productdetails_img"
             android:layout_width="150dp"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -63,7 +62,9 @@
                 android:layout_height="wrap_content"
                 android:text="Tên sản phẩm"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:maxLines="3"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/txbPrice"

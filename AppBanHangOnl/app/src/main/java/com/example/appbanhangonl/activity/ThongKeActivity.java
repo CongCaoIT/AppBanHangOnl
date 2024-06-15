@@ -178,9 +178,10 @@ public class ThongKeActivity extends AppCompatActivity {
     private void getdataChart() {
         updateTitle(CHART_TITLE_BEST_SELLING);
         List<PieEntry> listdata = new ArrayList<>();
-        List<String> productNames = new ArrayList<>(); // Danh sách tên sản phẩm
+        List<String> productNames = new ArrayList<>(); // List of product names
         Map<String, Integer> productPrices = new HashMap<>(); // Map to store product prices
-        Map<String, Integer> productQuantities = new HashMap<>(); // Map to store product quantities
+        Map<String, Integer> productQuantities = new HashMap<>(); // Map to store product quantities sold
+        Map<String, Integer> productStocks = new HashMap<>(); // Map to store product stock quantities
 
         compositeDisposable.add(apiBanHang.getthongke()
                 .subscribeOn(Schedulers.io())
@@ -194,9 +195,12 @@ public class ThongKeActivity extends AppCompatActivity {
                                     total += tong;
                                     String tenSP = thongKeModel.getResult().get(i).getTenSP();
                                     int giaSP = thongKeModel.getResult().get(i).getGiaSP(); // Get product price
-                                    productNames.add(tenSP); // Thêm tên sản phẩm vào danh sách
+                                    int soLuongTon = thongKeModel.getResult().get(i).getSoLuongTon(); // Get product stock
+
+                                    productNames.add(tenSP); // Add product name to list
                                     productPrices.put(tenSP, giaSP); // Add product price to map
                                     productQuantities.put(tenSP, tong); // Add product quantity to map
+                                    productStocks.put(tenSP, soLuongTon); // Add product stock to map
                                     listdata.add(new PieEntry(tong, tenSP)); // Include product name in PieEntry
                                 }
                                 PieDataSet pieDataSet = new PieDataSet(listdata, "");
@@ -220,11 +224,12 @@ public class ThongKeActivity extends AppCompatActivity {
                                         float percentage = (selectedValue / finalTotal) * 100;
 
                                         String productName = selectedEntry.getLabel(); // Get product name from label
-                                        if (productQuantities.containsKey(productName) && productPrices.containsKey(productName)) {
-                                            int totalQuantity = productQuantities.get(productName); // Get product quantity
+                                        if (productQuantities.containsKey(productName) && productPrices.containsKey(productName) && productStocks.containsKey(productName)) {
+                                            int totalQuantity = productQuantities.get(productName); // Get product quantity sold
                                             int productPrice = productPrices.get(productName); // Get product price
                                             int totalSalesAmount = totalQuantity * productPrice; // Calculate total sales amount
-                                            showDetailInfo(productName, selectedValue, percentage, totalSalesAmount);
+                                            int stockQuantity = productStocks.get(productName); // Get product stock quantity
+                                            showDetailInfo(productName, selectedValue, stockQuantity, percentage, totalSalesAmount);
                                         }
                                     }
 
@@ -258,7 +263,7 @@ public class ThongKeActivity extends AppCompatActivity {
         barChart = findViewById(R.id.barchart);
     }
 
-    private void showDetailInfo(String productName, int selectedValue, float percentage, int totalSalesAmount) {
+    private void showDetailInfo(String productName, int selectedValue, int stockQuantity, float percentage, int totalSalesAmount) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ThongKeActivity.this);
         bottomSheetDialog.setContentView(R.layout.layout_detail_info);
 
@@ -271,9 +276,9 @@ public class ThongKeActivity extends AppCompatActivity {
         txtProductName.setText(productName);
         txtSelectedValue.setText("Tổng số lượng sản phẩm đã bán: " + selectedValue + " sản phẩm");
         txtPercentage.setText("Phần trăm: " + String.format("%.2f", percentage) + "%");
-        txtSoluongSp.setText("Tổng số lượng sản phẩm có trong kho: " + selectedValue + " sản phẩm");
+        txtSoluongSp.setText("Tổng số lượng sản phẩm có trong kho: " + stockQuantity + " sản phẩm");
 
-        // Định dạng số tiền theo kiểu VND
+        // Format the total sales amount as VND
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedTotalSalesAmount = formatter.format(totalSalesAmount) + " VND";
         txtTotalSales.setText("Tổng số tiền thu được: " + formattedTotalSalesAmount);
