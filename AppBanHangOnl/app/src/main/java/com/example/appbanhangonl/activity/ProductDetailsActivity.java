@@ -71,13 +71,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
             for (int i = 0; i < Utils.CartList.size(); i++) {
                 if (Utils.CartList.get(i).getCartid() == productModel.getMaSP()) {
                     Utils.CartList.get(i).setQuality(num + Utils.CartList.get(i).getQuality());
-                    long price = Long.parseLong(productModel.getGiaSP()) * Utils.CartList.get(i).getQuality();
+                    long price = Long.parseLong(productModel.getGiaSP());
                     Utils.CartList.get(i).setPrice(price);
                     flag = true;
                 }
             }
             if (!flag) {
-                long price = Long.parseLong(productModel.getGiaSP()) * num;
+                long price = Long.parseLong(productModel.getGiaSP());
                 CartModel cartModel = new CartModel();
                 cartModel.setPrice(price);
                 cartModel.setQuality(num);
@@ -89,7 +89,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         } else {
             int num = Integer.parseInt(spinner.getSelectedItem().toString());
-            long price = Long.parseLong(productModel.getGiaSP()) * num;
+            long price = Long.parseLong(productModel.getGiaSP());
             CartModel cartModel = new CartModel();
             cartModel.setPrice(price);
             cartModel.setQuality(num);

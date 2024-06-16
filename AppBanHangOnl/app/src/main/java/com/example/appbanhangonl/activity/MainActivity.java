@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         Utils.CartList.clear();
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        finish();
                         break;
                     default:
                         return;
